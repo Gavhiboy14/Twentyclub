@@ -3,8 +3,13 @@ import { getAllProducts, getBrands } from "@/lib/data/queries";
 
 const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-/** Se regenera cada hora: los productos nuevos entran solos. */
-export const revalidate = 3600;
+/**
+ * Se genera en cada visita, no en el build. Si se prerenderizara al buildear,
+ * el deploy entero dependería de que la base esté accesible justo en ese
+ * momento — alcanza con que Supabase tarde un segundo de más para que se
+ * caiga todo el sitio por culpa del sitemap.
+ */
+export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [products, brands] = await Promise.all([getAllProducts(), getBrands()]);
