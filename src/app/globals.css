@@ -3,14 +3,9 @@
 /* ==========================================================================
    Twenty Club — sistema de diseño
 
-   Tres registros y nada más:
-     · el negro, que es el aire
-     · el vidrio ahumado, donde vive la interfaz
-     · el marfil, que es donde vive el producto
-
-   El contraste claro/oscuro es el motor: las fotos van sobre placas marfil
-   flotando en el negro. Todo acento sale de la familia arena/champagne, nunca
-   de un color saturado.
+   Negro profundo de base, vidrio ahumado para la interfaz y una display
+   ancha y pesada que es el carácter de la marca. El acento sale siempre de
+   la familia arena/champagne/dorado, nunca de un color saturado.
    ========================================================================== */
 
 @theme {
@@ -26,7 +21,7 @@
   --color-mist: #a8a49c; /* cuerpo — 7.6:1 */
   --color-chalk: #f2efe8; /* títulos — 16.4:1 */
 
-  /* Claros. El marfil es la placa donde se apoya cada foto */
+  /* Claros */
   --color-ivory: #f5f2ea;
   --color-linen: #faf8f3; /* blanco cálido */
   --color-cream: #efe9dc; /* crema suave */
@@ -36,7 +31,7 @@
   --color-champagne: #e8dcc4;
   --color-toast: #c9b997; /* crema tostado — el halo del fondo */
   /* El dorado apagado de la referencia. Es el acento con más presencia:
-     estados activos, precio del hero, luz del foco. Nunca en superficies. */
+       estados activos y detalles. Nunca en superficies. */
   --color-gold: #c9a063;
 
   /* Estados. Único lugar con color, y desaturado para no romper el conjunto */
@@ -44,9 +39,11 @@
   --color-warn: #c9a961;
   --color-bad: #bd7f6f;
 
-  /* Tipografía. Grotesca cerrada para display, humanista para leer */
-  --font-display: var(--font-inter-tight), system-ui, sans-serif;
+  /* Tipografía. La display ancha y pesada es el carácter de la marca: sin
+     ella el sitio se cae en la neutralidad. El mono da textura de dato. */
+  --font-display: var(--font-archivo), system-ui, sans-serif;
   --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, monospace;
 
   /* Curvas */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -275,16 +272,14 @@
     overflow-x: clip;
   }
 
-  /* Los títulos van en grotesca cerrada. El tracking se aprieta a medida que
-     crece el cuerpo — es lo que separa un título grande de un título caro. */
   h1,
   h2,
   h3,
   h4 {
     font-family: var(--font-display);
     color: var(--color-chalk);
-    font-weight: 500;
-    letter-spacing: -0.03em;
+    font-weight: 700;
+    letter-spacing: -0.035em;
     text-wrap: balance;
   }
 
@@ -403,62 +398,18 @@
    igual para una foto de estudio con fondo gris que para un recorte.
    -------------------------------------------------------------------------- */
 
-@utility spotlight {
-  position: relative;
-  background: radial-gradient(
-    ellipse 70% 55% at 50% 42%,
-    #2a2825 0%,
-    #151416 62%,
+/* Pozo del producto: una superficie oscura y plana donde la foto entra a
+   sangre. Sin viñeta ni halo redondo — la profundidad la dan el panel de
+   vidrio que lo contiene y la sombra propia de la foto, no un degradado
+   circular encima. */
+@utility well {
+  background: linear-gradient(
+    162deg,
+    #1c1b1e 0%,
+    #151416 55%,
     var(--color-ink) 100%
   );
-
-  /* El halo dorado detrás del producto */
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      ellipse 46% 38% at 50% 40%,
-      rgb(201 160 99 / 0.26),
-      transparent 70%
-    );
-    pointer-events: none;
-  }
-
-  /* La foto se funde en el panel por los bordes */
-  & img {
-    position: relative;
-    -webkit-mask-image: radial-gradient(
-      ellipse 60% 56% at 50% 46%,
-      #000 46%,
-      transparent 78%
-    );
-    mask-image: radial-gradient(
-      ellipse 60% 56% at 50% 46%,
-      #000 46%,
-      transparent 78%
-    );
-  }
-}
-
-/* Halo champagne detrás de una placa suspendida. Muy tenue, casi subliminal. */
-@utility halo {
-  position: relative;
-  &::before {
-    content: "";
-    position: absolute;
-    inset: -18% -10% -22%;
-    z-index: -1;
-    border-radius: 9999px;
-    background: radial-gradient(
-      ellipse at center,
-      rgb(232 220 196 / 0.16),
-      rgb(201 185 151 / 0.05) 45%,
-      transparent 72%
-    );
-    filter: blur(48px);
-    pointer-events: none;
-  }
+  box-shadow: inset 0 1px 0 0 rgb(232 220 196 / 0.045);
 }
 
 @utility glow-warm {
@@ -495,37 +446,37 @@
    Tipografía
    -------------------------------------------------------------------------- */
 
-/* Antetítulo: versalitas muy espaciadas. Reemplaza al mono del diseño anterior
-   — el mono lee "técnico" y acá queremos que lea "boutique". */
+/* Antetítulo monoespaciado. Se usa para datos reales: marcas, talles, conteos. */
 @utility eyebrow {
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
   font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-ash);
 }
 
-/* Titulares. El tracking se cierra fuerte porque a 4rem+ el espaciado normal
-   se ve suelto y barato. */
+/* Titulares. Ancha y con peso — es lo que separa a Twenty Club de cualquier
+   tienda con Inter. El eje de ancho de Archivo hace el trabajo. */
 @utility display {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-variation-settings: "wdth" 108;
+  font-weight: 700;
   letter-spacing: -0.04em;
-  line-height: 0.94;
+  line-height: 0.92;
 }
 
-/* Para los títulos más grandes, todavía más cerrado. */
 @utility display-xl {
   font-family: var(--font-display);
-  font-weight: 500;
-  letter-spacing: -0.052em;
-  line-height: 0.9;
+  font-variation-settings: "wdth" 112;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.88;
 }
 
 /* Datos que no deben bailar al cambiar de valor: precios, talles, contadores.
-   No toca el tracking a propósito, para poder combinarlo con `tracking-*`. */
+   No toca el tracking a propósito, para combinarlo con `tracking-*`. */
 @utility numeric {
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
 

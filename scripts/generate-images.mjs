@@ -138,7 +138,6 @@ function shoe({ base, accent, sole, highTop }) {
 }
 
 function svg({ base, accent, sole, highTop, view, seed }) {
-  const bloomX = view === 1 ? 660 : 340;
   const rotate = view === 1 ? -4 : view === 2 ? -2 : 0;
   const mirror = view === 1 ? "scale(-1 1) translate(-1000 0)" : "";
   // Vista 3: acercamiento al panel lateral y la entresuela.
@@ -146,19 +145,13 @@ function svg({ base, accent, sole, highTop, view, seed }) {
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000" role="img">
   <defs>
-    <!-- Fondo oscuro con foco cálido: estas imágenes viven dentro del panel
-         de foco de la tarjeta, así que tienen que continuar ese charco de
-         luz, no contrastar con él. -->
-    <radialGradient id="bg" cx="0.5" cy="0.42" r="0.72">
-      <stop offset="0" stop-color="#2a2825"/>
-      <stop offset="0.62" stop-color="#151416"/>
+    <!-- Fondo casi plano: el borde de la imagen tiene que fundirse con la
+         página y con el pozo de la tarjeta, sin dibujar ningún círculo. -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#17161a"/>
+      <stop offset="0.6" stop-color="#121114"/>
       <stop offset="1" stop-color="#0f0f10"/>
-    </radialGradient>
-    <radialGradient id="bloom">
-      <stop offset="0" stop-color="#c9a063" stop-opacity="0.3"/>
-      <stop offset="0.55" stop-color="#c9a063" stop-opacity="0.08"/>
-      <stop offset="1" stop-color="#c9a063" stop-opacity="0"/>
-    </radialGradient>
+    </linearGradient>
     <linearGradient id="upperGrad" x1="0.1" y1="0" x2="0.8" y2="1">
       <stop offset="0" stop-color="${lighten(base, 26)}"/>
       <stop offset="0.5" stop-color="${base}"/>
@@ -185,8 +178,8 @@ function svg({ base, accent, sole, highTop, view, seed }) {
       <stop offset="0.45" stop-color="#ffffff" stop-opacity="0.02"/>
       <stop offset="1" stop-color="#000000" stop-opacity="0.18"/>
     </linearGradient>
-    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="26"/>
+    <filter id="contact" x="-30%" y="-200%" width="160%" height="500%">
+      <feGaussianBlur stdDeviation="11"/>
     </filter>
     <filter id="grain">
       <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="${seed}"/>
@@ -195,10 +188,9 @@ function svg({ base, accent, sole, highTop, view, seed }) {
   </defs>
 
   <rect width="1000" height="1000" fill="url(#bg)"/>
-  <circle cx="${bloomX}" cy="380" r="330" fill="url(#bloom)"/>
-  <!-- Sombra de contacto sobre el foco -->
-  <ellipse cx="508" cy="600" rx="262" ry="26" fill="#000" opacity="0.6" filter="url(#soft)"/>
-  <ellipse cx="508" cy="594" rx="160" ry="16" fill="#c9a063" opacity="0.14" filter="url(#soft)"/>
+  <!-- Sombra de contacto: pegada a la suela y achatada, para que se lea
+       como apoyo en el piso y no como un halo redondo. -->
+  <ellipse cx="508" cy="598" rx="215" ry="13" fill="#000" opacity="0.5" filter="url(#contact)"/>
 
   <g transform="${zoom}">
     <g transform="${mirror}">

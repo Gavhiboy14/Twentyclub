@@ -73,7 +73,7 @@ export function ProductCard({
       {/* El producto, suspendido en el foco */}
       <Link
         href={`/producto/${product.slug}`}
-        className="spotlight relative block aspect-[4/5] overflow-hidden rounded-[1.35rem]"
+        className="well relative block aspect-square overflow-hidden rounded-[1.35rem]"
         aria-label={`Ver ${label}`}
       >
         <Image
@@ -133,7 +133,7 @@ export function ProductCard({
         </h3>
 
         <div className="mt-3 flex items-baseline gap-2.5">
-          <span className="numeric text-[1.0625rem] font-medium tracking-[-0.01em] text-linen">
+          <span className="font-display text-lg font-bold tracking-tight text-chalk">
             {formatPrice(product.finalPrice)}
           </span>
           {product.discount > 0 && (
@@ -143,10 +143,8 @@ export function ProductCard({
           )}
         </div>
 
-        {/* Talles y compra. Se revelan al hover en desktop; en touch van
-            siempre visibles, porque ahí el hover no existe. */}
-        {product.inStock ? (
-          <div className="mt-5 space-y-3 opacity-100 transition-opacity duration-500 sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100">
+                {product.inStock ? (
+          <div className="mt-5 space-y-3">
             <div className="flex flex-wrap gap-1.5">
               {product.visibleSizes.map((s) => (
                 <button

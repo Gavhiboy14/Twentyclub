@@ -1,21 +1,28 @@
 import type { Metadata, Viewport } from "next";
-import { Inter_Tight, Manrope } from "next/font/google";
+import { Archivo, Manrope, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 /**
- * Dos familias y nada más. Inter Tight para titulares — es la grotesca más
- * cerrada del catálogo y aguanta el tracking negativo fuerte que pide un
- * título de 6rem sin desarmarse. Manrope para leer.
+ * Archivo con el eje de ancho es el carácter de la marca: a wdth 112 y peso
+ * 700 los titulares tienen la presencia de un afiche. Manrope para leer y
+ * JetBrains Mono para los datos — talles, SKU, contadores.
  */
-const interTight = Inter_Tight({
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-inter-tight",
+  axes: ["wdth"],
+  variable: "--font-archivo",
   display: "swap",
 });
 
 const manrope = Manrope({
   subsets: ["latin"],
   variable: "--font-manrope",
+  display: "swap",
+});
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono-face",
   display: "swap",
 });
 
@@ -72,7 +79,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${interTight.variable} ${manrope.variable}`}
+      className={`${archivo.variable} ${manrope.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
       <body className="min-h-dvh antialiased">{children}</body>

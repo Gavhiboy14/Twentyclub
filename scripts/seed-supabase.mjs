@@ -159,6 +159,10 @@ async function uploadImages(db) {
       const { error } = await storage.upload(path, body, {
         contentType,
         upsert: true,
+        // Cinco minutos en vez de la hora por defecto. Estas imágenes se
+        // regeneran con el mismo nombre, así que un TTL largo hace que sigas
+        // viendo la versión vieja mucho después de haberla reemplazado.
+        cacheControl: "300",
       });
       if (error) throw new Error(`subiendo ${path}: ${error.message}`);
 
