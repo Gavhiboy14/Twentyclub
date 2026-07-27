@@ -14,7 +14,7 @@ export default function NotFound() {
               404
             </span>
           </p>
-          <h1 className="display-xl mt-4 text-[clamp(1.75rem,5vw,2.75rem)] text-cream">
+          <h1 className="display-xl mt-4 text-[clamp(1.75rem,5vw,2.75rem)] text-chalk">
             Esta página no existe
           </h1>
           <p className="mx-auto mt-4 max-w-sm text-[0.9375rem] leading-relaxed text-ash">

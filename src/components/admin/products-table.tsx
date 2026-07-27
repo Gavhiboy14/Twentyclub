@@ -82,7 +82,7 @@ export function ProductsTable({
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3.5">
-                        <div className="relative size-12 shrink-0 overflow-hidden rounded-xl bg-graphite">
+                        <div className="relative size-12 shrink-0 overflow-hidden rounded-xl bg-carbon">
                           <Image
                             src={product.images[0]?.url ?? PLACEHOLDER_IMAGE}
                             alt=""

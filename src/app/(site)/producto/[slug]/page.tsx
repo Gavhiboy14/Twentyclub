@@ -109,7 +109,7 @@ export default async function ProductPage({
       />
       <TrackRecentView slug={product.slug} />
 
-      <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 lg:py-14">
+      <div className="mx-auto max-w-[86rem] px-5 py-14 sm:px-8 lg:py-20">
         <nav aria-label="Migas de pan" className="mb-8 flex items-center gap-1.5 text-xs">
           <Link href="/" className="text-ash transition-colors hover:text-chalk">
             Inicio
@@ -149,12 +149,12 @@ export default async function ProductPage({
                 >
                   {product.brand.name}
                 </Link>
-                <h1 className="display-xl mt-3 text-[clamp(2rem,5.5vw,3.25rem)] text-cream">
+                <h1 className="display-xl mt-3 text-[clamp(2rem,5.5vw,3.25rem)] text-chalk">
                   {product.name}
                 </h1>
 
                 <div className="mt-6 flex flex-wrap items-baseline gap-4">
-                  <span className="font-display text-3xl font-bold tracking-tight text-cream">
+                  <span className="font-display text-3xl font-medium tracking-tight text-chalk">
                     {formatPrice(product.finalPrice)}
                   </span>
                   {product.discount > 0 && (

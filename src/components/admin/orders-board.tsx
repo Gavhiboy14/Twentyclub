@@ -118,7 +118,7 @@ export function OrdersBoard({ orders }: { orders: Order[] }) {
                     <ul className="space-y-2.5">
                       {order.items.map((item, i) => (
                         <li key={i} className="flex items-center gap-3.5">
-                          <span className="relative size-12 shrink-0 overflow-hidden rounded-xl bg-graphite">
+                          <span className="relative size-12 shrink-0 overflow-hidden rounded-xl bg-carbon">
                             {item.image && (
                               <Image
                                 src={item.image}

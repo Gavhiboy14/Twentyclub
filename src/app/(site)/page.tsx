@@ -118,7 +118,7 @@ export default async function HomePage() {
                   )}
                   <div className="relative flex h-full min-h-40 flex-col">
                     <div className="flex items-start justify-between gap-4">
-                      <p className="font-display text-2xl font-bold tracking-[-0.04em] text-chalk transition-colors group-hover:text-cream">
+                      <p className="font-display text-2xl font-medium tracking-[-0.04em] text-chalk transition-colors group-hover:text-cream">
                         {brand.name}
                       </p>
                       <ArrowUpRight className="size-4 shrink-0 text-ash transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-sand" />
@@ -156,7 +156,7 @@ export default async function HomePage() {
                   <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/75 to-ink/25" />
                   <div className="relative">
                     <p className="eyebrow mb-3">{banner.eyebrow}</p>
-                    <h3 className="max-w-sm font-display text-2xl font-bold tracking-[-0.035em] text-cream">
+                    <h3 className="max-w-sm font-display text-2xl font-medium tracking-[-0.035em] text-chalk">
                       {banner.title}
                     </h3>
                     <p className="mt-2.5 max-w-md text-sm text-mist">

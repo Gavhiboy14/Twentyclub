@@ -42,7 +42,7 @@ export function ProductGallery({
         onPointerEnter={() => setZooming(true)}
         onPointerLeave={() => setZooming(false)}
         onPointerMove={(e) => track(e.clientX, e.clientY)}
-        className="plate group relative aspect-[4/5] overflow-hidden rounded-[1.75rem]"
+        className="spotlight group relative aspect-[4/5] overflow-hidden rounded-[1.75rem]"
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -83,7 +83,7 @@ export function ProductGallery({
             aria-label={`Ver imagen ${i + 1} de ${images.length}`}
             aria-current={i === index}
             className={cn(
-              "plate relative aspect-[4/5] w-20 shrink-0 overflow-hidden rounded-xl border transition-all duration-300 sm:w-[5.5rem]",
+              "spotlight relative aspect-[4/5] w-20 shrink-0 overflow-hidden rounded-xl border transition-all duration-300 sm:w-[5.5rem]",
               i === index
                 ? "border-ivory opacity-100 ring-1 ring-ivory/40"
                 : "border-transparent opacity-45 hover:opacity-80",

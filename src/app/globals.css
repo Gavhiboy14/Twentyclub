@@ -35,6 +35,9 @@
   --color-sand: #d9cfbc; /* beige arena */
   --color-champagne: #e8dcc4;
   --color-toast: #c9b997; /* crema tostado — el halo del fondo */
+  /* El dorado apagado de la referencia. Es el acento con más presencia:
+     estados activos, precio del hero, luz del foco. Nunca en superficies. */
+  --color-gold: #c9a063;
 
   /* Estados. Único lugar con color, y desaturado para no romper el conjunto */
   --color-ok: #8a9e82;
@@ -392,19 +395,50 @@
 }
 
 /* --------------------------------------------------------------------------
-   Placa marfil — donde vive el producto
+   Foco — donde vive el producto
 
-   Es el gesto central del diseño: la foto no flota sobre el negro, se apoya
-   sobre una placa clara que sí flota. Funciona con cualquier foto, tenga el
-   fondo que tenga.
+   Es el gesto central del diseño. El producto no se apoya sobre una placa
+   clara: queda suspendido en un charco de luz cálida sobre el panel oscuro.
+   La máscara radial funde el fondo de la foto con el panel, así que sirve
+   igual para una foto de estudio con fondo gris que para un recorte.
    -------------------------------------------------------------------------- */
 
-@utility plate {
-  background: linear-gradient(168deg, var(--color-linen) 0%, var(--color-ivory) 55%, #ece7db 100%);
-  box-shadow:
-    0 1px 0 0 rgb(255 255 255 / 0.8) inset,
-    0 2px 4px -2px rgb(0 0 0 / 0.4),
-    0 24px 50px -24px rgb(0 0 0 / 0.75);
+@utility spotlight {
+  position: relative;
+  background: radial-gradient(
+    ellipse 70% 55% at 50% 42%,
+    #2a2825 0%,
+    #151416 62%,
+    var(--color-ink) 100%
+  );
+
+  /* El halo dorado detrás del producto */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse 46% 38% at 50% 40%,
+      rgb(201 160 99 / 0.26),
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+
+  /* La foto se funde en el panel por los bordes */
+  & img {
+    position: relative;
+    -webkit-mask-image: radial-gradient(
+      ellipse 60% 56% at 50% 46%,
+      #000 46%,
+      transparent 78%
+    );
+    mask-image: radial-gradient(
+      ellipse 60% 56% at 50% 46%,
+      #000 46%,
+      transparent 78%
+    );
+  }
 }
 
 /* Halo champagne detrás de una placa suspendida. Muy tenue, casi subliminal. */

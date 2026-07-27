@@ -140,7 +140,7 @@ export function CatalogControls({
       <Dialog open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetContent side="bottom" className="p-0">
           <div className="flex items-center justify-between border-b border-champagne/8 px-6 py-4">
-            <DialogTitle className="font-display text-lg font-bold text-chalk">
+            <DialogTitle className="font-display text-lg font-medium text-chalk">
               Filtros
             </DialogTitle>
             <button

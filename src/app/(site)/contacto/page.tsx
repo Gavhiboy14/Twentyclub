@@ -42,10 +42,10 @@ export default async function ContactPage() {
   const wa = `https://wa.me/${normalizePhone(settings.whatsappNumber)}`;
 
   return (
-    <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:py-20">
+    <div className="mx-auto max-w-[86rem] px-5 py-20 sm:px-8 lg:py-28">
       <Reveal className="mb-16 max-w-2xl">
         <p className="eyebrow mb-4">Contacto</p>
-        <h1 className="display-xl text-[clamp(2.25rem,6.5vw,4.5rem)] text-cream">
+        <h1 className="display-xl text-[clamp(2.25rem,6.5vw,4.5rem)] text-chalk">
           <RevealWords text="Del otro lado hay una persona." />
         </h1>
         <p className="mt-6 text-base leading-relaxed text-mist">
@@ -119,7 +119,7 @@ export default async function ContactPage() {
         <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PASOS.map((paso, i) => (
             <Reveal key={paso.title} delay={i * 0.08}>
-              <li className="glass edge-light h-full rounded-glass p-6">
+              <li className="h-full rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl p-8">
                 <span className="numeric text-[0.6875rem] tracking-[0.22em] text-cream">
                   0{i + 1}
                 </span>
@@ -167,7 +167,7 @@ function InfoCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="glass rounded-glass p-6">
+    <div className="rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl p-8">
       <span className="text-cream">{icon}</span>
       <h2 className="eyebrow mt-4">{title}</h2>
       <p className="mt-2 text-[0.8125rem] leading-relaxed text-mist">

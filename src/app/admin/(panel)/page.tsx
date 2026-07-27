@@ -22,7 +22,7 @@ export default async function DashboardPage() {
     <>
       <header className="mb-8">
         <p className="eyebrow mb-3">Panel</p>
-        <h1 className="font-display text-3xl font-bold tracking-[-0.04em] text-cream">
+        <h1 className="font-display text-3xl font-medium tracking-[-0.04em] text-chalk">
           Cómo viene la tienda
         </h1>
         <p className="mt-2 max-w-xl text-[0.875rem] leading-relaxed text-ash">
@@ -198,7 +198,7 @@ function Metric({
         <p className="eyebrow">{label}</p>
         <span className={alert ? "text-warn" : "text-cream"}>{icon}</span>
       </div>
-      <p className="mt-4 font-display text-2xl font-bold tracking-tight text-cream">
+      <p className="mt-4 font-display text-2xl font-medium tracking-tight text-chalk">
         {value}
       </p>
       <p className="mt-1.5 text-xs text-ash">{detail}</p>

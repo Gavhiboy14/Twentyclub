@@ -179,7 +179,7 @@ export function SearchDialog({
                       i === cursor ? "bg-champagne/[0.07]" : "hover:bg-champagne/[0.04]",
                     )}
                   >
-                    <div className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-graphite">
+                    <div className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-carbon">
                       <Image
                         src={r.image}
                         alt=""
@@ -196,7 +196,7 @@ export function SearchDialog({
                       <p className="truncate text-xs text-ash">{r.color}</p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <p className="font-display text-sm font-bold text-cream">
+                      <p className="font-display text-sm font-medium text-chalk">
                         {formatPrice(r.price)}
                       </p>
                       {!r.inStock && (

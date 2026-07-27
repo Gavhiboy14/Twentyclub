@@ -25,7 +25,7 @@ export function CartDrawer() {
       <SheetContent side="right" className="gap-0 p-0">
         <header className="flex items-center justify-between border-b border-champagne/8 px-6 py-5">
           <div>
-            <DialogTitle className="font-display text-xl font-bold tracking-tight text-chalk">
+            <DialogTitle className="font-display text-xl font-medium tracking-tight text-chalk">
               Tu carrito
             </DialogTitle>
             <DialogDescription className="eyebrow mt-1">
@@ -46,7 +46,7 @@ export function CartDrawer() {
 
         {items.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-5 px-8 text-center">
-            <div className="glass grid size-16 place-items-center rounded-2xl text-ash">
+            <div className="grid size-16 place-items-center rounded-2xl border border-champagne/[0.07] bg-graphite/60 text-ash">
               <ShoppingBag className="size-6" />
             </div>
             <div>
@@ -78,7 +78,7 @@ export function CartDrawer() {
                     <Link
                       href={`/producto/${item.slug}`}
                       onClick={closeCart}
-                      className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-graphite"
+                      className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-carbon"
                     >
                       <Image
                         src={item.image}
@@ -126,7 +126,7 @@ export function CartDrawer() {
                           </button>
                         </div>
 
-                        <span className="ml-auto font-display text-sm font-bold text-cream">
+                        <span className="ml-auto font-display text-sm font-medium text-chalk">
                           {formatPrice(item.unitPrice * item.qty)}
                         </span>
 
@@ -153,7 +153,7 @@ export function CartDrawer() {
                 </div>
                 <div className="flex items-baseline justify-between">
                   <span className="text-sm text-mist">Total</span>
-                  <span className="font-display text-2xl font-bold tracking-tight text-cream">
+                  <span className="font-display text-2xl font-medium tracking-tight text-chalk">
                     {formatPrice(subtotal)}
                   </span>
                 </div>

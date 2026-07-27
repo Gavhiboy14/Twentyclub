@@ -15,7 +15,7 @@ export function Skeleton({
 /** Placeholder de tarjeta de producto, con la misma métrica que la real. */
 export function ProductCardSkeleton() {
   return (
-    <div className="glass rounded-glass p-3">
+    <div className="glass rounded-[1.75rem] p-3">
       <Skeleton className="aspect-square w-full rounded-[1.15rem]" />
       <div className="space-y-2.5 px-2 pb-1 pt-4">
         <Skeleton className="h-2.5 w-16 rounded-full" />

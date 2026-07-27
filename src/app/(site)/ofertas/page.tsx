@@ -23,10 +23,10 @@ export default async function OffersPage() {
   const offer = offers[0];
 
   return (
-    <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:py-20">
+    <div className="mx-auto max-w-[86rem] px-5 py-20 sm:px-8 lg:py-28">
       <Reveal className="mb-14">
         <p className="eyebrow mb-4">Descuentos vigentes</p>
-        <h1 className="display-xl text-[clamp(2.25rem,6.5vw,4.5rem)] text-cream">
+        <h1 className="display-xl text-[clamp(2.25rem,6.5vw,4.5rem)] text-chalk">
           <RevealWords text={`Hasta ${biggest}% menos`} />
         </h1>
         <p className="mt-5 max-w-lg text-base leading-relaxed text-mist">
@@ -37,8 +37,8 @@ export default async function OffersPage() {
       </Reveal>
 
       {products.length === 0 ? (
-        <div className="glass rounded-glass px-8 py-20 text-center">
-          <p className="font-display text-xl font-bold text-chalk">
+        <div className="rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl px-8 py-24 text-center">
+          <p className="font-display text-xl font-medium text-chalk">
             Ahora mismo no hay ofertas
           </p>
           <p className="mx-auto mt-2 max-w-sm text-sm text-ash">

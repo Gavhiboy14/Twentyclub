@@ -88,9 +88,9 @@ export default async function BrandPage({
         )}
         <div className="absolute inset-0 -z-10 bg-linear-to-t from-ink via-ink/75 to-ink/40" />
 
-        <div className="mx-auto max-w-7xl px-5 pb-14 pt-16 sm:px-8 lg:pb-20 lg:pt-24">
+        <div className="mx-auto max-w-[86rem] px-5 pb-20 pt-20 sm:px-8 lg:pb-28 lg:pt-32">
           <p className="eyebrow mb-5">Marca</p>
-          <h1 className="display-xl text-[clamp(2.5rem,9vw,6rem)] text-cream">
+          <h1 className="display-xl text-[clamp(2.5rem,9vw,6rem)] text-chalk">
             <RevealWords text={brand.name} />
           </h1>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-mist">
@@ -103,7 +103,7 @@ export default async function BrandPage({
         </div>
       </header>
 
-      <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8 lg:py-16">
+      <div className="mx-auto max-w-[86rem] px-5 py-16 sm:px-8 lg:py-24">
         <div className="grid gap-10 lg:grid-cols-[16rem_1fr] lg:gap-12">
           <aside className="hidden lg:block">
             <div className="sticky top-28">
@@ -131,8 +131,8 @@ export default async function BrandPage({
             </Suspense>
 
             {products.length === 0 ? (
-              <div className="glass rounded-glass px-8 py-16 text-center">
-                <p className="font-display text-lg font-bold text-chalk">
+              <div className="rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl px-8 py-20 text-center">
+                <p className="font-display text-lg font-medium text-chalk">
                   Nada de {brand.name} con esos filtros
                 </p>
                 <p className="mx-auto mt-2 max-w-sm text-sm text-ash">

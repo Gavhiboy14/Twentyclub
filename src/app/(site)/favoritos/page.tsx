@@ -12,7 +12,7 @@ export default async function FavoritesPage() {
   const catalog = await getAllProducts();
 
   return (
-    <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:py-20">
+    <div className="mx-auto max-w-[86rem] px-5 py-20 sm:px-8 lg:py-28">
       <FavoritesList catalog={catalog} />
     </div>
   );

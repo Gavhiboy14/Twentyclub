@@ -21,7 +21,7 @@ export default function LoginPage() {
 
           <div className="glass-strong edge-light grain rounded-[1.75rem] p-8">
             <p className="eyebrow mb-3">Panel administrador</p>
-            <h1 className="font-display text-2xl font-bold tracking-tight text-cream">
+            <h1 className="font-display text-2xl font-medium tracking-tight text-chalk">
               Ingresá para administrar
             </h1>
             <p className="mt-2.5 text-[0.8125rem] leading-relaxed text-ash">

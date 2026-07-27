@@ -26,22 +26,22 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
       <div className="grid gap-8 lg:grid-cols-[1fr_22rem]">
         <div className="space-y-4">
           {[0, 1].map((i) => (
-            <Skeleton key={i} className="h-32 w-full rounded-glass" />
+            <Skeleton key={i} className="h-32 w-full rounded-[1.75rem]" />
           ))}
         </div>
-        <Skeleton className="h-72 w-full rounded-glass" />
+        <Skeleton className="h-72 w-full rounded-[1.75rem]" />
       </div>
     );
   }
 
   if (items.length === 0) {
     return (
-      <div className="glass flex flex-col items-center gap-5 rounded-glass px-8 py-24 text-center">
+      <div className="flex flex-col items-center gap-6 rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl px-8 py-28 text-center">
         <div className="grid size-16 place-items-center rounded-2xl bg-champagne/5 text-ash">
           <ShoppingBag className="size-6" />
         </div>
         <div>
-          <p className="font-display text-xl font-bold text-chalk">
+          <p className="font-display text-xl font-medium text-chalk">
             Tu carrito está vacío
           </p>
           <p className="mx-auto mt-2 max-w-sm text-sm text-ash">
@@ -68,7 +68,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, x: 32, height: 0, marginBottom: 0 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="glass flex gap-4 rounded-glass p-4 sm:gap-6 sm:p-5"
+              className="flex gap-5 rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl p-5 sm:gap-6 sm:p-6"
             >
               <Link
                 href={`/producto/${item.slug}`}
@@ -135,7 +135,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
                   </div>
 
                   <div className="text-right">
-                    <p className="font-display text-lg font-bold text-cream">
+                    <p className="font-display text-lg font-medium text-chalk">
                       {formatPrice(item.unitPrice * item.qty)}
                     </p>
                     {item.qty > 1 && (
@@ -153,9 +153,9 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
 
       {/* Resumen */}
       <aside className="lg:sticky lg:top-28 lg:self-start">
-        <div className="glass-strong edge-light space-y-6 rounded-glass p-6">
+        <div className="space-y-7 rounded-[1.75rem] border border-champagne/[0.09] bg-graphite/80 p-7 backdrop-blur-2xl">
           <div>
-            <h2 className="font-display text-lg font-bold tracking-tight text-chalk">
+            <h2 className="font-display text-lg font-medium tracking-tight text-chalk">
               Resumen
             </h2>
             <p className="eyebrow mt-1">
@@ -179,7 +179,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
 
           <div className="flex items-baseline justify-between">
             <span className="text-sm text-mist">Total</span>
-            <span className="font-display text-2xl font-bold tracking-tight text-cream">
+            <span className="font-display text-2xl font-medium tracking-tight text-chalk">
               {formatPrice(subtotal)}
             </span>
           </div>

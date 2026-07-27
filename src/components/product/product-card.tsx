@@ -14,9 +14,9 @@ import { FavoriteButton } from "./favorite-button";
  * La tarjeta es el elemento que más se repite del sitio, así que es donde se
  * decide si la tienda se siente cara o barata.
  *
- * La estructura es: panel de vidrio ahumado → placa marfil → foto. La foto
- * nunca toca el negro directamente, se apoya sobre la placa. Eso hace que
- * funcione con cualquier foto, tenga el fondo que tenga.
+ * La estructura es: panel de vidrio ahumado → foco cálido → foto. La máscara
+ * radial funde el fondo de la foto con el panel, así que funciona igual con
+ * una foto de estudio que con un recorte.
  */
 export function ProductCard({
   product,
@@ -70,10 +70,10 @@ export function ProductCard({
         !product.inStock && "opacity-55",
       )}
     >
-      {/* Placa marfil con la foto */}
+      {/* El producto, suspendido en el foco */}
       <Link
         href={`/producto/${product.slug}`}
-        className="plate relative block aspect-[4/5] overflow-hidden rounded-[1.35rem]"
+        className="spotlight relative block aspect-[4/5] overflow-hidden rounded-[1.35rem]"
         aria-label={`Ver ${label}`}
       >
         <Image

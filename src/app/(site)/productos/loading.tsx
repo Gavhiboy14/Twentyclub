@@ -2,7 +2,7 @@ import { ProductGridSkeleton, Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {
   return (
-    <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:py-20">
+    <div className="mx-auto max-w-[86rem] px-5 py-20 sm:px-8 lg:py-28">
       <div className="mb-12 space-y-4">
         <Skeleton className="h-2.5 w-24 rounded-full" />
         <Skeleton className="h-14 w-80 max-w-full rounded-2xl" />

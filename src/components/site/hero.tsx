@@ -20,10 +20,9 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 /**
  * Hero.
  *
- * La suspensión la da la placa marfil, no un recorte: una lámina clara
- * flotando sobre el negro, con halo champagne detrás y una sombra muy amplia
- * debajo. Funciona con cualquier foto y no depende de que el producto venga
- * con fondo transparente.
+ * El producto queda suspendido en un charco de luz cálida sobre el negro.
+ * La máscara radial funde el fondo de la foto con el panel, así que sirve
+ * igual para una foto de estudio con fondo gris que para un recorte.
  */
 export function Hero({
   banner,
@@ -39,7 +38,7 @@ export function Hero({
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const plateY = useTransform(scrollYProgress, [0, 1], [0, 90]);
+  const spotY = useTransform(scrollYProgress, [0, 1], [0, 90]);
   const copyY = useTransform(scrollYProgress, [0, 1], [0, -40]);
   const fade = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
 
@@ -102,16 +101,16 @@ export function Hero({
           </motion.div>
         </motion.div>
 
-        {/* La placa suspendida */}
+        {/* El producto suspendido en el foco */}
         <motion.div
-          style={reduced ? undefined : { y: plateY }}
+          style={reduced ? undefined : { y: spotY }}
           initial={{ opacity: 0, y: 40, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.3, delay: 0.2, ease: EASE }}
           className="halo relative mx-auto w-full max-w-md lg:max-w-lg"
         >
           <div className="animate-float">
-            <div className="plate relative aspect-[4/5] overflow-hidden rounded-[1.75rem]">
+            <div className="spotlight relative aspect-[4/5] overflow-hidden rounded-[1.75rem]">
               <Image
                 src={image}
                 alt={`${product.brand.name} ${product.name}`}
@@ -123,7 +122,7 @@ export function Hero({
             </div>
           </div>
 
-          {/* Ficha del par destacado, montada sobre el borde de la placa */}
+          {/* Ficha del par destacado, montada sobre el borde del foco */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}

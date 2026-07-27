@@ -58,10 +58,10 @@ export default async function ProductsPage({
   ]);
 
   return (
-    <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:py-20">
+    <div className="mx-auto max-w-[86rem] px-5 py-20 sm:px-8 lg:py-28">
       <Reveal className="mb-12">
         <p className="eyebrow mb-4">Catálogo</p>
-        <h1 className="display-xl text-[clamp(2.25rem,6vw,4rem)] text-cream">
+        <h1 className="display-xl text-[clamp(2.25rem,6vw,4rem)] text-chalk">
           {query.q ? `«${query.q}»` : "Toda la colección"}
         </h1>
         <p className="mt-4 max-w-lg text-[0.9375rem] leading-relaxed text-ash">
@@ -108,12 +108,12 @@ export default async function ProductsPage({
 
 function EmptyState() {
   return (
-    <div className="glass flex flex-col items-center gap-5 rounded-glass px-8 py-20 text-center">
+    <div className="flex flex-col items-center gap-6 rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl px-8 py-24 text-center">
       <div className="grid size-14 place-items-center rounded-2xl bg-champagne/5 text-ash">
         <PackageSearch className="size-6" />
       </div>
       <div>
-        <p className="font-display text-xl font-bold text-chalk">
+        <p className="font-display text-xl font-medium text-chalk">
           Ningún par entra en esos filtros
         </p>
         <p className="mx-auto mt-2 max-w-sm text-sm text-ash">
