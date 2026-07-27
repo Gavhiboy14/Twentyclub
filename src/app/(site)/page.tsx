@@ -105,7 +105,7 @@ export default async function HomePage() {
               <Reveal key={brand.id} delay={(i % 3) * 0.08}>
                 <Link
                   href={`/marca/${brand.slug}`}
-                  className="group glass edge-light relative block h-full overflow-hidden rounded-glass p-6 transition-all duration-500 hover:border-cream/25"
+                  className="group relative block h-full overflow-hidden rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/60 p-8 backdrop-blur-xl transition-all duration-500 hover:border-champagne/18 hover:bg-graphite/80"
                 >
                   {brand.banner && (
                     <Image
@@ -113,7 +113,7 @@ export default async function HomePage() {
                       alt=""
                       fill
                       sizes="(max-width: 640px) 92vw, 30vw"
-                      className="object-cover opacity-25 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 group-hover:opacity-45"
+                      className="object-cover opacity-20 transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 group-hover:opacity-35"
                     />
                   )}
                   <div className="relative flex h-full min-h-40 flex-col">
@@ -143,17 +143,17 @@ export default async function HomePage() {
           <div className="grid gap-4 lg:grid-cols-2">
             {promos.map((banner, i) => (
               <Reveal key={banner.id} delay={i * 0.1}>
-                <div className="glass edge-light relative flex min-h-56 flex-col justify-end overflow-hidden rounded-glass p-8">
+                <div className="relative flex min-h-72 flex-col justify-end overflow-hidden rounded-[1.75rem] border border-champagne/[0.07] p-10">
                   {banner.image && (
                     <Image
                       src={banner.image}
                       alt=""
                       fill
                       sizes="(max-width: 1024px) 92vw, 46vw"
-                      className="object-cover opacity-40"
+                      className="object-cover opacity-45"
                     />
                   )}
-                  <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/60 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/75 to-ink/25" />
                   <div className="relative">
                     <p className="eyebrow mb-3">{banner.eyebrow}</p>
                     <h3 className="max-w-sm font-display text-2xl font-bold tracking-[-0.035em] text-cream">
@@ -194,7 +194,7 @@ export default async function HomePage() {
       </Section>
 
       <Section id="preguntas">
-        <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="grid gap-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
           <div>
             <SectionHeader
               eyebrow="Preguntas frecuentes"
@@ -215,22 +215,22 @@ export default async function HomePage() {
       {/* Cierre */}
       <Section className="pb-8">
         <Reveal>
-          <div className="glass-strong edge-light grain relative overflow-hidden rounded-[2rem] px-8 py-16 text-center sm:px-16 lg:py-24">
+          <div className="relative overflow-hidden rounded-[2rem] border border-champagne/[0.08] bg-graphite/50 px-8 py-24 text-center backdrop-blur-2xl sm:px-16 lg:py-32">
             <div
               aria-hidden
-              className="absolute left-1/2 top-0 size-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cream/25 blur-[120px]"
+              className="absolute left-1/2 top-0 size-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-champagne/[0.12] blur-[130px]"
             />
             <div className="relative">
               <p className="eyebrow mb-5">Envío sin cargo</p>
-              <h2 className="display-wide mx-auto max-w-2xl text-[clamp(1.9rem,5vw,3.25rem)] text-cream">
+              <h2 className="display mx-auto max-w-2xl text-[clamp(1.9rem,4.6vw,3.25rem)] text-chalk">
                 Desde {formatPrice(settings.freeShippingFrom)} el envío lo
                 ponemos nosotros.
               </h2>
-              <p className="mx-auto mt-5 max-w-md text-[0.9375rem] text-mist">
+              <p className="mx-auto mt-6 max-w-md text-[0.9375rem] leading-[1.75] text-mist">
                 A todo el país. Y si tenés dudas con el talle, escribinos antes
                 de comprar: preferimos que aciertes.
               </p>
-              <div className="mt-9 flex flex-wrap justify-center gap-3">
+              <div className="mt-11 flex flex-wrap justify-center gap-3">
                 <Button asChild size="lg">
                   <Link href="/productos">Explorar colección</Link>
                 </Button>

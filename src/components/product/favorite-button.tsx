@@ -33,7 +33,7 @@ export function FavoriteButton({
       className={cn(
         "glass grid size-10 place-items-center rounded-full transition-colors duration-300",
         active
-          ? "border-cream/40 text-sand"
+          ? "border-champagne/40 text-sand"
           : "text-ash hover:text-chalk",
         className,
       )}

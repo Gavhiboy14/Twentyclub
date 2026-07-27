@@ -57,7 +57,7 @@ export function Panel({
   return (
     <section
       className={cn(
-        "rounded-2xl border border-cream/[0.07] bg-cream/[0.022] p-5 sm:p-6",
+        "rounded-2xl border border-champagne/[0.07] bg-champagne/[0.022] p-5 sm:p-6",
         className,
       )}
     >
@@ -194,7 +194,7 @@ export function ConfirmAction({
 
 export function EmptyRow({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-dashed border-cream/10 px-6 py-14 text-center">
+    <div className="rounded-2xl border border-dashed border-champagne/10 px-6 py-14 text-center">
       <p className="text-sm text-ash">{children}</p>
     </div>
   );

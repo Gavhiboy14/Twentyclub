@@ -50,7 +50,7 @@ export function ListInput({
           type="button"
           onClick={add}
           aria-label={`Agregar a ${label.toLowerCase()}`}
-          className="grid size-11 shrink-0 place-items-center rounded-2xl border border-cream/10 bg-cream/[0.035] text-mist transition-colors hover:border-cream/40 hover:text-chalk"
+          className="grid size-11 shrink-0 place-items-center rounded-2xl border border-champagne/10 bg-champagne/[0.035] text-mist transition-colors hover:border-champagne/40 hover:text-chalk"
         >
           <Plus className="size-4" />
         </button>
@@ -67,7 +67,7 @@ export function ListInput({
             <li
               key={value}
               className={cn(
-                "group flex items-center gap-2 border border-cream/10 bg-cream/[0.03] text-[0.8125rem] text-mist",
+                "group flex items-center gap-2 border border-champagne/10 bg-champagne/[0.03] text-[0.8125rem] text-mist",
                 variant === "chips"
                   ? "rounded-full py-1.5 pl-3.5 pr-1.5"
                   : "rounded-xl px-3.5 py-2.5",

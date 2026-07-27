@@ -183,7 +183,7 @@ export function ProductForm({
                 value={draft.sku}
                 onChange={(e) => set("sku", e.target.value)}
                 placeholder="TC-NIK-001"
-                className="font-mono"
+                className="numeric"
               />
             </Field>
 
@@ -199,7 +199,7 @@ export function ProductForm({
                   value={draft.colorHex}
                   onChange={(e) => set("colorHex", e.target.value)}
                   aria-label="Color de referencia"
-                  className="size-11 shrink-0 cursor-pointer rounded-2xl border border-cream/10 bg-transparent p-1"
+                  className="size-11 shrink-0 cursor-pointer rounded-2xl border border-champagne/10 bg-transparent p-1"
                 />
               </div>
             </Field>
@@ -234,16 +234,16 @@ export function ProductForm({
                 className={cn(
                   "flex flex-wrap items-center gap-3 rounded-xl border px-3.5 py-2.5 transition-colors",
                   size.available && size.stock > 0
-                    ? "border-cream/8 bg-cream/[0.03]"
-                    : "border-cream/6 bg-transparent",
+                    ? "border-champagne/8 bg-champagne/[0.03]"
+                    : "border-champagne/6 bg-transparent",
                 )}
               >
-                <span className="w-10 shrink-0 font-mono text-sm text-chalk">
+                <span className="w-10 shrink-0 numeric text-sm text-chalk">
                   {size.size}
                 </span>
 
                 <label className="flex items-center gap-2">
-                  <span className="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-ash">
+                  <span className="numeric text-[0.625rem] uppercase tracking-[0.16em] text-ash">
                     Stock
                   </span>
                   <Input
@@ -253,14 +253,14 @@ export function ProductForm({
                     onChange={(e) =>
                       updateSize(i, { stock: Math.max(0, Number(e.target.value)) })
                     }
-                    className="h-9 w-20 text-center font-mono"
+                    className="h-9 w-20 text-center numeric"
                   />
                 </label>
 
                 <label className="ml-auto flex items-center gap-2.5">
                   <span
                     className={cn(
-                      "font-mono text-[0.625rem] uppercase tracking-[0.16em]",
+                      "numeric text-[0.625rem] uppercase tracking-[0.16em]",
                       size.available ? "text-mist" : "text-ash",
                     )}
                   >
@@ -335,7 +335,7 @@ export function ProductForm({
                 min={0}
                 value={draft.price}
                 onChange={(e) => set("price", Math.max(0, Number(e.target.value)))}
-                className="font-mono"
+                className="numeric"
               />
             </Field>
 
@@ -348,12 +348,12 @@ export function ProductForm({
                 onChange={(e) =>
                   set("discount", Math.min(90, Math.max(0, Number(e.target.value))))
                 }
-                className="font-mono"
+                className="numeric"
               />
             </Field>
 
-            <div className="flex items-baseline justify-between rounded-xl border border-cream/8 bg-cream/[0.03] px-4 py-3">
-              <span className="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-ash">
+            <div className="flex items-baseline justify-between rounded-xl border border-champagne/8 bg-champagne/[0.03] px-4 py-3">
+              <span className="numeric text-[0.625rem] uppercase tracking-[0.16em] text-ash">
                 Se publica en
               </span>
               <span className="font-display text-lg font-bold text-cream">
@@ -399,10 +399,10 @@ export function ProductForm({
                       }
                       aria-pressed={active}
                       className={cn(
-                        "rounded-full border px-3 py-1.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] transition-colors",
+                        "rounded-full border px-3 py-1.5 numeric text-[0.625rem] uppercase tracking-[0.14em] transition-colors",
                         active
-                          ? "border-cream bg-cream/20 text-cream"
-                          : "border-cream/10 bg-cream/[0.03] text-ash hover:text-chalk",
+                          ? "border-cream bg-champagne/20 text-cream"
+                          : "border-champagne/10 bg-champagne/[0.03] text-ash hover:text-chalk",
                       )}
                     >
                       {TAG_META[tag].label}
@@ -447,7 +447,7 @@ export function ProductForm({
               </div>
             </div>
 
-            <p className="rounded-xl border border-cream/8 bg-cream/[0.02] px-3.5 py-3 text-xs leading-relaxed text-ash">
+            <p className="rounded-xl border border-champagne/8 bg-champagne/[0.02] px-3.5 py-3 text-xs leading-relaxed text-ash">
               {visibleSizes.length === 0
                 ? "Ahora mismo el producto se muestra como agotado: ningún talle tiene stock."
                 : `Se van a mostrar ${visibleSizes.length} talles en el sitio.`}

@@ -33,15 +33,15 @@ export function Logo({
       aria-label="Twenty Club — inicio"
       className={cn("group flex items-center gap-2.5", className)}
     >
-      <span className="relative grid size-9 shrink-0 place-items-center">
-        <Sparkle className="size-5 text-cream transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110 group-hover:rotate-90" />
-        <Sparkle className="absolute -bottom-0.5 -right-0.5 size-2.5 text-sand opacity-80 transition-transform duration-500 group-hover:scale-125" />
+      <span className="relative grid size-8 shrink-0 place-items-center">
+        <Sparkle className="size-[1.15rem] text-chalk transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-90" />
+        <Sparkle className="absolute -bottom-px -right-px size-2 text-champagne/70 transition-transform duration-700 group-hover:scale-125" />
       </span>
 
       {!compact && (
-        <span className="font-display text-[1.0625rem] font-bold leading-none tracking-[-0.04em] text-cream">
+        <span className="font-display text-[1.0625rem] font-medium leading-none tracking-[-0.045em] text-chalk">
           Twenty
-          <span className="text-ash transition-colors duration-300 group-hover:text-sand">
+          <span className="text-ash transition-colors duration-500 group-hover:text-champagne">
             {" "}
             Club
           </span>

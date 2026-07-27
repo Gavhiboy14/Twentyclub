@@ -61,7 +61,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
               <Input
                 value={draft.whatsappNumber}
                 onChange={(e) => set("whatsappNumber", e.target.value)}
-                className="font-mono"
+                className="numeric"
                 inputMode="numeric"
               />
             </Field>
@@ -109,7 +109,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
               onChange={(e) =>
                 set("freeShippingFrom", Math.max(0, Number(e.target.value)))
               }
-              className="max-w-48 font-mono"
+              className="max-w-48 numeric"
             />
           </Field>
         </Panel>
@@ -133,7 +133,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
         description="Mensaje de ejemplo con dos productos."
         className="xl:sticky xl:top-6"
       >
-        <pre className="whitespace-pre-wrap rounded-xl border border-cream/8 bg-cream/[0.02] p-4 font-mono text-[0.6875rem] leading-relaxed text-mist">
+        <pre className="whitespace-pre-wrap rounded-xl border border-champagne/8 bg-champagne/[0.02] p-4 numeric text-[0.6875rem] leading-relaxed text-mist">
           {preview}
         </pre>
 
@@ -146,7 +146,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
           Probar el link de WhatsApp
         </a>
 
-        <p className="mt-3 text-center font-mono text-[0.625rem] text-ash">
+        <p className="mt-3 text-center numeric text-[0.625rem] text-ash">
           wa.me/{normalizePhone(draft.whatsappNumber)}
         </p>
       </Panel>

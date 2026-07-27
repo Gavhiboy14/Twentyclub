@@ -2,47 +2,58 @@
 
 /* ==========================================================================
    Twenty Club — sistema de diseño
-   Los dos colores salen del logo: carbón cálido y crema. Nada más.
-   El crema es a la vez el color del texto importante y el del acento, así que
-   la jerarquía la marca el brillo, no el matiz.
+
+   Tres registros y nada más:
+     · el negro, que es el aire
+     · el vidrio ahumado, donde vive la interfaz
+     · el marfil, que es donde vive el producto
+
+   El contraste claro/oscuro es el motor: las fotos van sobre placas marfil
+   flotando en el negro. Todo acento sale de la familia arena/champagne, nunca
+   de un color saturado.
    ========================================================================== */
 
 @theme {
-  /* Neutros cálidos, del carbón del logo */
-  --color-ink: #302f2b; /* fondo del sitio */
-  --color-graphite: #26251f; /* pozos de imagen — más profundo que el fondo */
-  --color-slate: #3a3934; /* superficie elevada */
-  --color-steel: #454339;
-  --color-iron: #56534a;
-  --color-ash: #9a9689; /* microcopy y datos secundarios */
-  --color-mist: #b4b0a0; /* texto de cuerpo */
-  --color-chalk: #f2efdd; /* títulos */
+  /* Oscuros. Neutros con una pizca de calidez para que el marfil no se enfríe */
+  --color-ink: #0f0f10; /* fondo del sitio */
+  --color-carbon: #141315; /* carbón — pozos y fondos hundidos */
+  --color-graphite: #1a1a1c; /* grafito — superficie de las tarjetas */
+  --color-smoke: #242326; /* humo — superficie elevada, hover */
+  --color-iron: #34333a; /* bordes marcados, divisores */
 
-  /* Acento — el crema exacto del logo */
-  --color-cream: #f7f4e0;
-  --color-sand: #d9d3b6; /* crema apagado, para acentos que no gritan */
-  --color-glow: #c9be93; /* la luz cálida difuminada del fondo */
+  /* Texto. La jerarquía la marca el brillo, no el matiz */
+  --color-ash: #807d76; /* microcopy — 4.6:1 sobre ink */
+  --color-mist: #a8a49c; /* cuerpo — 7.6:1 */
+  --color-chalk: #f2efe8; /* títulos — 16.4:1 */
 
-  /* Estados — el único lugar donde entra color, y va apagado para no romper */
-  --color-ok: #86a67c;
-  --color-warn: #d9a441;
-  --color-bad: #cc7a68;
+  /* Claros. El marfil es la placa donde se apoya cada foto */
+  --color-ivory: #f5f2ea;
+  --color-linen: #faf8f3; /* blanco cálido */
+  --color-cream: #efe9dc; /* crema suave */
 
-  /* Tipografía */
-  --font-display: var(--font-archivo), "Archivo", system-ui, sans-serif;
-  --font-sans: var(--font-manrope), "Manrope", system-ui, sans-serif;
-  --font-mono: var(--font-mono-face), "JetBrains Mono", ui-monospace, monospace;
+  /* Acento */
+  --color-sand: #d9cfbc; /* beige arena */
+  --color-champagne: #e8dcc4;
+  --color-toast: #c9b997; /* crema tostado — el halo del fondo */
+
+  /* Estados. Único lugar con color, y desaturado para no romper el conjunto */
+  --color-ok: #8a9e82;
+  --color-warn: #c9a961;
+  --color-bad: #bd7f6f;
+
+  /* Tipografía. Grotesca cerrada para display, humanista para leer */
+  --font-display: var(--font-inter-tight), system-ui, sans-serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
 
   /* Curvas */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
 
-  --radius-glass: 1.5rem;
+  --radius-glass: 1.5rem; /* 24px — el radio base de los paneles */
 
-  --animate-marquee: marquee 42s linear infinite;
-  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
-  --animate-float: float 7s var(--ease-out-soft) infinite;
-  --animate-drift: drift 22s ease-in-out infinite alternate;
+  --animate-marquee: marquee 46s linear infinite;
+  --animate-float: float 9s var(--ease-out-soft) infinite;
+  --animate-drift: drift 28s ease-in-out infinite alternate;
 }
 
 @keyframes marquee {
@@ -216,7 +227,7 @@
   .tc-skeleton {
     position: relative;
     overflow: hidden;
-    background: rgb(255 255 255 / 0.045);
+    background: rgb(232 220 196 / 0.04);
   }
   .tc-skeleton::after {
     content: "";
@@ -225,10 +236,10 @@
     background: linear-gradient(
       90deg,
       transparent,
-      rgb(255 255 255 / 0.075),
+      rgb(232 220 196 / 0.06),
       transparent
     );
-    animation: tc-skeleton-sweep 1.7s ease-in-out infinite;
+    animation: tc-skeleton-sweep 1.9s ease-in-out infinite;
   }
 }
 
@@ -261,18 +272,26 @@
     overflow-x: clip;
   }
 
+  /* Los títulos van en grotesca cerrada. El tracking se aprieta a medida que
+     crece el cuerpo — es lo que separa un título grande de un título caro. */
   h1,
   h2,
   h3,
   h4 {
     font-family: var(--font-display);
     color: var(--color-chalk);
-    letter-spacing: -0.035em;
+    font-weight: 500;
+    letter-spacing: -0.03em;
     text-wrap: balance;
   }
 
   p {
     text-wrap: pretty;
+  }
+
+  /* Los números de precio y talle nunca deben bailar al cambiar de valor. */
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
   }
 
   ::selection {
@@ -295,7 +314,7 @@
     background: var(--color-ink);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-steel);
+    background: var(--color-smoke);
     border-radius: 99px;
     border: 3px solid var(--color-ink);
   }
@@ -311,79 +330,115 @@
 }
 
 /* --------------------------------------------------------------------------
-   Glassmorphism / liquid glass
+   Vidrio ahumado
+
+   Tres densidades. Las veladuras van en champagne, nunca en blanco puro: el
+   blanco sobre negro se lee azulado y enfría toda la paleta.
    -------------------------------------------------------------------------- */
 
-/* Los veladuras del glass van en crema, no en blanco: sobre carbón cálido el
-   blanco puro se ve azulado y rompe la temperatura de la marca. */
 @utility glass {
   background: linear-gradient(
-    150deg,
-    rgb(247 244 224 / 0.07) 0%,
-    rgb(247 244 224 / 0.025) 45%,
-    rgb(247 244 224 / 0.055) 100%
+    155deg,
+    rgb(232 220 196 / 0.055) 0%,
+    rgb(232 220 196 / 0.018) 50%,
+    rgb(232 220 196 / 0.04) 100%
   );
-  backdrop-filter: blur(22px) saturate(120%);
-  -webkit-backdrop-filter: blur(22px) saturate(120%);
-  border: 1px solid rgb(247 244 224 / 0.1);
+  backdrop-filter: blur(28px) saturate(110%);
+  -webkit-backdrop-filter: blur(28px) saturate(110%);
+  border: 1px solid rgb(232 220 196 / 0.08);
   box-shadow:
-    0 1px 0 0 rgb(247 244 224 / 0.09) inset,
-    0 -1px 0 0 rgb(0 0 0 / 0.3) inset,
-    0 24px 60px -24px rgb(0 0 0 / 0.7);
+    0 1px 0 0 rgb(232 220 196 / 0.06) inset,
+    0 30px 70px -30px rgb(0 0 0 / 0.9);
 }
 
 @utility glass-soft {
-  background: rgb(247 244 224 / 0.035);
-  backdrop-filter: blur(14px) saturate(115%);
-  -webkit-backdrop-filter: blur(14px) saturate(115%);
-  border: 1px solid rgb(247 244 224 / 0.07);
+  background: rgb(232 220 196 / 0.025);
+  backdrop-filter: blur(16px) saturate(108%);
+  -webkit-backdrop-filter: blur(16px) saturate(108%);
+  border: 1px solid rgb(232 220 196 / 0.055);
 }
 
 @utility glass-strong {
   background: linear-gradient(
     160deg,
-    rgb(58 57 52 / 0.88) 0%,
-    rgb(38 37 31 / 0.94) 100%
+    rgb(36 35 38 / 0.9) 0%,
+    rgb(20 19 21 / 0.96) 100%
   );
-  backdrop-filter: blur(30px) saturate(125%);
-  -webkit-backdrop-filter: blur(30px) saturate(125%);
-  border: 1px solid rgb(247 244 224 / 0.11);
+  backdrop-filter: blur(36px) saturate(115%);
+  -webkit-backdrop-filter: blur(36px) saturate(115%);
+  border: 1px solid rgb(232 220 196 / 0.09);
   box-shadow:
-    0 1px 0 0 rgb(247 244 224 / 0.1) inset,
-    0 40px 90px -30px rgb(0 0 0 / 0.8);
+    0 1px 0 0 rgb(232 220 196 / 0.07) inset,
+    0 50px 110px -40px rgb(0 0 0 / 0.95);
 }
 
-/* Filo de luz superior — el detalle "liquid" de las tarjetas */
+/* Filo de luz superior — el detalle "liquid" de los paneles */
 @utility edge-light {
   position: relative;
   &::before {
     content: "";
     position: absolute;
-    inset-inline: 12%;
+    inset-inline: 15%;
     top: 0;
     height: 1px;
     background: linear-gradient(
       90deg,
       transparent,
-      rgb(247 244 224 / 0.5),
+      rgb(232 220 196 / 0.35),
       transparent
     );
     pointer-events: none;
   }
 }
 
+/* --------------------------------------------------------------------------
+   Placa marfil — donde vive el producto
+
+   Es el gesto central del diseño: la foto no flota sobre el negro, se apoya
+   sobre una placa clara que sí flota. Funciona con cualquier foto, tenga el
+   fondo que tenga.
+   -------------------------------------------------------------------------- */
+
+@utility plate {
+  background: linear-gradient(168deg, var(--color-linen) 0%, var(--color-ivory) 55%, #ece7db 100%);
+  box-shadow:
+    0 1px 0 0 rgb(255 255 255 / 0.8) inset,
+    0 2px 4px -2px rgb(0 0 0 / 0.4),
+    0 24px 50px -24px rgb(0 0 0 / 0.75);
+}
+
+/* Halo champagne detrás de una placa suspendida. Muy tenue, casi subliminal. */
+@utility halo {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -18% -10% -22%;
+    z-index: -1;
+    border-radius: 9999px;
+    background: radial-gradient(
+      ellipse at center,
+      rgb(232 220 196 / 0.16),
+      rgb(201 185 151 / 0.05) 45%,
+      transparent 72%
+    );
+    filter: blur(48px);
+    pointer-events: none;
+  }
+}
+
 @utility glow-warm {
   box-shadow:
-    0 0 0 1px rgb(247 244 224 / 0.22),
-    0 12px 40px -12px rgb(201 190 147 / 0.4),
-    0 0 90px -30px rgb(247 244 224 / 0.35);
+    0 0 0 1px rgb(232 220 196 / 0.18),
+    0 18px 50px -18px rgb(201 185 151 / 0.28),
+    0 0 100px -40px rgb(232 220 196 / 0.3);
 }
 
 /* Bloom cálido difuminado de fondo */
 @utility bloom {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(110px);
+  filter: blur(130px);
   pointer-events: none;
   will-change: transform;
 }
@@ -402,33 +457,42 @@
   }
 }
 
-/* Eyebrow monoespaciado — se usa sólo para datos reales (talles, SKU, conteos) */
+/* --------------------------------------------------------------------------
+   Tipografía
+   -------------------------------------------------------------------------- */
+
+/* Antetítulo: versalitas muy espaciadas. Reemplaza al mono del diseño anterior
+   — el mono lee "técnico" y acá queremos que lea "boutique". */
 @utility eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.6875rem;
-  letter-spacing: 0.22em;
+  font-weight: 500;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--color-ash);
 }
 
-@utility display-wide {
+/* Titulares. El tracking se cierra fuerte porque a 4rem+ el espaciado normal
+   se ve suelto y barato. */
+@utility display {
   font-family: var(--font-display);
-  font-variation-settings: "wdth" 112;
-  font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 0.88;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 0.94;
 }
 
-@utility text-gradient-cream {
-  background: linear-gradient(
-    100deg,
-    var(--color-cream) 0%,
-    var(--color-sand) 55%,
-    var(--color-glow) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Para los títulos más grandes, todavía más cerrado. */
+@utility display-xl {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.052em;
+  line-height: 0.9;
+}
+
+/* Datos que no deben bailar al cambiar de valor: precios, talles, contadores.
+   No toca el tracking a propósito, para poder combinarlo con `tracking-*`. */
+@utility numeric {
+  font-variant-numeric: tabular-nums;
 }
 
 @utility hide-scrollbar {

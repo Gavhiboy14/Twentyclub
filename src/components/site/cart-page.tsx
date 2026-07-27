@@ -37,7 +37,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
   if (items.length === 0) {
     return (
       <div className="glass flex flex-col items-center gap-5 rounded-glass px-8 py-24 text-center">
-        <div className="grid size-16 place-items-center rounded-2xl bg-cream/5 text-ash">
+        <div className="grid size-16 place-items-center rounded-2xl bg-champagne/5 text-ash">
           <ShoppingBag className="size-6" />
         </div>
         <div>
@@ -95,7 +95,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
                         {item.name}
                       </Link>
                     </h2>
-                    <p className="mt-1 font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-ash">
+                    <p className="mt-1 numeric text-[0.6875rem] uppercase tracking-[0.16em] text-ash">
                       Talle {item.size}
                     </p>
                   </div>
@@ -111,16 +111,16 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
                 </div>
 
                 <div className="mt-auto flex flex-wrap items-center justify-between gap-4 pt-4">
-                  <div className="flex items-center gap-1 rounded-full border border-cream/10 bg-cream/[0.03] p-1">
+                  <div className="flex items-center gap-1 rounded-full border border-champagne/10 bg-champagne/[0.03] p-1">
                     <button
                       type="button"
                       onClick={() => setQty(item.productId, item.size, item.qty - 1)}
                       aria-label="Restar uno"
-                      className="grid size-8 place-items-center rounded-full text-ash transition-colors hover:bg-cream/8 hover:text-chalk"
+                      className="grid size-8 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/8 hover:text-chalk"
                     >
                       <Minus className="size-3.5" />
                     </button>
-                    <span className="min-w-6 text-center font-mono text-sm text-chalk">
+                    <span className="min-w-6 text-center numeric text-sm text-chalk">
                       {item.qty}
                     </span>
                     <button
@@ -128,7 +128,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
                       disabled={item.qty >= item.maxStock}
                       onClick={() => setQty(item.productId, item.size, item.qty + 1)}
                       aria-label="Sumar uno"
-                      className="grid size-8 place-items-center rounded-full text-ash transition-colors hover:bg-cream/8 hover:text-chalk disabled:opacity-30"
+                      className="grid size-8 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/8 hover:text-chalk disabled:opacity-30"
                     >
                       <Plus className="size-3.5" />
                     </button>
@@ -139,7 +139,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
                       {formatPrice(item.unitPrice * item.qty)}
                     </p>
                     {item.qty > 1 && (
-                      <p className="font-mono text-[0.6875rem] text-ash">
+                      <p className="numeric text-[0.6875rem] text-ash">
                         {formatPrice(item.unitPrice)} c/u
                       </p>
                     )}
@@ -163,7 +163,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
             </p>
           </div>
 
-          <div className="space-y-3 border-y border-cream/8 py-5">
+          <div className="space-y-3 border-y border-champagne/8 py-5">
             <Row label="Subtotal" value={formatPrice(subtotal)} />
             <Row
               label="Envío"
@@ -171,7 +171,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
               highlight={missing === 0}
             />
             {missing > 0 && (
-              <p className="rounded-xl border border-cream/20 bg-cream/8 px-3.5 py-2.5 text-xs leading-relaxed text-sand">
+              <p className="rounded-xl border border-champagne/20 bg-champagne/8 px-3.5 py-2.5 text-xs leading-relaxed text-sand">
                 Te faltan {formatPrice(missing)} para el envío sin cargo.
               </p>
             )}
@@ -250,7 +250,7 @@ function Row({
   return (
     <div className="flex justify-between text-sm">
       <span className="text-mist">{label}</span>
-      <span className={highlight ? "font-mono text-ok" : "font-mono text-chalk"}>
+      <span className={highlight ? "numeric text-ok" : "numeric text-chalk"}>
         {value}
       </span>
     </div>

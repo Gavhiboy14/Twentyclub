@@ -27,15 +27,15 @@ const TESTIMONIALS = [
 
 export function Testimonials() {
   return (
-    <div className="grid gap-5 md:grid-cols-3">
+    <div className="grid gap-5 md:grid-cols-3 lg:gap-6">
       {TESTIMONIALS.map((item, i) => (
         <Reveal key={item.name} delay={i * 0.1}>
-          <figure className="glass edge-light flex h-full flex-col rounded-glass p-7">
+          <figure className="flex h-full flex-col rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 p-9 backdrop-blur-xl">
             <Quote className="size-5 text-cream/70" />
-            <blockquote className="mt-5 flex-1 text-[0.9375rem] leading-relaxed text-mist">
+            <blockquote className="mt-6 flex-1 text-[0.9375rem] leading-[1.75] text-mist">
               {item.quote}
             </blockquote>
-            <figcaption className="mt-7 border-t border-cream/8 pt-5">
+            <figcaption className="mt-8 border-t border-champagne/[0.08] pt-6">
               <p className="text-sm font-semibold text-chalk">{item.name}</p>
               <p className="mt-0.5 text-xs text-ash">{item.detail}</p>
               <p className="eyebrow mt-3">{item.purchase}</p>

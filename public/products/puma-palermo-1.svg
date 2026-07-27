@@ -1,14 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000" role="img">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#3a3934"/>
-      <stop offset="0.55" stop-color="#2e2d28"/>
-      <stop offset="1" stop-color="#24231f"/>
+    <!-- Fondo marfil: estas imágenes se apoyan sobre la placa clara de la
+         tarjeta, así que el degradado tiene que continuar esa placa, no
+         contrastar con ella. -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#faf8f3"/>
+      <stop offset="0.5" stop-color="#f5f2ea"/>
+      <stop offset="1" stop-color="#eae5d9"/>
     </linearGradient>
     <radialGradient id="bloom">
-      <stop offset="0" stop-color="#f7f4e0" stop-opacity="0.2"/>
-      <stop offset="0.55" stop-color="#c9be93" stop-opacity="0.08"/>
-      <stop offset="1" stop-color="#c9be93" stop-opacity="0"/>
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="upperGrad" x1="0.1" y1="0" x2="0.8" y2="1">
       <stop offset="0" stop-color="#a6a79e"/>
@@ -46,9 +49,10 @@
   </defs>
 
   <rect width="1000" height="1000" fill="url(#bg)"/>
-  <circle cx="340" cy="380" r="330" fill="url(#bloom)"/>
-  <ellipse cx="508" cy="600" rx="270" ry="28" fill="#000" opacity="0.75" filter="url(#soft)"/>
-  <ellipse cx="508" cy="594" rx="185" ry="17" fill="#c9be93" opacity="0.16" filter="url(#soft)"/>
+  <circle cx="340" cy="360" r="340" fill="url(#bloom)"/>
+  <!-- Sombra de contacto sobre marfil: gris cálido, nunca negro puro -->
+  <ellipse cx="508" cy="600" rx="262" ry="26" fill="#8a8378" opacity="0.34" filter="url(#soft)"/>
+  <ellipse cx="508" cy="596" rx="150" ry="15" fill="#6b6459" opacity="0.24" filter="url(#soft)"/>
 
   <g transform="">
     <g transform="">

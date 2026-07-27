@@ -1,8 +1,9 @@
 /**
  * Carga el catálogo semilla en Supabase y sube las imágenes generadas al bucket.
  *
- *   npm run seed:supabase          # sólo inserta lo que falta
- *   npm run seed:supabase -- --force   # borra todo y vuelve a cargar
+ *   npm run seed:supabase                    # carga inicial (se niega si ya hay datos)
+ *   npm run seed:supabase -- --images-only   # sólo empuja imágenes a Storage
+ *   npm run seed:supabase -- --force         # borra todo y vuelve a cargar
  *
  * Requiere NEXT_PUBLIC_SUPABASE_URL y SUPABASE_SECRET_KEY en .env.local, y
  * haber ejecutado supabase/schema.sql una vez desde el SQL Editor.
@@ -14,6 +15,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const force = process.argv.includes("--force");
+const imagesOnly = process.argv.includes("--images-only");
 const BUCKET = "productos";
 
 /* ------------------------------- Entorno ---------------------------------- */
@@ -190,9 +192,40 @@ async function main() {
   }
 
   const db = createClient(url, key, { auth: { persistSession: false } });
-  const seed = await loadSeed();
 
   console.log(`→ ${url}`);
+
+  // Modo sólo-imágenes: regenerás los SVG con `npm run gen:images` y los
+  // empujás a Storage sin tocar una fila de la base.
+  if (imagesOnly) {
+    await uploadImages(db);
+    console.log("\nListo. Sólo se actualizaron las imágenes.");
+    return;
+  }
+
+  const seed = await loadSeed();
+
+  /*
+   * Protección contra pérdida de datos.
+   *
+   * Este script carga el catálogo desde .data/db.json, que es una foto local.
+   * Si ya venís administrando desde el panel contra Supabase, ese archivo está
+   * desactualizado y correr el seed pisaría tu catálogo real con datos viejos.
+   */
+  const { count, error: countError } = await db
+    .from("products")
+    .select("id", { count: "exact", head: true });
+  if (countError) throw new Error(`consultando la base: ${countError.message}`);
+
+  if ((count ?? 0) > 0 && !force) {
+    throw new Error(
+      `La base ya tiene ${count} productos.\n\n` +
+        "Este script carga desde .data/db.json (una foto local) y pisaría lo que\n" +
+        "tengas cargado desde el panel. Si es lo que querés, repetilo con --force.\n\n" +
+        "Si sólo necesitás actualizar las imágenes generadas:\n" +
+        "  npm run seed:supabase -- --images-only",
+    );
+  }
 
   if (force) {
     console.log("  × borrando datos existentes");

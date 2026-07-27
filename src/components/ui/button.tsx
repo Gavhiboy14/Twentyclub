@@ -1,34 +1,45 @@
-﻿"use client";
+"use client";
 
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
+/*
+ * Dos botones de verdad y tres apoyos.
+ *
+ * `primary` es crema sólido sobre negro: el contraste más alto que da la
+ * paleta, así que va uno solo por pantalla. `glass` es el secundario para
+ * todo lo demás. El resto son variantes de bajo peso.
+ */
 const button = cva(
-  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium " +
-    "transition-[transform,background-color,border-color,box-shadow,color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] " +
-    "disabled:pointer-events-none disabled:opacity-40 active:scale-[0.97] " +
-    "[&_svg]:shrink-0 [&_svg]:size-[1.05em]",
+  "relative inline-flex items-center justify-center gap-2.5 whitespace-nowrap rounded-full font-medium " +
+    "transition-[transform,background-color,border-color,box-shadow,color] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] " +
+    "disabled:pointer-events-none disabled:opacity-35 " +
+    "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-champagne " +
+    "[&_svg]:shrink-0 [&_svg]:size-[1.05em] [&_svg]:stroke-[1.75]",
   {
     variants: {
       variant: {
-        // La acción principal es crema sólido sobre carbón: es el contraste
-        // más alto que da la marca, así que se reserva para una por pantalla.
         primary:
-          "bg-cream text-ink shadow-[0_10px_30px_-12px_rgba(247,244,224,0.45)] " +
-          "hover:bg-white hover:shadow-[0_16px_44px_-14px_rgba(247,244,224,0.6)]",
+          "bg-ivory text-ink shadow-[0_2px_8px_-2px_rgba(0,0,0,0.5),0_16px_36px_-16px_rgba(232,220,196,0.35)] " +
+          "hover:-translate-y-0.5 hover:bg-linen hover:shadow-[0_4px_12px_-2px_rgba(0,0,0,0.5),0_24px_50px_-18px_rgba(232,220,196,0.45)] " +
+          "active:translate-y-0 active:shadow-[0_2px_6px_-2px_rgba(0,0,0,0.5)]",
         glass:
-          "glass text-chalk hover:border-cream/25 hover:bg-cream/[0.08] hover:text-cream",
+          "glass text-chalk hover:-translate-y-0.5 hover:border-champagne/22 hover:bg-champagne/[0.07] hover:text-linen " +
+          "active:translate-y-0",
         outline:
-          "border border-iron/80 bg-transparent text-mist hover:border-cream/50 hover:text-chalk",
-        ghost: "text-mist hover:bg-cream/[0.07] hover:text-chalk",
-        danger: "bg-bad/15 text-bad border border-bad/30 hover:bg-bad/25",
+          "border border-iron/70 bg-transparent text-mist " +
+          "hover:border-champagne/35 hover:bg-champagne/[0.04] hover:text-chalk",
+        ghost: "text-mist hover:bg-champagne/[0.06] hover:text-chalk",
+        danger:
+          "border border-bad/30 bg-bad/12 text-bad hover:border-bad/45 hover:bg-bad/20",
       },
       size: {
         sm: "h-9 px-4 text-[0.8125rem]",
         md: "h-11 px-6 text-sm",
-        lg: "h-14 px-8 text-[0.9375rem]",
+        lg: "h-14 px-9 text-[0.9375rem]",
+        xl: "h-16 px-11 text-base",
         icon: "size-11",
         "icon-sm": "size-9",
       },

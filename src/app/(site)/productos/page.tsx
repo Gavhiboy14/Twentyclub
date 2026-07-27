@@ -61,7 +61,7 @@ export default async function ProductsPage({
     <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:py-20">
       <Reveal className="mb-12">
         <p className="eyebrow mb-4">Catálogo</p>
-        <h1 className="display-wide text-[clamp(2.25rem,6vw,4rem)] text-cream">
+        <h1 className="display-xl text-[clamp(2.25rem,6vw,4rem)] text-cream">
           {query.q ? `«${query.q}»` : "Toda la colección"}
         </h1>
         <p className="mt-4 max-w-lg text-[0.9375rem] leading-relaxed text-ash">
@@ -109,7 +109,7 @@ export default async function ProductsPage({
 function EmptyState() {
   return (
     <div className="glass flex flex-col items-center gap-5 rounded-glass px-8 py-20 text-center">
-      <div className="grid size-14 place-items-center rounded-2xl bg-cream/5 text-ash">
+      <div className="grid size-14 place-items-center rounded-2xl bg-champagne/5 text-ash">
         <PackageSearch className="size-6" />
       </div>
       <div>

@@ -96,7 +96,7 @@ export default async function AdminOffersPage() {
               {discounted.map((product) => (
                 <li
                   key={product.id}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-cream/8 bg-cream/[0.02] px-3.5 py-2.5"
+                  className="flex items-center justify-between gap-3 rounded-xl border border-champagne/8 bg-champagne/[0.02] px-3.5 py-2.5"
                 >
                   <span className="min-w-0">
                     <span className="eyebrow block">{product.brand.name}</span>
@@ -106,7 +106,7 @@ export default async function AdminOffersPage() {
                   </span>
                   <span className="shrink-0 text-right">
                     <Badge variant="cream">−{product.discount}%</Badge>
-                    <span className="mt-1 block font-mono text-[0.625rem] text-ash">
+                    <span className="mt-1 block numeric text-[0.625rem] text-ash">
                       {formatPrice(product.finalPrice)}
                     </span>
                   </span>

@@ -20,16 +20,19 @@ import { formatNumber, formatPrice } from "@/lib/utils";
  * panel son magnitudes del mismo tipo, no categorías que compiten, y el peso
  * lo tiene que dar el valor, no el matiz.
  */
-const CREAM = "#f7f4e0";
-const AXIS = "#9a9689";
-const GRID = "rgba(247,244,224,0.07)";
+const CREAM = "#efe9dc";
+const AXIS = "#807d76";
+const GRID = "rgba(232,220,196,0.06)";
 
 const axisProps = {
   stroke: AXIS,
   fontSize: 11,
   tickLine: false,
   axisLine: false,
-  style: { fontFamily: "var(--font-mono-face)" },
+  style: {
+    fontFamily: "var(--font-manrope)",
+    fontVariantNumeric: "tabular-nums",
+  },
 } as const;
 
 function TooltipBox({
@@ -46,7 +49,7 @@ function TooltipBox({
   if (!active || !payload?.length) return null;
   return (
     <div className="glass-strong rounded-xl px-3.5 py-2.5">
-      <p className="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-ash">
+      <p className="numeric text-[0.625rem] uppercase tracking-[0.16em] text-ash">
         {label}
       </p>
       {payload.map((entry, i) => (
@@ -90,7 +93,7 @@ export function OrdersTimeline({
           strokeWidth={2}
           fill="url(#fillOrders)"
           dot={false}
-          activeDot={{ r: 4, fill: CREAM, stroke: "#302f2b", strokeWidth: 2 }}
+          activeDot={{ r: 4, fill: CREAM, stroke: "#0f0f10", strokeWidth: 2 }}
         />
       </AreaChart>
     </ResponsiveContainer>
@@ -121,7 +124,7 @@ export function BrandSalesChart({
           style={{ fontFamily: "var(--font-manrope)", fontSize: 12 }}
         />
         <Tooltip
-          cursor={{ fill: "rgba(247,244,224,0.04)" }}
+          cursor={{ fill: "rgba(232,220,196,0.04)" }}
           content={<TooltipBox formatter={formatNumber} />}
         />
         <Bar dataKey="units" name="Pares vendidos" radius={[0, 6, 6, 0]}>
@@ -155,7 +158,7 @@ export function ViewsChart({
         />
         <YAxis {...axisProps} width={40} />
         <Tooltip
-          cursor={{ fill: "rgba(247,244,224,0.04)" }}
+          cursor={{ fill: "rgba(232,220,196,0.04)" }}
           content={<TooltipBox formatter={formatNumber} />}
         />
         <Bar

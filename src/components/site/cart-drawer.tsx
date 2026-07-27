@@ -23,7 +23,7 @@ export function CartDrawer() {
   return (
     <Dialog open={isOpen} onOpenChange={(o) => !o && closeCart()}>
       <SheetContent side="right" className="gap-0 p-0">
-        <header className="flex items-center justify-between border-b border-cream/8 px-6 py-5">
+        <header className="flex items-center justify-between border-b border-champagne/8 px-6 py-5">
           <div>
             <DialogTitle className="font-display text-xl font-bold tracking-tight text-chalk">
               Tu carrito
@@ -38,7 +38,7 @@ export function CartDrawer() {
             type="button"
             onClick={closeCart}
             aria-label="Cerrar carrito"
-            className="grid size-10 place-items-center rounded-full text-ash transition-colors hover:bg-cream/8 hover:text-chalk"
+            className="grid size-10 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/8 hover:text-chalk"
           >
             <X className="size-4" />
           </button>
@@ -73,7 +73,7 @@ export function CartDrawer() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 40, height: 0, marginBottom: 0 }}
                     transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="mb-2 flex gap-4 rounded-2xl p-2.5 transition-colors hover:bg-cream/[0.03]"
+                    className="mb-2 flex gap-4 rounded-2xl p-2.5 transition-colors hover:bg-champagne/[0.03]"
                   >
                     <Link
                       href={`/producto/${item.slug}`}
@@ -94,23 +94,23 @@ export function CartDrawer() {
                       <p className="truncate text-sm font-medium text-chalk">
                         {item.name}
                       </p>
-                      <p className="mt-0.5 font-mono text-[0.6875rem] text-ash">
+                      <p className="mt-0.5 numeric text-[0.6875rem] text-ash">
                         Talle {item.size}
                       </p>
 
                       <div className="mt-2.5 flex items-center gap-3">
-                        <div className="flex items-center gap-1 rounded-full border border-cream/10 bg-cream/[0.03] p-0.5">
+                        <div className="flex items-center gap-1 rounded-full border border-champagne/10 bg-champagne/[0.03] p-0.5">
                           <button
                             type="button"
                             onClick={() =>
                               setQty(item.productId, item.size, item.qty - 1)
                             }
                             aria-label="Restar uno"
-                            className="grid size-6 place-items-center rounded-full text-ash transition-colors hover:bg-cream/8 hover:text-chalk"
+                            className="grid size-6 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/8 hover:text-chalk"
                           >
                             <Minus className="size-3" />
                           </button>
-                          <span className="min-w-5 text-center font-mono text-xs text-chalk">
+                          <span className="min-w-5 text-center numeric text-xs text-chalk">
                             {item.qty}
                           </span>
                           <button
@@ -120,7 +120,7 @@ export function CartDrawer() {
                               setQty(item.productId, item.size, item.qty + 1)
                             }
                             aria-label="Sumar uno"
-                            className="grid size-6 place-items-center rounded-full text-ash transition-colors hover:bg-cream/8 hover:text-chalk disabled:opacity-30"
+                            className="grid size-6 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/8 hover:text-chalk disabled:opacity-30"
                           >
                             <Plus className="size-3" />
                           </button>
@@ -145,11 +145,11 @@ export function CartDrawer() {
               </AnimatePresence>
             </div>
 
-            <footer className="space-y-4 border-t border-cream/8 bg-cream/[0.02] p-6">
+            <footer className="space-y-4 border-t border-champagne/8 bg-champagne/[0.02] p-6">
               <div className="space-y-2">
                 <div className="flex justify-between text-sm text-mist">
                   <span>Subtotal</span>
-                  <span className="font-mono">{formatPrice(subtotal)}</span>
+                  <span className="numeric">{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex items-baseline justify-between">
                   <span className="text-sm text-mist">Total</span>

@@ -1,23 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Manrope, JetBrains_Mono } from "next/font/google";
+import { Inter_Tight, Manrope } from "next/font/google";
 import "./globals.css";
 
-const archivo = Archivo({
+/**
+ * Dos familias y nada más. Inter Tight para titulares — es la grotesca más
+ * cerrada del catálogo y aguanta el tracking negativo fuerte que pide un
+ * título de 6rem sin desarmarse. Manrope para leer.
+ */
+const interTight = Inter_Tight({
   subsets: ["latin"],
-  axes: ["wdth"],
-  variable: "--font-archivo",
+  variable: "--font-inter-tight",
   display: "swap",
 });
 
 const manrope = Manrope({
   subsets: ["latin"],
   variable: "--font-manrope",
-  display: "swap",
-});
-
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono-face",
   display: "swap",
 });
 
@@ -62,7 +60,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#302f2b",
+  themeColor: "#0f0f10",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -74,7 +72,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${archivo.variable} ${manrope.variable} ${mono.variable}`}
+      className={`${interTight.variable} ${manrope.variable}`}
       suppressHydrationWarning
     >
       <body className="min-h-dvh antialiased">{children}</body>

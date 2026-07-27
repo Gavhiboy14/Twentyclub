@@ -46,12 +46,12 @@ export function OrdersBoard({ orders }: { orders: Order[] }) {
               className={cn(
                 "flex items-center gap-2 rounded-full border px-4 py-2 text-[0.8125rem] transition-colors",
                 active
-                  ? "border-cream/50 bg-cream/15 text-cream"
-                  : "border-cream/8 bg-cream/[0.02] text-ash hover:text-chalk",
+                  ? "border-champagne/50 bg-champagne/15 text-cream"
+                  : "border-champagne/8 bg-champagne/[0.02] text-ash hover:text-chalk",
               )}
             >
               {key === "todos" ? "Todos" : STATUS_META[key].label}
-              <span className="font-mono text-[0.625rem] text-ash">
+              <span className="numeric text-[0.625rem] text-ash">
                 {counts[key]}
               </span>
             </button>
@@ -75,15 +75,15 @@ export function OrdersBoard({ orders }: { orders: Order[] }) {
             return (
               <li
                 key={order.id}
-                className="overflow-hidden rounded-2xl border border-cream/[0.07] bg-cream/[0.022]"
+                className="overflow-hidden rounded-2xl border border-champagne/[0.07] bg-champagne/[0.022]"
               >
                 <button
                   type="button"
                   onClick={() => setExpanded(open ? null : order.id)}
                   aria-expanded={open}
-                  className="flex w-full flex-wrap items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-cream/[0.02]"
+                  className="flex w-full flex-wrap items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-champagne/[0.02]"
                 >
-                  <span className="font-mono text-xs text-chalk">
+                  <span className="numeric text-xs text-chalk">
                     {order.code}
                   </span>
 
@@ -97,7 +97,7 @@ export function OrdersBoard({ orders }: { orders: Order[] }) {
                     </span>
                   </span>
 
-                  <span className="font-mono text-[0.8125rem] text-chalk">
+                  <span className="numeric text-[0.8125rem] text-chalk">
                     {formatPrice(order.total)}
                   </span>
 
@@ -114,7 +114,7 @@ export function OrdersBoard({ orders }: { orders: Order[] }) {
                 </button>
 
                 {open && (
-                  <div className="space-y-5 border-t border-cream/[0.07] px-5 py-5">
+                  <div className="space-y-5 border-t border-champagne/[0.07] px-5 py-5">
                     <ul className="space-y-2.5">
                       {order.items.map((item, i) => (
                         <li key={i} className="flex items-center gap-3.5">
@@ -135,10 +135,10 @@ export function OrdersBoard({ orders }: { orders: Order[] }) {
                               {item.name}
                             </span>
                           </span>
-                          <span className="font-mono text-[0.6875rem] text-ash">
+                          <span className="numeric text-[0.6875rem] text-ash">
                             Talle {item.size} · x{item.qty}
                           </span>
-                          <span className="font-mono text-[0.8125rem] text-chalk">
+                          <span className="numeric text-[0.8125rem] text-chalk">
                             {formatPrice(item.unitPrice * item.qty)}
                           </span>
                         </li>
@@ -146,15 +146,15 @@ export function OrdersBoard({ orders }: { orders: Order[] }) {
                     </ul>
 
                     {order.customer.note && (
-                      <p className="rounded-xl border border-cream/8 bg-cream/[0.02] px-4 py-3 text-[0.8125rem] leading-relaxed text-mist">
+                      <p className="rounded-xl border border-champagne/8 bg-champagne/[0.02] px-4 py-3 text-[0.8125rem] leading-relaxed text-mist">
                         <span className="eyebrow mb-1.5 block">Nota</span>
                         {order.customer.note}
                       </p>
                     )}
 
-                    <div className="flex flex-wrap items-center gap-3 border-t border-cream/[0.07] pt-5">
+                    <div className="flex flex-wrap items-center gap-3 border-t border-champagne/[0.07] pt-5">
                       <label className="flex items-center gap-2.5">
-                        <span className="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-ash">
+                        <span className="numeric text-[0.625rem] uppercase tracking-[0.16em] text-ash">
                           Estado
                         </span>
                         <NativeSelect

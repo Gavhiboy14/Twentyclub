@@ -53,7 +53,7 @@ export function ImageField({
       <Label>{label}</Label>
 
       <div
-        className={`group relative ${aspect} overflow-hidden rounded-2xl border border-cream/8 bg-graphite`}
+        className={`group relative ${aspect} overflow-hidden rounded-2xl border border-champagne/8 bg-graphite`}
       >
         {value ? (
           <>
@@ -78,7 +78,7 @@ export function ImageField({
         type="button"
         onClick={() => inputRef.current?.click()}
         disabled={uploading}
-        className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-cream/12 py-2.5 text-[0.8125rem] text-ash transition-colors hover:border-cream/40 hover:text-chalk disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-champagne/12 py-2.5 text-[0.8125rem] text-ash transition-colors hover:border-champagne/40 hover:text-chalk disabled:opacity-50"
       >
         {uploading ? (
           <Loader2 className="size-3.5 animate-spin" />

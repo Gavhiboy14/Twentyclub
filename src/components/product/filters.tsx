@@ -98,13 +98,13 @@ export function CatalogControls({
           <SlidersHorizontal className="size-3.5" />
           Filtros
           {activeCount > 0 && (
-            <span className="grid size-5 place-items-center rounded-full bg-cream font-mono text-[0.625rem] font-bold text-cream">
+            <span className="grid size-5 place-items-center rounded-full bg-ivory numeric text-[0.625rem] font-bold text-ink">
               {activeCount}
             </span>
           )}
         </button>
 
-        <p className="font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-ash">
+        <p className="numeric text-[0.6875rem] uppercase tracking-[0.18em] text-ash">
           {pending ? (
             <span className="flex items-center gap-2">
               <Loader2 className="size-3 animate-spin" />
@@ -118,7 +118,7 @@ export function CatalogControls({
         <div className="ml-auto flex items-center gap-2.5">
           <label
             htmlFor="orden"
-            className="hidden font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-ash sm:block"
+            className="hidden numeric text-[0.6875rem] uppercase tracking-[0.18em] text-ash sm:block"
           >
             Ordenar
           </label>
@@ -139,7 +139,7 @@ export function CatalogControls({
 
       <Dialog open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetContent side="bottom" className="p-0">
-          <div className="flex items-center justify-between border-b border-cream/8 px-6 py-4">
+          <div className="flex items-center justify-between border-b border-champagne/8 px-6 py-4">
             <DialogTitle className="font-display text-lg font-bold text-chalk">
               Filtros
             </DialogTitle>
@@ -147,7 +147,7 @@ export function CatalogControls({
               type="button"
               onClick={() => setSheetOpen(false)}
               aria-label="Cerrar filtros"
-              className="grid size-9 place-items-center rounded-full text-ash hover:bg-cream/8 hover:text-chalk"
+              className="grid size-9 place-items-center rounded-full text-ash hover:bg-champagne/8 hover:text-chalk"
             >
               <X className="size-4" />
             </button>
@@ -161,7 +161,7 @@ export function CatalogControls({
               resultCount={resultCount}
             />
           </div>
-          <div className="border-t border-cream/8 p-5">
+          <div className="border-t border-champagne/8 p-5">
             <Button className="w-full" onClick={() => setSheetOpen(false)}>
               Ver {resultCount} {resultCount === 1 ? "resultado" : "resultados"}
             </Button>
@@ -217,7 +217,7 @@ export function FilterPanel({
               oferta: null,
             });
           }}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-cream/10 py-2.5 text-[0.8125rem] text-mist transition-colors hover:border-bad/30 hover:text-bad"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-champagne/10 py-2.5 text-[0.8125rem] text-mist transition-colors hover:border-bad/30 hover:text-bad"
         >
           <X className="size-3.5" />
           Limpiar filtros
@@ -255,7 +255,7 @@ export function FilterPanel({
           }
           aria-label="Rango de precio"
         />
-        <div className="mt-3.5 flex justify-between font-mono text-[0.6875rem] text-ash">
+        <div className="mt-3.5 flex justify-between numeric text-[0.6875rem] text-ash">
           <span>{formatPrice(range[0])}</span>
           <span>{formatPrice(range[1])}</span>
         </div>
@@ -287,10 +287,10 @@ export function FilterPanel({
                 onClick={() => toggleIn("talle", size)}
                 aria-pressed={active}
                 className={cn(
-                  "min-w-11 rounded-xl border px-3 py-2 font-mono text-xs transition-all duration-200",
+                  "min-w-11 rounded-xl border px-3 py-2 numeric text-xs transition-all duration-200",
                   active
-                    ? "border-cream bg-cream/20 text-cream"
-                    : "border-cream/10 bg-cream/[0.03] text-mist hover:border-cream/25 hover:text-chalk",
+                    ? "border-cream bg-champagne/20 text-cream"
+                    : "border-champagne/10 bg-champagne/[0.03] text-mist hover:border-champagne/25 hover:text-chalk",
                 )}
               >
                 {size}
@@ -316,8 +316,8 @@ export function FilterPanel({
                   className={cn(
                     "size-5 shrink-0 rounded-full border transition-all duration-200",
                     active
-                      ? "border-cream ring-2 ring-cream/40 ring-offset-2 ring-offset-ink"
-                      : "border-cream/20",
+                      ? "border-cream ring-2 ring-champagne/40 ring-offset-2 ring-offset-ink"
+                      : "border-champagne/20",
                   )}
                   style={{ backgroundColor: color.hex }}
                 />

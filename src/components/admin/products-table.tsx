@@ -54,10 +54,10 @@ export function ProductsTable({
             : "Todavía no hay productos cargados."}
         </EmptyRow>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-cream/[0.07]">
+        <div className="overflow-x-auto rounded-2xl border border-champagne/[0.07]">
           <table className="w-full min-w-[52rem] border-collapse">
             <thead>
-              <tr className="border-b border-cream/[0.07] bg-cream/[0.02]">
+              <tr className="border-b border-champagne/[0.07] bg-champagne/[0.02]">
                 <Th>Producto</Th>
                 <Th>Precio</Th>
                 <Th>Stock</Th>
@@ -78,7 +78,7 @@ export function ProductsTable({
                 return (
                   <tr
                     key={product.id}
-                    className="border-b border-cream/[0.04] transition-colors last:border-0 hover:bg-cream/[0.02]"
+                    className="border-b border-champagne/[0.04] transition-colors last:border-0 hover:bg-champagne/[0.02]"
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3.5">
@@ -96,7 +96,7 @@ export function ProductsTable({
                           <p className="truncate text-[0.8125rem] font-medium text-chalk">
                             {product.name}
                           </p>
-                          <p className="font-mono text-[0.625rem] text-ash">
+                          <p className="numeric text-[0.625rem] text-ash">
                             {product.sku}
                           </p>
                         </div>
@@ -104,11 +104,11 @@ export function ProductsTable({
                     </td>
 
                     <td className="px-4 py-3">
-                      <p className="font-mono text-[0.8125rem] text-chalk">
+                      <p className="numeric text-[0.8125rem] text-chalk">
                         {formatPrice(final)}
                       </p>
                       {product.discount > 0 && (
-                        <p className="font-mono text-[0.625rem] text-sand">
+                        <p className="numeric text-[0.625rem] text-sand">
                           −{product.discount}%
                         </p>
                       )}
@@ -117,7 +117,7 @@ export function ProductsTable({
                     <td className="px-4 py-3">
                       <p
                         className={cn(
-                          "font-mono text-[0.8125rem]",
+                          "numeric text-[0.8125rem]",
                           stock === 0
                             ? "text-bad"
                             : stock <= 5
@@ -127,7 +127,7 @@ export function ProductsTable({
                       >
                         {stock}
                       </p>
-                      <p className="font-mono text-[0.625rem] text-ash">
+                      <p className="numeric text-[0.625rem] text-ash">
                         {visible.length} talles
                       </p>
                     </td>
@@ -170,7 +170,7 @@ export function ProductsTable({
                             })
                           }
                           aria-label={`Duplicar ${product.name}`}
-                          className="grid size-8 place-items-center rounded-lg text-ash transition-colors hover:bg-cream/8 hover:text-chalk disabled:opacity-40"
+                          className="grid size-8 place-items-center rounded-lg text-ash transition-colors hover:bg-champagne/8 hover:text-chalk disabled:opacity-40"
                         >
                           <Copy className="size-3.5" />
                         </button>
@@ -204,7 +204,7 @@ export function ProductsTable({
         </div>
       )}
 
-      <p className="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-ash">
+      <p className="numeric text-[0.625rem] uppercase tracking-[0.16em] text-ash">
         {rows.length} de {products.length} productos
       </p>
     </div>
@@ -227,7 +227,7 @@ function IconLink({
       href={href}
       aria-label={label}
       target={external ? "_blank" : undefined}
-      className="grid size-8 place-items-center rounded-lg text-ash transition-colors hover:bg-cream/8 hover:text-chalk"
+      className="grid size-8 place-items-center rounded-lg text-ash transition-colors hover:bg-champagne/8 hover:text-chalk"
     >
       {children}
     </Link>
@@ -245,7 +245,7 @@ function Th({
     <th
       scope="col"
       className={cn(
-        "px-4 py-3 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-ash",
+        "px-4 py-3 numeric text-[0.625rem] uppercase tracking-[0.16em] text-ash",
         align === "right" ? "text-right" : "text-left",
       )}
     >

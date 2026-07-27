@@ -81,7 +81,7 @@ export default async function DashboardPage() {
                 <li key={item.id}>
                   <Link
                     href={`/admin/productos?q=${encodeURIComponent(item.label)}`}
-                    className="flex items-center justify-between gap-4 rounded-xl px-3 py-2.5 transition-colors hover:bg-cream/[0.04]"
+                    className="flex items-center justify-between gap-4 rounded-xl px-3 py-2.5 transition-colors hover:bg-champagne/[0.04]"
                   >
                     <span className="truncate text-[0.8125rem] text-mist">
                       {item.label}
@@ -127,7 +127,7 @@ export default async function DashboardPage() {
           <div className="-mx-2 overflow-x-auto">
             <table className="w-full min-w-[38rem] border-collapse">
               <thead>
-                <tr className="border-b border-cream/[0.07]">
+                <tr className="border-b border-champagne/[0.07]">
                   <Th>Código</Th>
                   <Th>Cliente</Th>
                   <Th>Fecha</Th>
@@ -140,10 +140,10 @@ export default async function DashboardPage() {
                 {recent.map((order) => (
                   <tr
                     key={order.id}
-                    className="border-b border-cream/[0.04] last:border-0"
+                    className="border-b border-champagne/[0.04] last:border-0"
                   >
                     <Td>
-                      <span className="font-mono text-xs text-chalk">
+                      <span className="numeric text-xs text-chalk">
                         {order.code}
                       </span>
                     </Td>
@@ -159,7 +159,7 @@ export default async function DashboardPage() {
                       </span>
                     </Td>
                     <Td align="right">
-                      <span className="font-mono text-xs text-chalk">
+                      <span className="numeric text-xs text-chalk">
                         {formatPrice(order.total)}
                       </span>
                     </Td>
@@ -193,7 +193,7 @@ function Metric({
   alert?: boolean;
 }) {
   return (
-    <div className="rounded-2xl border border-cream/[0.07] bg-cream/[0.022] p-5">
+    <div className="rounded-2xl border border-champagne/[0.07] bg-champagne/[0.022] p-5">
       <div className="flex items-center justify-between">
         <p className="eyebrow">{label}</p>
         <span className={alert ? "text-warn" : "text-cream"}>{icon}</span>
@@ -216,7 +216,7 @@ function Th({
   return (
     <th
       scope="col"
-      className={`px-3 pb-3 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-ash ${
+      className={`px-3 pb-3 numeric text-[0.625rem] uppercase tracking-[0.16em] text-ash ${
         align === "right" ? "text-right" : "text-left"
       }`}
     >

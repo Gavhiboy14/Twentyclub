@@ -90,7 +90,7 @@ export default async function BrandPage({
 
         <div className="mx-auto max-w-7xl px-5 pb-14 pt-16 sm:px-8 lg:pb-20 lg:pt-24">
           <p className="eyebrow mb-5">Marca</p>
-          <h1 className="display-wide text-[clamp(2.5rem,9vw,6rem)] text-cream">
+          <h1 className="display-xl text-[clamp(2.5rem,9vw,6rem)] text-cream">
             <RevealWords text={brand.name} />
           </h1>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-mist">

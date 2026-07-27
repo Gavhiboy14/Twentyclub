@@ -3,7 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useScroll, useMotionValueEvent } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useMotionValueEvent,
+} from "framer-motion";
 import { Heart, Menu, Search, ShoppingBag, X } from "lucide-react";
 import { Dialog, SheetContent, DialogTitle } from "@/components/ui/dialog";
 import { useCart } from "@/store/cart";
@@ -17,6 +22,13 @@ export interface NavLink {
   href: string;
 }
 
+/**
+ * Barra flotante.
+ *
+ * Arranca pegada al borde y transparente; al scrollear se despega y se
+ * convierte en una cápsula de vidrio ahumado. El movimiento es el mínimo
+ * necesario para que se entienda que la barra está por encima del contenido.
+ */
 export function Navbar({ links }: { links: NavLink[] }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -26,7 +38,7 @@ export function Navbar({ links }: { links: NavLink[] }) {
   const { ids } = useFavorites();
   const { scrollY } = useScroll();
 
-  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 24));
+  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 20));
 
   useEffect(() => setMenuOpen(false), [pathname]);
 
@@ -49,38 +61,37 @@ export function Navbar({ links }: { links: NavLink[] }) {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-40 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
-          scrolled ? "px-3 pt-3 sm:px-5 sm:pt-4" : "px-0 pt-0",
+          "fixed inset-x-0 top-0 z-40 transition-[padding] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
+          scrolled ? "px-4 pt-4 sm:px-6 sm:pt-5" : "px-0 pt-0",
         )}
       >
         <div
           className={cn(
-            "mx-auto flex items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+            "mx-auto flex items-center gap-4 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
             scrolled
-              ? "glass-strong max-w-6xl rounded-full px-4 py-2.5 sm:px-5"
-              : "max-w-[100rem] border-b border-cream/[0.06] bg-transparent px-4 py-4 sm:px-8",
+              ? "max-w-6xl rounded-full border border-champagne/[0.09] bg-graphite/80 px-5 py-3 shadow-[0_20px_50px_-24px_rgba(0,0,0,0.95)] backdrop-blur-2xl"
+              : "max-w-[92rem] border border-transparent px-5 py-6 sm:px-8",
           )}
         >
           <Logo />
 
-          {/* Navegación principal */}
-          <nav className="ml-4 hidden flex-1 items-center gap-0.5 lg:flex">
+          <nav className="ml-6 hidden flex-1 items-center gap-1 lg:flex">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "relative rounded-full px-3.5 py-2 text-[0.8125rem] transition-colors duration-300",
+                  "relative rounded-full px-4 py-2 text-[0.8125rem] transition-colors duration-300",
                   isActive(link.href)
-                    ? "text-cream"
-                    : "text-ash hover:text-chalk",
+                    ? "text-chalk"
+                    : "text-ash hover:text-mist",
                 )}
               >
                 {isActive(link.href) && (
                   <motion.span
                     layoutId="nav-active"
-                    className="absolute inset-0 -z-10 rounded-full bg-cream/[0.08]"
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    className="absolute inset-0 -z-10 rounded-full bg-champagne/[0.08]"
+                    transition={{ type: "spring", stiffness: 380, damping: 34 }}
                   />
                 )}
                 {link.label}
@@ -88,36 +99,24 @@ export function Navbar({ links }: { links: NavLink[] }) {
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-1.5">
-            <button
-              type="button"
-              onClick={() => setSearchOpen(true)}
-              className="group hidden items-center gap-2.5 rounded-full border border-cream/8 bg-cream/[0.03] py-2 pl-3.5 pr-2.5 text-[0.8125rem] text-ash transition-colors duration-300 hover:border-cream/16 hover:text-chalk md:flex"
-            >
-              <Search className="size-3.5" />
-              Buscar
-              <kbd className="rounded border border-cream/10 bg-cream/5 px-1.5 py-0.5 font-mono text-[0.625rem] text-ash">
-                ⌘K
-              </kbd>
-            </button>
-
+          <div className="ml-auto flex items-center gap-0.5">
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="Buscar productos"
-              className="grid size-10 place-items-center rounded-full text-ash transition-colors hover:bg-cream/8 hover:text-chalk md:hidden"
+              className="grid size-10 place-items-center rounded-full text-ash transition-colors duration-300 hover:bg-champagne/[0.07] hover:text-chalk"
             >
-              <Search className="size-[1.15rem]" />
+              <Search className="size-[1.1rem] stroke-[1.5]" />
             </button>
 
             <Link
               href="/favoritos"
               aria-label={`Favoritos${ids.length ? ` (${ids.length})` : ""}`}
-              className="relative hidden size-10 place-items-center rounded-full text-ash transition-colors hover:bg-cream/8 hover:text-chalk sm:grid"
+              className="relative hidden size-10 place-items-center rounded-full text-ash transition-colors duration-300 hover:bg-champagne/[0.07] hover:text-chalk sm:grid"
             >
-              <Heart className="size-[1.15rem]" />
+              <Heart className="size-[1.1rem] stroke-[1.5]" />
               {ids.length > 0 && (
-                <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-cream" />
+                <span className="absolute right-2 top-2 size-1.5 rounded-full bg-champagne" />
               )}
             </Link>
 
@@ -125,9 +124,9 @@ export function Navbar({ links }: { links: NavLink[] }) {
               type="button"
               onClick={openCart}
               aria-label={`Abrir carrito${count ? ` (${count} productos)` : ""}`}
-              className="relative grid size-10 place-items-center rounded-full text-chalk transition-colors hover:bg-cream/8"
+              className="relative grid size-10 place-items-center rounded-full text-chalk transition-colors duration-300 hover:bg-champagne/[0.07]"
             >
-              <ShoppingBag className="size-[1.15rem]" />
+              <ShoppingBag className="size-[1.1rem] stroke-[1.5]" />
               <AnimatePresence>
                 {hydrated && count > 0 && (
                   <motion.span
@@ -135,7 +134,7 @@ export function Navbar({ links }: { links: NavLink[] }) {
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0, opacity: 0 }}
                     transition={{ type: "spring", stiffness: 500, damping: 26 }}
-                    className="absolute -right-0.5 -top-0.5 grid min-w-5 place-items-center rounded-full bg-cream px-1 font-mono text-[0.625rem] font-bold text-cream"
+                    className="numeric absolute -right-0.5 -top-0.5 grid min-w-[1.15rem] place-items-center rounded-full bg-ivory px-1 text-[0.625rem] font-semibold text-ink"
                   >
                     {count}
                   </motion.span>
@@ -147,9 +146,9 @@ export function Navbar({ links }: { links: NavLink[] }) {
               type="button"
               onClick={() => setMenuOpen(true)}
               aria-label="Abrir menú"
-              className="grid size-10 place-items-center rounded-full text-chalk transition-colors hover:bg-cream/8 lg:hidden"
+              className="grid size-10 place-items-center rounded-full text-chalk transition-colors duration-300 hover:bg-champagne/[0.07] lg:hidden"
             >
-              <Menu className="size-[1.15rem]" />
+              <Menu className="size-[1.1rem] stroke-[1.5]" />
             </button>
           </div>
         </div>
@@ -157,7 +156,7 @@ export function Navbar({ links }: { links: NavLink[] }) {
 
       {/* Menú mobile */}
       <Dialog open={menuOpen} onOpenChange={setMenuOpen}>
-        <SheetContent side="right" className="p-6">
+        <SheetContent side="right" className="p-7">
           <div className="flex items-center justify-between">
             <DialogTitle asChild>
               <span>
@@ -168,25 +167,31 @@ export function Navbar({ links }: { links: NavLink[] }) {
               type="button"
               onClick={() => setMenuOpen(false)}
               aria-label="Cerrar menú"
-              className="grid size-10 place-items-center rounded-full text-ash transition-colors hover:bg-cream/8 hover:text-chalk"
+              className="grid size-10 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/[0.07] hover:text-chalk"
             >
-              <X className="size-4" />
+              <X className="size-4 stroke-[1.5]" />
             </button>
           </div>
 
-          <nav className="mt-10 flex flex-col">
+          <nav className="mt-14 flex flex-col">
             {links.map((link, i) => (
               <motion.div
                 key={link.href}
                 initial={{ opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.06 + i * 0.045, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                transition={{
+                  delay: 0.07 + i * 0.05,
+                  duration: 0.6,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
               >
                 <Link
                   href={link.href}
                   className={cn(
-                    "block border-b border-cream/6 py-4 font-display text-2xl font-semibold tracking-tight transition-colors",
-                    isActive(link.href) ? "text-cream" : "text-mist hover:text-chalk",
+                    "block border-b border-champagne/[0.06] py-5 font-display text-2xl tracking-[-0.03em] transition-colors duration-300",
+                    isActive(link.href)
+                      ? "text-chalk"
+                      : "text-mist hover:text-chalk",
                   )}
                 >
                   {link.label}
@@ -197,12 +202,12 @@ export function Navbar({ links }: { links: NavLink[] }) {
 
           <Link
             href="/favoritos"
-            className="mt-auto flex items-center gap-3 rounded-2xl border border-cream/8 bg-cream/[0.03] px-4 py-3.5 text-sm text-mist transition-colors hover:text-chalk"
+            className="mt-auto flex items-center gap-3 rounded-2xl border border-champagne/[0.08] bg-champagne/[0.03] px-5 py-4 text-sm text-mist transition-colors hover:text-chalk"
           >
-            <Heart className="size-4" />
+            <Heart className="size-4 stroke-[1.5]" />
             Mis favoritos
             {ids.length > 0 && (
-              <span className="ml-auto font-mono text-xs text-sand">
+              <span className="numeric ml-auto text-xs text-champagne">
                 {ids.length}
               </span>
             )}

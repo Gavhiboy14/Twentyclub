@@ -26,7 +26,7 @@ export default async function OffersPage() {
     <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:py-20">
       <Reveal className="mb-14">
         <p className="eyebrow mb-4">Descuentos vigentes</p>
-        <h1 className="display-wide text-[clamp(2.25rem,6.5vw,4.5rem)] text-cream">
+        <h1 className="display-xl text-[clamp(2.25rem,6.5vw,4.5rem)] text-cream">
           <RevealWords text={`Hasta ${biggest}% menos`} />
         </h1>
         <p className="mt-5 max-w-lg text-base leading-relaxed text-mist">

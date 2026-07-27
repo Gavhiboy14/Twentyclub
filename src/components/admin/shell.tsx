@@ -59,7 +59,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           className="bloom left-[-10%] top-[-20%] size-[36rem] opacity-30"
           style={{
             background:
-              "radial-gradient(circle, rgba(247,244,224,0.16), transparent 68%)",
+              "radial-gradient(circle, rgba(232,220,196,0.10), transparent 68%)",
           }}
         />
       </div>
@@ -67,7 +67,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       {/* Barra lateral */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-cream/[0.07] bg-graphite/90 backdrop-blur-xl",
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-champagne/[0.07] bg-graphite/90 backdrop-blur-xl",
           "transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full",
         )}
@@ -78,7 +78,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             type="button"
             onClick={() => setOpen(false)}
             aria-label="Cerrar menú"
-            className="grid size-9 place-items-center rounded-full text-ash hover:bg-cream/8 hover:text-chalk lg:hidden"
+            className="grid size-9 place-items-center rounded-full text-ash hover:bg-champagne/8 hover:text-chalk lg:hidden"
           >
             <X className="size-4" />
           </button>
@@ -101,7 +101,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                 {active && (
                   <motion.span
                     layoutId="admin-active"
-                    className="absolute inset-0 -z-10 rounded-xl border border-cream/25 bg-cream/12"
+                    className="absolute inset-0 -z-10 rounded-xl border border-champagne/25 bg-champagne/12"
                     transition={{ type: "spring", stiffness: 400, damping: 34 }}
                   />
                 )}
@@ -112,7 +112,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        <div className="space-y-1 border-t border-cream/[0.07] p-3">
+        <div className="space-y-1 border-t border-champagne/[0.07] p-3">
           <Link
             href="/"
             target="_blank"
@@ -143,12 +143,12 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
       {/* Contenido */}
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-cream/[0.07] bg-ink/80 px-5 py-3 backdrop-blur-xl lg:hidden">
+        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-champagne/[0.07] bg-ink/80 px-5 py-3 backdrop-blur-xl lg:hidden">
           <button
             type="button"
             onClick={() => setOpen(true)}
             aria-label="Abrir menú"
-            className="grid size-10 place-items-center rounded-full text-chalk hover:bg-cream/8"
+            className="grid size-10 place-items-center rounded-full text-chalk hover:bg-champagne/8"
           >
             <Menu className="size-5" />
           </button>

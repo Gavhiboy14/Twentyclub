@@ -49,7 +49,7 @@ export const DialogContent = React.forwardRef<
       {children}
       {!hideClose && (
         <DialogPrimitive.Close
-          className="absolute right-5 top-5 grid size-9 place-items-center rounded-full text-ash transition-colors hover:bg-cream/10 hover:text-chalk"
+          className="absolute right-5 top-5 grid size-9 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/10 hover:text-chalk"
           aria-label="Cerrar"
         >
           <X className="size-4" />

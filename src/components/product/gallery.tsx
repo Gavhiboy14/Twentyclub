@@ -42,7 +42,7 @@ export function ProductGallery({
         onPointerEnter={() => setZooming(true)}
         onPointerLeave={() => setZooming(false)}
         onPointerMove={(e) => track(e.clientX, e.clientY)}
-        className="glass edge-light group relative aspect-square overflow-hidden rounded-[1.75rem] bg-graphite"
+        className="plate group relative aspect-[4/5] overflow-hidden rounded-[1.75rem]"
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -68,7 +68,7 @@ export function ProductGallery({
           </motion.div>
         </AnimatePresence>
 
-        <div className="pointer-events-none absolute bottom-4 right-4 flex items-center gap-1.5 rounded-full bg-ink/70 px-3 py-1.5 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-mist opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+        <div className="pointer-events-none absolute bottom-4 right-4 flex items-center gap-1.5 rounded-full bg-ink/85 px-3 py-1.5 text-[0.625rem] uppercase tracking-[0.16em] text-mist opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
           <ZoomIn className="size-3" />
           Zoom
         </div>
@@ -83,10 +83,10 @@ export function ProductGallery({
             aria-label={`Ver imagen ${i + 1} de ${images.length}`}
             aria-current={i === index}
             className={cn(
-              "relative aspect-square w-20 shrink-0 overflow-hidden rounded-2xl border bg-graphite transition-all duration-300 sm:w-24",
+              "plate relative aspect-[4/5] w-20 shrink-0 overflow-hidden rounded-xl border transition-all duration-300 sm:w-[5.5rem]",
               i === index
-                ? "border-cream/70 opacity-100"
-                : "border-cream/8 opacity-55 hover:opacity-90",
+                ? "border-ivory opacity-100 ring-1 ring-ivory/40"
+                : "border-transparent opacity-45 hover:opacity-80",
             )}
           >
             <Image

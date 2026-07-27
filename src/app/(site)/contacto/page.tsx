@@ -45,7 +45,7 @@ export default async function ContactPage() {
     <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:py-20">
       <Reveal className="mb-16 max-w-2xl">
         <p className="eyebrow mb-4">Contacto</p>
-        <h1 className="display-wide text-[clamp(2.25rem,6.5vw,4.5rem)] text-cream">
+        <h1 className="display-xl text-[clamp(2.25rem,6.5vw,4.5rem)] text-cream">
           <RevealWords text="Del otro lado hay una persona." />
         </h1>
         <p className="mt-6 text-base leading-relaxed text-mist">
@@ -110,7 +110,7 @@ export default async function ContactPage() {
       <section id="como-comprar" className="mt-24 scroll-mt-28">
         <Reveal className="mb-10">
           <p className="eyebrow mb-4">Cómo comprar</p>
-          <h2 className="display-wide text-[clamp(1.85rem,4.5vw,3rem)] text-chalk">
+          <h2 className="display-xl text-[clamp(1.85rem,4.5vw,3rem)] text-chalk">
             Cuatro pasos, sin cuenta ni tarjeta
           </h2>
         </Reveal>
@@ -120,7 +120,7 @@ export default async function ContactPage() {
           {PASOS.map((paso, i) => (
             <Reveal key={paso.title} delay={i * 0.08}>
               <li className="glass edge-light h-full rounded-glass p-6">
-                <span className="font-mono text-[0.6875rem] tracking-[0.22em] text-cream">
+                <span className="numeric text-[0.6875rem] tracking-[0.22em] text-cream">
                   0{i + 1}
                 </span>
                 <h3 className="mt-4 text-base font-semibold text-chalk">
@@ -139,7 +139,7 @@ export default async function ContactPage() {
         <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
           <Reveal>
             <p className="eyebrow mb-4">Preguntas frecuentes</p>
-            <h2 className="display-wide text-[clamp(1.85rem,4.5vw,3rem)] text-chalk">
+            <h2 className="display-xl text-[clamp(1.85rem,4.5vw,3rem)] text-chalk">
               Envíos, cambios y todo lo demás
             </h2>
             <p className="mt-5 max-w-sm text-[0.9375rem] leading-relaxed text-ash">

@@ -114,7 +114,7 @@ export function SearchDialog({
           Buscá por marca, modelo, nombre o color.
         </DialogDescription>
 
-        <div className="flex items-center gap-3 border-b border-cream/8 px-5">
+        <div className="flex items-center gap-3 border-b border-champagne/8 px-5">
           {loading ? (
             <Loader2 className="size-4 shrink-0 animate-spin text-cream" />
           ) : (
@@ -130,7 +130,7 @@ export function SearchDialog({
             autoComplete="off"
             spellCheck={false}
           />
-          <kbd className="hidden shrink-0 rounded border border-cream/10 bg-cream/5 px-1.5 py-0.5 font-mono text-[0.625rem] text-ash sm:block">
+          <kbd className="hidden shrink-0 rounded border border-champagne/10 bg-champagne/5 px-1.5 py-0.5 numeric text-[0.625rem] text-ash sm:block">
             ESC
           </kbd>
         </div>
@@ -148,7 +148,7 @@ export function SearchDialog({
                     key={s}
                     type="button"
                     onClick={() => setQuery(s)}
-                    className="rounded-full border border-cream/10 bg-cream/[0.03] px-3.5 py-1.5 text-[0.8125rem] text-mist transition-colors hover:border-cream/40 hover:text-chalk"
+                    className="rounded-full border border-champagne/10 bg-champagne/[0.03] px-3.5 py-1.5 text-[0.8125rem] text-mist transition-colors hover:border-champagne/40 hover:text-chalk"
                   >
                     {s}
                   </button>
@@ -176,7 +176,7 @@ export function SearchDialog({
                     onClick={() => go(r.slug)}
                     className={cn(
                       "flex w-full items-center gap-4 rounded-2xl p-2.5 text-left transition-colors duration-150",
-                      i === cursor ? "bg-cream/[0.07]" : "hover:bg-cream/[0.04]",
+                      i === cursor ? "bg-champagne/[0.07]" : "hover:bg-champagne/[0.04]",
                     )}
                   >
                     <div className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-graphite">
@@ -200,7 +200,7 @@ export function SearchDialog({
                         {formatPrice(r.price)}
                       </p>
                       {!r.inStock && (
-                        <p className="font-mono text-[0.625rem] uppercase tracking-widest text-ash">
+                        <p className="numeric text-[0.625rem] uppercase tracking-widest text-ash">
                           Agotado
                         </p>
                       )}

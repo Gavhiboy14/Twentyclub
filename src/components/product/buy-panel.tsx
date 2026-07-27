@@ -66,7 +66,7 @@ export function BuyPanel({ product }: { product: ProductView }) {
         <div className="mb-4 flex items-baseline justify-between">
           <p className="eyebrow">Talle argentino</p>
           {selected && selected.stock <= LOW_STOCK && (
-            <p className="font-mono text-[0.6875rem] text-warn">
+            <p className="numeric text-[0.6875rem] text-warn">
               Quedan {selected.stock}
             </p>
           )}
@@ -86,10 +86,10 @@ export function BuyPanel({ product }: { product: ProductView }) {
                 }}
                 aria-pressed={active}
                 className={cn(
-                  "relative h-12 rounded-xl border font-mono text-sm transition-all duration-300",
+                  "relative h-12 rounded-xl border numeric text-sm transition-all duration-300",
                   active
-                    ? "border-cream bg-cream text-ink shadow-[0_8px_24px_-10px_rgba(247,244,224,0.6)]"
-                    : "border-cream/10 bg-cream/[0.03] text-mist hover:border-cream/25 hover:text-chalk",
+                    ? "border-cream bg-ivory text-ink shadow-[0_8px_24px_-10px_rgba(247,244,224,0.6)]"
+                    : "border-champagne/10 bg-champagne/[0.03] text-mist hover:border-champagne/25 hover:text-chalk",
                 )}
               >
                 {s.size}
@@ -108,17 +108,17 @@ export function BuyPanel({ product }: { product: ProductView }) {
 
       {/* Cantidad + acciones */}
       <div className="flex flex-wrap items-center gap-3">
-        <div className="flex h-14 items-center gap-2 rounded-full border border-cream/10 bg-cream/[0.03] px-2">
+        <div className="flex h-14 items-center gap-2 rounded-full border border-champagne/10 bg-champagne/[0.03] px-2">
           <button
             type="button"
             onClick={() => setQty((q) => Math.max(1, q - 1))}
             disabled={qty <= 1}
             aria-label="Restar uno"
-            className="grid size-10 place-items-center rounded-full text-ash transition-colors hover:bg-cream/8 hover:text-chalk disabled:opacity-30"
+            className="grid size-10 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/8 hover:text-chalk disabled:opacity-30"
           >
             <Minus className="size-4" />
           </button>
-          <span className="min-w-7 text-center font-mono text-sm text-chalk">
+          <span className="min-w-7 text-center numeric text-sm text-chalk">
             {qty}
           </span>
           <button
@@ -128,7 +128,7 @@ export function BuyPanel({ product }: { product: ProductView }) {
             }
             disabled={!selected || qty >= selected.stock}
             aria-label="Sumar uno"
-            className="grid size-10 place-items-center rounded-full text-ash transition-colors hover:bg-cream/8 hover:text-chalk disabled:opacity-30"
+            className="grid size-10 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/8 hover:text-chalk disabled:opacity-30"
           >
             <Plus className="size-4" />
           </button>
@@ -152,7 +152,7 @@ export function BuyPanel({ product }: { product: ProductView }) {
                 <ShoppingBag />
                 Agregar al carrito
                 {selected && (
-                  <span className="ml-1 font-mono text-[0.8125rem] opacity-80">
+                  <span className="ml-1 numeric text-[0.8125rem] opacity-80">
                     {formatPrice(product.finalPrice * qty)}
                   </span>
                 )}

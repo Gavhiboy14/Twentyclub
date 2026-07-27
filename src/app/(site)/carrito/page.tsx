@@ -15,7 +15,7 @@ export default async function CarritoPage() {
     <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:py-20">
       <header className="mb-12">
         <p className="eyebrow mb-4">Paso final</p>
-        <h1 className="display-wide text-[clamp(2.25rem,6vw,4rem)] text-cream">
+        <h1 className="display-xl text-[clamp(2.25rem,6vw,4rem)] text-cream">
           Tu carrito
         </h1>
         <p className="mt-4 max-w-md text-[0.9375rem] leading-relaxed text-ash">

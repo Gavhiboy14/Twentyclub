@@ -1,10 +1,9 @@
 /**
- * Atmósfera del sitio: tres focos cálidos muy difuminados sobre carbón, con una
- * malla fina encima. Va fijo detrás de todo y no se scrollea — es lo que da la
- * sensación de profundidad sin cargar ninguna imagen.
+ * Atmósfera del sitio: negro profundo con dos focos champagne casi imperceptibles.
  *
- * La luz es del mismo crema del logo, bajada a un 20–30% de opacidad: se lee
- * como iluminación de vidriera, no como un color más de la paleta.
+ * La opacidad es deliberadamente baja (0.05–0.09). A partir de ahí la luz se
+ * lee como un color más de la paleta en vez de como iluminación, y el negro
+ * deja de sentirse profundo.
  */
 export function SiteBackground() {
   return (
@@ -13,41 +12,35 @@ export function SiteBackground() {
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-ink"
     >
       <div
-        className="bloom animate-drift left-[-12%] top-[-18%] size-[46rem] opacity-45"
+        className="bloom animate-drift left-[-15%] top-[-25%] size-[52rem] opacity-70"
         style={{
           background:
-            "radial-gradient(circle, rgba(247,244,224,0.22), rgba(201,190,147,0.07) 55%, transparent 70%)",
+            "radial-gradient(circle, rgba(232,220,196,0.09), rgba(201,185,151,0.03) 50%, transparent 72%)",
         }}
       />
       <div
-        className="bloom animate-drift right-[-16%] top-[22%] size-[38rem] opacity-35 [animation-delay:-8s]"
+        className="bloom animate-drift right-[-18%] top-[35%] size-[44rem] opacity-55 [animation-delay:-12s]"
         style={{
           background:
-            "radial-gradient(circle, rgba(201,190,147,0.24), rgba(201,190,147,0.06) 55%, transparent 70%)",
-        }}
-      />
-      <div
-        className="bloom animate-drift bottom-[-20%] left-[35%] size-[42rem] opacity-30 [animation-delay:-15s]"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(217,211,182,0.2), transparent 68%)",
+            "radial-gradient(circle, rgba(201,185,151,0.07), transparent 68%)",
         }}
       />
 
-      {/* Malla de 88px — se lee como estructura, no como decoración */}
+      {/* Malla amplia. Da estructura sin dibujar: a 120px se percibe como
+          textura del material, no como una grilla. */}
       <div
-        className="absolute inset-0 opacity-[0.04]"
+        className="absolute inset-0 opacity-[0.022]"
         style={{
           backgroundImage:
-            "linear-gradient(to right, #f7f4e0 1px, transparent 1px), linear-gradient(to bottom, #f7f4e0 1px, transparent 1px)",
-          backgroundSize: "88px 88px",
+            "linear-gradient(to right, #e8dcc4 1px, transparent 1px), linear-gradient(to bottom, #e8dcc4 1px, transparent 1px)",
+          backgroundSize: "120px 120px",
           maskImage:
-            "radial-gradient(ellipse 85% 65% at 50% 40%, #000 30%, transparent 78%)",
+            "radial-gradient(ellipse 80% 60% at 50% 35%, #000 25%, transparent 75%)",
         }}
       />
 
-      {/* Viñeta inferior para asentar el footer */}
-      <div className="absolute inset-x-0 bottom-0 h-96 bg-linear-to-t from-ink via-ink/70 to-transparent" />
+      {/* Viñeta inferior: asienta el footer y evita que el negro se vea plano */}
+      <div className="absolute inset-x-0 bottom-0 h-[28rem] bg-linear-to-t from-ink via-ink/80 to-transparent" />
     </div>
   );
 }

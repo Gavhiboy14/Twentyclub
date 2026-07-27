@@ -20,7 +20,7 @@ export function FavoritesList({ catalog }: { catalog: ProductView[] }) {
       <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
         <div>
           <p className="eyebrow mb-4">Tu lista</p>
-          <h1 className="display-wide text-[clamp(2.25rem,6vw,4rem)] text-cream">
+          <h1 className="display-xl text-[clamp(2.25rem,6vw,4rem)] text-cream">
             Favoritos
           </h1>
           <p className="mt-4 max-w-md text-[0.9375rem] leading-relaxed text-ash">
@@ -39,7 +39,7 @@ export function FavoritesList({ catalog }: { catalog: ProductView[] }) {
         <ProductGridSkeleton count={4} />
       ) : products.length === 0 ? (
         <div className="glass flex flex-col items-center gap-5 rounded-glass px-8 py-20 text-center">
-          <div className="grid size-14 place-items-center rounded-2xl bg-cream/5 text-ash">
+          <div className="grid size-14 place-items-center rounded-2xl bg-champagne/5 text-ash">
             <Heart className="size-6" />
           </div>
           <div>

@@ -4,13 +4,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
 import type { ProductView } from "@/lib/types";
 import { cn, formatPrice } from "@/lib/utils";
 import { useCart } from "@/store/cart";
 import { Badge, TagBadge } from "@/components/ui/badge";
 import { FavoriteButton } from "./favorite-button";
 
+/**
+ * La tarjeta es el elemento que más se repite del sitio, así que es donde se
+ * decide si la tienda se siente cara o barata.
+ *
+ * La estructura es: panel de vidrio ahumado → placa marfil → foto. La foto
+ * nunca toca el negro directamente, se apoya sobre la placa. Eso hace que
+ * funcione con cualquier foto, tenga el fondo que tenga.
+ */
 export function ProductCard({
   product,
   priority = false,
@@ -52,35 +59,33 @@ export function ProductCard({
     <motion.article
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ y: -8 }}
+      transition={{ type: "spring", stiffness: 320, damping: 30 }}
       className={cn(
-        "glass edge-light group relative flex flex-col rounded-glass p-3",
-        "transition-shadow duration-500",
-        "hover:border-cream/20 hover:shadow-[0_40px_80px_-40px_rgba(247,244,224,0.22)]",
-        !product.inStock && "opacity-60",
+        "group relative flex h-full flex-col rounded-[1.75rem] p-4",
+        "border border-champagne/[0.07] bg-graphite/70 backdrop-blur-xl",
+        "shadow-[0_24px_60px_-32px_rgba(0,0,0,0.9)]",
+        "transition-[border-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+        "hover:border-champagne/16 hover:shadow-[0_40px_90px_-40px_rgba(0,0,0,1),0_0_60px_-30px_rgba(232,220,196,0.22)]",
+        !product.inStock && "opacity-55",
       )}
     >
-      {/* Imagen */}
+      {/* Placa marfil con la foto */}
       <Link
         href={`/producto/${product.slug}`}
-        className="relative block aspect-square overflow-hidden rounded-[1.15rem] bg-graphite"
+        className="plate relative block aspect-[4/5] overflow-hidden rounded-[1.35rem]"
         aria-label={`Ver ${label}`}
       >
-        <div
-          aria-hidden
-          className="absolute inset-x-6 bottom-4 h-24 rounded-full bg-cream/35 opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100"
-        />
         <Image
           src={product.images[0].url}
           alt={product.images[0].alt}
           fill
-          sizes="(max-width: 640px) 92vw, (max-width: 1024px) 45vw, 23vw"
+          sizes="(max-width: 640px) 88vw, (max-width: 1024px) 44vw, 24vw"
           priority={priority}
           loading={priority ? undefined : "lazy"}
           className={cn(
-            "object-cover transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
-            hovered ? "scale-105 opacity-0" : "scale-100 opacity-100",
+            "object-cover transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+            hovered ? "scale-[1.06] opacity-0" : "scale-100 opacity-100",
           )}
         />
         <Image
@@ -88,61 +93,60 @@ export function ProductCard({
           alt=""
           aria-hidden
           fill
-          sizes="(max-width: 640px) 92vw, (max-width: 1024px) 45vw, 23vw"
+          sizes="(max-width: 640px) 88vw, (max-width: 1024px) 44vw, 24vw"
           loading="lazy"
           className={cn(
-            "object-cover transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
-            hovered ? "scale-105 opacity-100" : "scale-110 opacity-0",
+            "object-cover transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+            hovered ? "scale-[1.06] opacity-100" : "scale-[1.12] opacity-0",
           )}
         />
 
-        <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
-          {product.tags.slice(0, 2).map((tag) => (
-            <TagBadge key={tag} tag={tag} />
-          ))}
-          {!product.inStock && <Badge variant="bad">Agotado</Badge>}
-        </div>
+        {product.tags.length > 0 && product.inStock && (
+          <div className="absolute left-3 top-3">
+            <TagBadge tag={product.tags[0]} />
+          </div>
+        )}
+        {!product.inStock && (
+          <div className="absolute left-3 top-3">
+            <Badge variant="bad">Agotado</Badge>
+          </div>
+        )}
       </Link>
 
       <FavoriteButton
         productId={product.id}
         label={label}
-        className="absolute right-5 top-5 z-20"
+        className="absolute right-6 top-6 z-20"
       />
 
       {/* Datos */}
-      <div className="flex flex-1 flex-col gap-3 px-2 pb-1 pt-4">
-        <div className="space-y-1">
-          <p className="eyebrow">{product.brand.name}</p>
-          <h3 className="text-[0.975rem] font-semibold leading-tight tracking-tight text-chalk">
-            <Link
-              href={`/producto/${product.slug}`}
-              className="transition-colors hover:text-cream"
-            >
-              {product.name}
-            </Link>
-          </h3>
-        </div>
+      <div className="flex flex-1 flex-col px-1.5 pb-1 pt-6">
+        <p className="eyebrow">{product.brand.name}</p>
 
-        <div className="flex items-baseline gap-2.5">
-          <span className="font-display text-lg font-bold tracking-tight text-cream">
+        <h3 className="mt-2.5 text-[1.0625rem] font-medium leading-snug tracking-[-0.015em] text-chalk">
+          <Link
+            href={`/producto/${product.slug}`}
+            className="transition-colors duration-300 hover:text-linen"
+          >
+            {product.name}
+          </Link>
+        </h3>
+
+        <div className="mt-3 flex items-baseline gap-2.5">
+          <span className="numeric text-[1.0625rem] font-medium tracking-[-0.01em] text-linen">
             {formatPrice(product.finalPrice)}
           </span>
           {product.discount > 0 && (
-            <>
-              <span className="text-sm text-ash line-through">
-                {formatPrice(product.price)}
-              </span>
-              <span className="font-mono text-[0.6875rem] text-sand">
-                −{product.discount}%
-              </span>
-            </>
+            <span className="numeric text-[0.8125rem] text-ash line-through">
+              {formatPrice(product.price)}
+            </span>
           )}
         </div>
 
-        {/* Talles: son datos, van en mono */}
+        {/* Talles y compra. Se revelan al hover en desktop; en touch van
+            siempre visibles, porque ahí el hover no existe. */}
         {product.inStock ? (
-          <div className="mt-auto space-y-3">
+          <div className="mt-5 space-y-3 opacity-100 transition-opacity duration-500 sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100">
             <div className="flex flex-wrap gap-1.5">
               {product.visibleSizes.map((s) => (
                 <button
@@ -154,10 +158,10 @@ export function ProductCard({
                   }}
                   aria-pressed={s.size === size}
                   className={cn(
-                    "relative z-10 rounded-lg border px-2 py-1 font-mono text-[0.6875rem] transition-all duration-200",
+                    "numeric relative z-10 min-w-9 rounded-lg border px-2 py-1.5 text-[0.6875rem] transition-all duration-300",
                     s.size === size
-                      ? "border-cream bg-cream/20 text-cream"
-                      : "border-cream/10 bg-cream/[0.03] text-mist hover:border-cream/25 hover:text-chalk",
+                      ? "border-ivory bg-ivory text-ink"
+                      : "border-champagne/10 bg-champagne/[0.03] text-mist hover:border-champagne/28 hover:text-chalk",
                   )}
                 >
                   {s.size}
@@ -171,27 +175,24 @@ export function ProductCard({
               animate={needsSize ? { x: [0, -5, 5, -3, 3, 0] } : { x: 0 }}
               transition={{ duration: 0.4 }}
               className={cn(
-                "relative z-10 flex h-10 w-full items-center justify-center gap-2 rounded-xl text-[0.8125rem] font-medium transition-all duration-300",
+                "relative z-10 flex h-11 w-full items-center justify-center rounded-xl text-[0.8125rem] font-medium transition-all duration-300",
                 needsSize
-                  ? "bg-warn/15 text-warn"
+                  ? "bg-warn/12 text-warn"
                   : size
-                    ? "bg-cream text-ink shadow-[0_10px_28px_-14px_rgba(247,244,224,0.5)] hover:bg-white"
-                    : "border border-cream/10 bg-cream/[0.04] text-mist hover:border-cream/20 hover:text-chalk",
+                    ? "bg-ivory text-ink hover:bg-linen"
+                    : "border border-champagne/10 bg-champagne/[0.04] text-mist hover:border-champagne/22 hover:text-chalk",
               )}
             >
-              {needsSize ? (
-                "Elegí un talle"
-              ) : (
-                <>
-                  <Plus className="size-3.5" />
-                  {size ? `Agregar talle ${size}` : "Agregar al carrito"}
-                </>
-              )}
+              {needsSize
+                ? "Elegí un talle"
+                : size
+                  ? `Agregar talle ${size}`
+                  : "Agregar al carrito"}
             </motion.button>
           </div>
         ) : (
-          <p className="mt-auto pt-1 font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-ash">
-            Sin talles disponibles
+          <p className="mt-5 text-[0.6875rem] uppercase tracking-[0.2em] text-ash">
+            Sin talles
           </p>
         )}
       </div>

@@ -149,7 +149,7 @@ export default async function ProductPage({
                 >
                   {product.brand.name}
                 </Link>
-                <h1 className="display-wide mt-3 text-[clamp(2rem,5.5vw,3.25rem)] text-cream">
+                <h1 className="display-xl mt-3 text-[clamp(2rem,5.5vw,3.25rem)] text-cream">
                   {product.name}
                 </h1>
 
@@ -162,7 +162,7 @@ export default async function ProductPage({
                       <span className="text-lg text-ash line-through">
                         {formatPrice(product.price)}
                       </span>
-                      <span className="rounded-full border border-cream/35 bg-cream/15 px-2.5 py-1 font-mono text-[0.6875rem] text-sand">
+                      <span className="rounded-full border border-champagne/35 bg-champagne/15 px-2.5 py-1 numeric text-[0.6875rem] text-sand">
                         −{product.discount}%
                       </span>
                     </>
@@ -177,7 +177,7 @@ export default async function ProductPage({
               <BuyPanel product={product} />
 
               {/* Garantías */}
-              <ul className="grid gap-3 border-y border-cream/8 py-6 sm:grid-cols-3">
+              <ul className="grid gap-3 border-y border-champagne/8 py-6 sm:grid-cols-3">
                 <Perk icon={<Truck className="size-4" />} title="Envío sin cargo">
                   Desde {formatPrice(settings.freeShippingFrom)}
                 </Perk>
@@ -199,14 +199,14 @@ export default async function ProductPage({
                         key={feature}
                         className="flex gap-3 text-[0.9375rem] text-mist"
                       >
-                        <span className="mt-2 size-1 shrink-0 rounded-full bg-cream" />
+                        <span className="mt-2 size-1 shrink-0 rounded-full bg-sand" />
                         {feature}
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <dl className="grid grid-cols-2 gap-x-6 gap-y-4 border-t border-cream/8 pt-6">
+                <dl className="grid grid-cols-2 gap-x-6 gap-y-4 border-t border-champagne/8 pt-6">
                   <Spec label="Color" value={product.color} />
                   <Spec label="Materiales" value={product.materials.join(" · ")} />
                   <Spec label="SKU" value={product.sku} mono />
@@ -274,7 +274,7 @@ function Spec({
       <dt className="eyebrow mb-1.5">{label}</dt>
       <dd
         className={
-          mono ? "font-mono text-[0.8125rem] text-mist" : "text-sm text-mist"
+          mono ? "numeric text-[0.8125rem] text-mist" : "text-sm text-mist"
         }
       >
         {value}

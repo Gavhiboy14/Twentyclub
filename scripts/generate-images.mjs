@@ -146,15 +146,18 @@ function svg({ base, accent, sole, highTop, view, seed }) {
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000" role="img">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#3a3934"/>
-      <stop offset="0.55" stop-color="#2e2d28"/>
-      <stop offset="1" stop-color="#24231f"/>
+    <!-- Fondo marfil: estas imágenes se apoyan sobre la placa clara de la
+         tarjeta, así que el degradado tiene que continuar esa placa, no
+         contrastar con ella. -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#faf8f3"/>
+      <stop offset="0.5" stop-color="#f5f2ea"/>
+      <stop offset="1" stop-color="#eae5d9"/>
     </linearGradient>
     <radialGradient id="bloom">
-      <stop offset="0" stop-color="#f7f4e0" stop-opacity="0.2"/>
-      <stop offset="0.55" stop-color="#c9be93" stop-opacity="0.08"/>
-      <stop offset="1" stop-color="#c9be93" stop-opacity="0"/>
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="upperGrad" x1="0.1" y1="0" x2="0.8" y2="1">
       <stop offset="0" stop-color="${lighten(base, 26)}"/>
@@ -192,9 +195,10 @@ function svg({ base, accent, sole, highTop, view, seed }) {
   </defs>
 
   <rect width="1000" height="1000" fill="url(#bg)"/>
-  <circle cx="${bloomX}" cy="380" r="330" fill="url(#bloom)"/>
-  <ellipse cx="508" cy="600" rx="270" ry="28" fill="#000" opacity="0.75" filter="url(#soft)"/>
-  <ellipse cx="508" cy="594" rx="185" ry="17" fill="#c9be93" opacity="0.16" filter="url(#soft)"/>
+  <circle cx="${bloomX}" cy="360" r="340" fill="url(#bloom)"/>
+  <!-- Sombra de contacto sobre marfil: gris cálido, nunca negro puro -->
+  <ellipse cx="508" cy="600" rx="262" ry="26" fill="#8a8378" opacity="0.34" filter="url(#soft)"/>
+  <ellipse cx="508" cy="596" rx="150" ry="15" fill="#6b6459" opacity="0.24" filter="url(#soft)"/>
 
   <g transform="${zoom}">
     <g transform="${mirror}">
@@ -242,25 +246,29 @@ function darken(hex, amount) {
 /* Banners de marca / portadas de categoría                                    */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * Los banners van sobre el fondo oscuro del sitio, así que se quedan en negro
+ * — al revés que las fotos de producto, que viven sobre la placa marfil.
+ */
 function bannerSvg(label, accent) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" width="1600" height="700" role="img">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#3a3934"/>
-      <stop offset="1" stop-color="#24231f"/>
+      <stop offset="0" stop-color="#1a1a1c"/>
+      <stop offset="1" stop-color="#0f0f10"/>
     </linearGradient>
     <radialGradient id="b1">
-      <stop offset="0" stop-color="${accent}" stop-opacity="0.5"/>
+      <stop offset="0" stop-color="${accent}" stop-opacity="0.16"/>
       <stop offset="1" stop-color="${accent}" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <rect width="1600" height="700" fill="url(#bg)"/>
   <circle cx="1180" cy="220" r="420" fill="url(#b1)"/>
   <circle cx="300" cy="620" r="340" fill="url(#b1)" opacity="0.6"/>
-  <text x="80" y="420" font-family="Archivo, Helvetica, sans-serif" font-size="180" font-weight="800"
-        letter-spacing="-8" fill="#f7f4e0" fill-opacity="0.92">${label}</text>
-  <text x="86" y="480" font-family="monospace" font-size="26" letter-spacing="14"
-        fill="#b4b0a0" fill-opacity="0.7">TWENTY CLUB</text>
+  <text x="80" y="420" font-family="'Inter Tight', Inter, Helvetica, sans-serif" font-size="176" font-weight="500"
+        letter-spacing="-9" fill="#f2efe8" fill-opacity="0.9">${label}</text>
+  <text x="86" y="482" font-family="Manrope, Helvetica, sans-serif" font-size="24" font-weight="500"
+        letter-spacing="13" fill="#807d76" fill-opacity="0.85">TWENTY CLUB</text>
 </svg>`;
 }
 

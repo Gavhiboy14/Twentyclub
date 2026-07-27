@@ -1,21 +1,21 @@
-﻿import * as React from "react";
+import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import type { ProductTag } from "@/lib/types";
 
 const badge = cva(
-  "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.16em] leading-none",
+  "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[0.625rem] font-medium uppercase tracking-[0.18em] leading-none",
   {
     variants: {
       variant: {
-        neutral: "border-cream/12 bg-cream/[0.06] text-mist",
-        /** Contorno crema: destaca sin gritar. */
-        cream: "border-cream/40 bg-cream/12 text-cream",
-        /** Crema sólido: sólo para la etiqueta más importante de la tarjeta. */
-        solid: "border-cream bg-cream text-ink",
-        ok: "border-ok/35 bg-ok/15 text-ok",
-        warn: "border-warn/35 bg-warn/15 text-warn",
-        bad: "border-bad/35 bg-bad/15 text-bad",
+        neutral: "border-champagne/12 bg-champagne/[0.05] text-mist",
+        /** Contorno champagne: destaca sin gritar. */
+        cream: "border-champagne/35 bg-champagne/10 text-champagne",
+        /** Marfil sólido: sólo para la etiqueta más importante de una tarjeta. */
+        solid: "border-ivory bg-ivory text-ink",
+        ok: "border-ok/30 bg-ok/12 text-ok",
+        warn: "border-warn/30 bg-warn/12 text-warn",
+        bad: "border-bad/30 bg-bad/12 text-bad",
       },
     },
     defaultVariants: { variant: "neutral" },

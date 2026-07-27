@@ -29,8 +29,8 @@ export function Footer({
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-32 border-t border-cream/[0.07]">
-      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-20">
+    <footer className="relative mt-40 border-t border-champagne/[0.06]">
+      <div className="mx-auto max-w-[86rem] px-5 py-20 sm:px-8 lg:py-28">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div className="max-w-sm space-y-5">
             <Logo />
@@ -112,16 +112,16 @@ export function Footer({
         {/* Marca denominativa a sangre — cierra la página */}
         <div
           aria-hidden
-          className="mt-16 select-none overflow-hidden border-t border-cream/[0.07] pt-10"
+          className="mt-24 select-none overflow-hidden border-t border-champagne/[0.06] pt-14"
         >
-          <p className="display-wide bg-linear-to-b from-cream/12 to-transparent bg-clip-text text-[clamp(3rem,15vw,11rem)] text-transparent">
+          <p className="display-xl bg-linear-to-b from-champagne/[0.09] to-transparent bg-clip-text text-[clamp(3rem,15vw,11rem)] text-transparent">
             TWENTY CLUB
           </p>
         </div>
 
         <div className="mt-6 flex flex-col gap-3 text-xs text-ash sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} Twenty Club. Todos los derechos reservados.</p>
-          <p className="font-mono uppercase tracking-[0.18em]">
+          <p className="numeric uppercase tracking-[0.18em]">
             Buenos Aires · Envíos a todo el país
           </p>
         </div>

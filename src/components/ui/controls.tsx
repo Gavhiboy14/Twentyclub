@@ -20,13 +20,13 @@ export const Slider = React.forwardRef<
     className={cn("relative flex w-full touch-none select-none items-center", className)}
     {...props}
   >
-    <SliderPrimitive.Track className="relative h-1 w-full grow overflow-hidden rounded-full bg-cream/10">
-      <SliderPrimitive.Range className="absolute h-full bg-linear-to-r from-glow to-cream" />
+    <SliderPrimitive.Track className="relative h-1 w-full grow overflow-hidden rounded-full bg-champagne/10">
+      <SliderPrimitive.Range className="absolute h-full bg-linear-to-r from-toast to-cream" />
     </SliderPrimitive.Track>
     {(props.value ?? props.defaultValue ?? [0]).map((_, i) => (
       <SliderPrimitive.Thumb
         key={i}
-        className="block size-4 rounded-full border border-cream/40 bg-chalk shadow-[0_2px_10px_rgba(0,0,0,0.6)] transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream"
+        className="block size-4 rounded-full border border-champagne/40 bg-chalk shadow-[0_2px_10px_rgba(0,0,0,0.6)] transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne"
       />
     ))}
   </SliderPrimitive.Root>
@@ -42,8 +42,8 @@ export const Switch = React.forwardRef<
   <SwitchPrimitive.Root
     ref={ref}
     className={cn(
-      "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border border-cream/10 transition-colors duration-300",
-      "data-[state=checked]:bg-cream data-[state=unchecked]:bg-cream/8",
+      "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border border-champagne/10 transition-colors duration-300",
+      "data-[state=checked]:bg-ivory data-[state=unchecked]:bg-champagne/8",
       "disabled:cursor-not-allowed disabled:opacity-50",
       className,
     )}
@@ -63,8 +63,8 @@ export const Checkbox = React.forwardRef<
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
-      "grid size-[1.15rem] shrink-0 place-items-center rounded-md border border-cream/15 bg-cream/[0.04] transition-colors duration-200",
-      "hover:border-cream/50 data-[state=checked]:border-cream data-[state=checked]:bg-cream",
+      "grid size-[1.15rem] shrink-0 place-items-center rounded-md border border-champagne/15 bg-champagne/[0.04] transition-colors duration-200",
+      "hover:border-champagne/50 data-[state=checked]:border-cream data-[state=checked]:bg-ivory",
       className,
     )}
     {...props}
@@ -86,7 +86,7 @@ export const AccordionItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn("border-b border-cream/8", className)}
+    className={cn("border-b border-champagne/8", className)}
     {...props}
   />
 ));
@@ -155,7 +155,7 @@ export const TabsTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       "rounded-full px-4 py-2 text-sm text-ash transition-all duration-300",
-      "hover:text-chalk data-[state=active]:bg-cream/10 data-[state=active]:text-cream",
+      "hover:text-chalk data-[state=active]:bg-champagne/10 data-[state=active]:text-cream",
       className,
     )}
     {...props}

@@ -136,7 +136,7 @@ export function CollectionManager({
           {entries.map(({ record, card }) => (
             <li
               key={record.id}
-              className="flex flex-col overflow-hidden rounded-2xl border border-cream/[0.07] bg-cream/[0.022]"
+              className="flex flex-col overflow-hidden rounded-2xl border border-champagne/[0.07] bg-champagne/[0.022]"
             >
               <Cover src={card.cover} aspect={card.coverAspect} />
 
@@ -158,7 +158,7 @@ export function CollectionManager({
                 </p>
 
                 {card.meta && (
-                  <p className="mt-1 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-ash">
+                  <p className="mt-1 numeric text-[0.625rem] uppercase tracking-[0.16em] text-ash">
                     {card.meta}
                   </p>
                 )}
@@ -170,7 +170,7 @@ export function CollectionManager({
                 )}
               </div>
 
-              <div className="mt-auto flex items-center gap-1.5 border-t border-cream/[0.07] px-4 py-3">
+              <div className="mt-auto flex items-center gap-1.5 border-t border-champagne/[0.07] px-4 py-3">
                 <Button variant="ghost" size="sm" onClick={() => openEdit(record)}>
                   <Pencil className="size-3.5" />
                   Editar
@@ -309,7 +309,7 @@ function FieldRenderer({
             type="number"
             value={Number(value ?? 0)}
             onChange={(e) => onChange(Number(e.target.value))}
-            className="font-mono"
+            className="numeric"
           />
         </Field>
       );
@@ -331,7 +331,7 @@ function FieldRenderer({
       return (
         <label className="flex items-center justify-between gap-4">
           <span>
-            <span className="block font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-ash">
+            <span className="block numeric text-[0.6875rem] uppercase tracking-[0.18em] text-ash">
               {field.label}
             </span>
             {field.hint && (
@@ -374,7 +374,7 @@ function FieldRenderer({
       return (
         <div className="space-y-2">
           <Label>{field.label}</Label>
-          <div className="max-h-60 space-y-2.5 overflow-y-auto rounded-2xl border border-cream/8 bg-cream/[0.02] p-4">
+          <div className="max-h-60 space-y-2.5 overflow-y-auto rounded-2xl border border-champagne/8 bg-champagne/[0.02] p-4">
             {field.options.map((option) => {
               const active = selected.includes(option.value);
               return (

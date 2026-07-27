@@ -70,7 +70,7 @@ export function ImageManager({
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <Label>Imágenes</Label>
-        <span className="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-ash">
+        <span className="numeric text-[0.625rem] uppercase tracking-[0.16em] text-ash">
           {images.length} cargadas
         </span>
       </div>
@@ -81,7 +81,7 @@ export function ImageManager({
             key={image.id}
             className={cn(
               "group relative aspect-square overflow-hidden rounded-2xl border bg-graphite",
-              i === 0 ? "border-cream/50" : "border-cream/8",
+              i === 0 ? "border-champagne/50" : "border-champagne/8",
             )}
           >
             <Image
@@ -93,7 +93,7 @@ export function ImageManager({
             />
 
             {i === 0 && (
-              <figcaption className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-cream px-2 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.14em] text-cream">
+              <figcaption className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-ivory px-2 py-1 text-[0.5625rem] uppercase tracking-[0.14em] text-ink">
                 <Star className="size-2.5 fill-current" />
                 Portada
               </figcaption>
@@ -131,7 +131,7 @@ export function ImageManager({
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          className="grid aspect-square place-items-center rounded-2xl border border-dashed border-cream/12 bg-cream/[0.02] text-ash transition-colors hover:border-cream/40 hover:text-chalk disabled:opacity-50"
+          className="grid aspect-square place-items-center rounded-2xl border border-dashed border-champagne/12 bg-champagne/[0.02] text-ash transition-colors hover:border-champagne/40 hover:text-chalk disabled:opacity-50"
         >
           <span className="flex flex-col items-center gap-2 px-3 text-center">
             {uploading ? (
@@ -186,7 +186,7 @@ function IconBtn({
       aria-label={label}
       className={cn(
         "grid size-7 place-items-center rounded-lg bg-ink/80 text-mist backdrop-blur-sm transition-colors disabled:opacity-30",
-        danger ? "hover:bg-bad/25 hover:text-bad" : "hover:bg-cream/15 hover:text-chalk",
+        danger ? "hover:bg-bad/25 hover:text-bad" : "hover:bg-champagne/15 hover:text-chalk",
       )}
     >
       {children}

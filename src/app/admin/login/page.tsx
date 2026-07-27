@@ -35,8 +35,8 @@ export default function LoginPage() {
 
           <p className="mt-6 text-center text-xs text-ash">
             Las credenciales se configuran en las variables{" "}
-            <code className="font-mono text-mist">ADMIN_EMAIL</code> y{" "}
-            <code className="font-mono text-mist">ADMIN_PASSWORD</code>.
+            <code className="numeric text-mist">ADMIN_EMAIL</code> y{" "}
+            <code className="numeric text-mist">ADMIN_PASSWORD</code>.
           </p>
         </div>
       </div>
