@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a3934"/>
+      <stop offset="1" stop-color="#24231f"/>
+    </linearGradient>
+    <radialGradient id="bloom">
+      <stop offset="0" stop-color="#f7f4e0" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#f7f4e0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1000" height="1000" fill="url(#bg)"/>
+  <circle cx="500" cy="440" r="300" fill="url(#bloom)"/>
+  <rect x="330" y="330" width="340" height="340" rx="40" fill="none"
+        stroke="#f7f4e0" stroke-opacity="0.14" stroke-width="2" stroke-dasharray="10 12"/>
+  <text x="500" y="520" text-anchor="middle" font-family="monospace" font-size="26"
+        letter-spacing="10" fill="#9a9689">SIN FOTO</text>
+  <text x="500" y="566" text-anchor="middle" font-family="monospace" font-size="17"
+        letter-spacing="5" fill="#6b695c">TWENTY CLUB</text>
+</svg>

@@ -1,0 +1,30 @@
+# Netlify detecta Next.js solo e instala su runtime (OpenNext) en cada build.
+# No hay que declarar ningún plugin: Netlify desaconseja fijar la versión del
+# adaptador, porque lo actualizan ellos para acompañar las versiones de Next.
+
+[build]
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # El catálogo vive en Supabase: en Netlify el filesystem es de sólo lectura.
+  DATA_DRIVER = "supabase"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Las imágenes generadas nunca cambian de contenido sin cambiar de nombre.
+[[headers]]
+  for = "/products/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/brands/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
