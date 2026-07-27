@@ -4,6 +4,9 @@
 
 [build]
   command = "npm run build"
+  # Sin esto, Netlify default-ea el publish a la raíz del repo, que choca con
+  # el base directory y el plugin de Next.js rechaza el build.
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "22"
