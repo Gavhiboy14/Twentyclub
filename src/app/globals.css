@@ -57,6 +57,9 @@
   /* Cabecera: el bamboleo corto de las fichas y la mota de polvo que sube */
   --animate-bob: bob 11s var(--ease-out-soft) infinite;
   --animate-dust: dust 22s linear infinite;
+  /* Splash: entra una sola vez, gira todo lo que dure la carga */
+  --animate-sparkle-enter: sparkle-enter 700ms var(--ease-out-expo) both;
+  --animate-sparkle-spin: sparkle-spin 2.4s linear infinite;
 }
 
 @keyframes marquee {
@@ -94,6 +97,33 @@
   }
   to {
     transform: translate3d(5%, 3%, 0) scale(1.14);
+  }
+}
+
+/* Splash de bienvenida: la chispa entra con un desenfoque leve y se asienta,
+   sin golpe seco. Gira aparte (ver `sparkle-spin`), así que acá sólo hay
+   opacidad, blur y escala — nunca rotación, para no pisarle el `transform` a
+   la animación de giro que corre en el elemento de adentro. */
+@keyframes sparkle-enter {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1);
+  }
+}
+
+/* Giro continuo del splash sobre su propio eje mientras dura la carga. */
+@keyframes sparkle-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 

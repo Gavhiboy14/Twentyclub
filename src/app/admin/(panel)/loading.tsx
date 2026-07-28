@@ -1,5 +1,4 @@
-import { RouteLoader } from "@/components/site/loader";
-
+/** Ver `(site)/loading.tsx`: el `<Splash />` del layout raíz cubre la pantalla. */
 export default function Loading() {
-  return <RouteLoader label="Cargando el panel" />;
+  return null;
 }

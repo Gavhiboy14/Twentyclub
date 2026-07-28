@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Manrope, JetBrains_Mono } from "next/font/google";
+import { Splash } from "@/components/site/splash";
 import "./globals.css";
 
 /**
@@ -82,7 +83,10 @@ export default function RootLayout({
       className={`${archivo.variable} ${manrope.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-dvh antialiased">{children}</body>
+      <body className="min-h-dvh antialiased">
+        <Splash />
+        {children}
+      </body>
     </html>
   );
 }

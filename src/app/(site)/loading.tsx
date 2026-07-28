@@ -1,10 +1,9 @@
-import { RouteLoader } from "@/components/site/loader";
-
 /**
- * Cubre toda la tienda. Next lo manda en el primer flush del stream, así que
- * el visitante ve la barra y el anillo mientras el servidor todavía está
- * resolviendo el catálogo, en vez de una pantalla en blanco.
+ * El `<Splash />` del layout raíz cubre toda la pantalla mientras carga, así
+ * que este fallback no necesita mostrar nada — sigue existiendo sólo para que
+ * Next tenga un límite de Suspense alrededor de la página y el resto del
+ * árbol pueda transmitirse en paralelo.
  */
 export default function Loading() {
-  return <RouteLoader />;
+  return null;
 }
