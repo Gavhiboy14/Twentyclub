@@ -128,7 +128,62 @@ check(
   ["price"],
 );
 
-/* ------------------------------- 4. aplicar ------------------------------- */
+/* ------------------------------ 4. vincular ------------------------------- */
+
+console.log("\n4. VINCULAR UN BORRADOR A UN PRODUCTO EXISTENTE");
+const { relinkItem } = await import("../src/lib/sync/plan.ts");
+
+const borrador = items.find((i) => i.kind === "nuevo");
+const destino = before.products.find((p) => !p.supplierRef);
+
+if (!borrador || !destino) {
+  console.log("  info no hay caso para probar");
+} else {
+  const vinculado = relinkItem(borrador, destino, before);
+  check("deja de ser producto nuevo", vinculado?.kind !== "nuevo", true);
+  check("apunta al producto elegido", vinculado?.productId, destino.id);
+  check("conserva el id de la línea", vinculado?.id, borrador.id);
+  check(
+    "graba la referencia para el próximo PDF",
+    Boolean((vinculado?.patch as { supplierRef?: string })?.supplierRef),
+    true,
+  );
+  check(
+    "el precio manual del destino sigue sin moverse",
+    (vinculado?.patch as { price?: number })?.price,
+    undefined,
+  );
+  check(
+    "se puede deshacer: guarda el valor anterior",
+    (vinculado?.previous as { supplierPrice?: number })?.supplierPrice,
+    destino.supplierPrice,
+  );
+}
+
+/* ------------------------------- 5. margen -------------------------------- */
+
+console.log("\n5. MARGEN");
+const { publishedPrice, roundUpTo } = await import("../src/lib/sync/pricing.ts");
+const cfgMargen = { pricingMode: "margen" as const, marginPercent: 35, marginFixed: 0 };
+const cfgFijo = { pricingMode: "fijo" as const, marginPercent: 0, marginFixed: 15000 };
+const ajustes = { ...cfgMargen, roundTo: 100 };
+
+check("35% sobre 30.000 redondeado a 100", publishedPrice(30000, cfgMargen, ajustes), 40500);
+check("monto fijo sobre 30.000", publishedPrice(30000, cfgFijo, ajustes), 45000);
+check(
+  "el modo manual no calcula nada",
+  publishedPrice(30000, { ...cfgMargen, pricingMode: "manual" }, ajustes),
+  null,
+);
+check("sin costo no hay precio", publishedPrice(0, cfgMargen, ajustes), null);
+check("el redondeo va hacia arriba", roundUpTo(40401, 100), 40500);
+check(
+  "35% sobre 36.660 redondeado a 100",
+  publishedPrice(36660, cfgMargen, ajustes),
+  49500,
+);
+
+/* ------------------------------- 6. aplicar ------------------------------- */
 
 const run = {
   id: `test_${Date.now().toString(36)}`,
@@ -146,7 +201,7 @@ const approved = items.filter((i) => i.patch).map((i) => i.id);
 const { report, items: applied } = await applyPlan(run, approved);
 
 const afterApply = await readDb();
-console.log("\n4. APLICAR");
+console.log("\n6. APLICAR");
 console.log(
   `  ok   ${report.created} creados · ${report.updated} actualizados · ${report.skipped} salteados · ${report.failed.length} fallidos`,
 );
@@ -185,12 +240,12 @@ console.log(
       : ""),
 );
 
-/* ------------------------------ 5. deshacer ------------------------------- */
+/* ------------------------------ 7. deshacer ------------------------------- */
 
 const rollback = await rollbackPlan({ ...run, items: applied });
 const afterRollback = await readDb();
 
-console.log("\n5. DESHACER");
+console.log("\n7. DESHACER");
 console.log(
   `  ok   ${rollback.created} borrados · ${rollback.updated} restaurados · ${rollback.failed.length} fallidos`,
 );

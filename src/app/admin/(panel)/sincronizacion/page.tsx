@@ -3,8 +3,9 @@ import { repo } from "@/lib/data/store";
 import { PageHeader, Panel } from "@/components/admin/ui";
 import { SyncCenter } from "@/components/admin/sync-center";
 import { SyncHistory } from "@/components/admin/sync-history";
+import { MarginForm } from "@/components/admin/margin-form";
 import { defaultRules } from "@/lib/sync/rules";
-import { formatDateTime, formatPrice } from "@/lib/utils";
+import { formatDateTime } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -17,6 +18,21 @@ export default async function SyncPage() {
   const ruleCount = db.syncRules.length || defaultRules(db.brands).length;
   const lastApplied = runs.find((run) => run.status === "aplicado");
   const fromSupplier = db.products.filter((p) => p.supplierRef).length;
+  /* Un costo real del catálogo para la vista previa del margen: con un número
+     inventado no se ve si el redondeo hace lo que uno espera. */
+  const sampleCost =
+    db.products.find((p) => p.supplierPrice > 0)?.supplierPrice ?? 0;
+
+  /* Sólo los que todavía no están atados a una fila del PDF: los que ya
+     tienen referencia se cruzan solos y ofrecerlos sería invitar a un choque. */
+  const brandName = new Map(db.brands.map((brand) => [brand.id, brand.name]));
+  const catalog = db.products
+    .filter((product) => !product.supplierRef)
+    .map((product) => ({
+      id: product.id,
+      label: `${brandName.get(product.brandId) ?? ""} ${product.name}`.trim(),
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label, "es"));
 
   return (
     <>
@@ -28,7 +44,7 @@ export default async function SyncPage() {
 
       <div className="grid gap-5 lg:grid-cols-[1.55fr_1fr]">
         <div className="space-y-5">
-          <SyncCenter />
+          <SyncCenter catalog={catalog} />
 
           <Panel
             title="Historial"
@@ -59,41 +75,14 @@ export default async function SyncPage() {
             </dl>
           </Panel>
 
-          <Panel
-            title="Margen"
-            description="Los precios publicados se calculan con esto. Nunca se escriben a mano."
-          >
-            <dl className="space-y-3.5 text-[0.8125rem]">
-              <Row
-                label="Modo"
-                value={
-                  sync.pricingMode === "margen"
-                    ? "Margen porcentual"
-                    : sync.pricingMode === "fijo"
-                      ? "Monto fijo"
-                      : "Precio personalizado"
-                }
-              />
-              <Row
-                label={sync.pricingMode === "fijo" ? "Monto" : "Porcentaje"}
-                value={
-                  sync.pricingMode === "fijo"
-                    ? formatPrice(sync.marginFixed)
-                    : `${sync.marginPercent}%`
-                }
-              />
-              <Row
-                label="Redondeo"
-                value={sync.roundTo > 0 ? `Al múltiplo de ${sync.roundTo}` : "Sin redondeo"}
-              />
-            </dl>
-            <p className="mt-5 rounded-xl border border-champagne/[0.07] bg-ink/40 p-3.5 text-[0.75rem] leading-relaxed text-ash">
-              Los productos cargados a mano quedan en{" "}
-              <span className="text-mist">precio personalizado</span> y ninguna
-              importación se los mueve. Para pasarlos al margen automático hay
-              que hacerlo desde la ficha del producto.
-            </p>
-          </Panel>
+          <MarginForm settings={sync} sampleCost={sampleCost} />
+
+          <p className="rounded-xl border border-champagne/[0.07] bg-ink/40 p-3.5 text-[0.75rem] leading-relaxed text-ash">
+            Los productos cargados a mano quedan en{" "}
+            <span className="text-mist">precio personalizado</span> y ninguna
+            importación se los mueve. Para pasarlos al margen automático hay que
+            hacerlo desde la ficha del producto.
+          </p>
         </div>
       </div>
     </>

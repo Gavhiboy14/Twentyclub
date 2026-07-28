@@ -374,6 +374,52 @@ function createItem(
   };
 }
 
+/* ------------------------------ Revinculación ----------------------------- */
+
+/**
+ * Convierte una línea "producto nuevo" en una actualización de un producto que
+ * ya existe.
+ *
+ * El cruce automático es conservador a propósito —ante la duda crea— y en el
+ * primer PDF eso deja decenas de borradores que en realidad son productos que
+ * la tienda ya tiene con otro nombre. Esto es la salida manual: el admin elige
+ * el par correcto y la línea se recalcula como modificación.
+ *
+ * Queda atado para siempre: el `supplierRef` que se escribe hace que la
+ * próxima importación lo encuentre por clave exacta, sin volver a preguntar.
+ */
+export function relinkItem(
+  item: ImportItem,
+  product: Product,
+  db: Database,
+  now?: string,
+): ImportItem | null {
+  if (item.kind !== "nuevo" || !item.patch) return null;
+
+  const draft = item.patch as Product;
+  const extracted: ExtractedProduct = {
+    page: item.page,
+    source: "",
+    brand: item.brand,
+    color: draft.color,
+    // `supplierRef` del borrador ya es la forma canónica del modelo del PDF.
+    model: draft.supplierRef,
+    supplierPrice: draft.supplierPrice,
+    sizes: draft.sizes.map((size) => size.size),
+  };
+
+  const linked = updateItem(
+    product,
+    extracted,
+    new Map(db.brands.map((brand) => [brand.id, brand])),
+    db.settings.sync ?? DEFAULT_SYNC_SETTINGS,
+    now ?? new Date().toISOString(),
+  );
+
+  // Se conserva el id para que la aprobación que ya tenía el admin no se pierda.
+  return { ...linked, id: item.id, approved: true };
+}
+
 /* ------------------------------ Resumen ----------------------------------- */
 
 export function summarize(items: ImportItem[]): ImportSummary {

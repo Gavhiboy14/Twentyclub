@@ -9,7 +9,8 @@ import { Badge, TAG_META } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/field";
 import { ConfirmAction, EmptyRow, ErrorNote, useMutate } from "./ui";
-import { cn, formatPrice, PLACEHOLDER_IMAGE } from "@/lib/utils";
+import { appliedMarginPercent } from "@/lib/sync/pricing";
+import { cn, formatDate, formatPrice, PLACEHOLDER_IMAGE } from "@/lib/utils";
 
 type Row = Product & { brandName: string };
 
@@ -60,6 +61,7 @@ export function ProductsTable({
               <tr className="border-b border-champagne/[0.07] bg-champagne/[0.02]">
                 <Th>Producto</Th>
                 <Th>Precio</Th>
+                <Th>Costo y margen</Th>
                 <Th>Stock</Th>
                 <Th>Estado</Th>
                 <Th align="right">Acciones</Th>
@@ -114,6 +116,35 @@ export function ProductsTable({
                       )}
                     </td>
 
+                    {/* Costo del proveedor y de dónde sale el precio. Sin esto
+                        el panel muestra un precio sin decir si lo puso alguien
+                        o lo calculó una importación. */}
+                    <td className="px-4 py-3">
+                      {product.supplierPrice > 0 ? (
+                        <>
+                          <p className="numeric text-[0.8125rem] text-mist">
+                            {formatPrice(product.supplierPrice)}
+                          </p>
+                          <p className="numeric text-[0.625rem] text-ash">
+                            {product.pricingMode === "manual"
+                              ? `+${appliedMarginPercent(product)}% · a mano`
+                              : product.pricingMode === "fijo"
+                                ? `+${formatPrice(product.marginFixed)}`
+                                : `+${product.marginPercent}%`}
+                          </p>
+                        </>
+                      ) : (
+                        <p className="text-[0.75rem] text-ash">
+                          Precio propio
+                        </p>
+                      )}
+                      {product.lastSyncAt && (
+                        <p className="numeric mt-0.5 text-[0.625rem] text-ash">
+                          {formatDate(product.lastSyncAt)}
+                        </p>
+                      )}
+                    </td>
+
                     <td className="px-4 py-3">
                       <p
                         className={cn(
@@ -134,7 +165,15 @@ export function ProductsTable({
 
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-1.5">
-                        {stock === 0 && <Badge variant="bad">Agotado</Badge>}
+                        {product.status === "borrador" && (
+                          <Badge variant="warn">Borrador</Badge>
+                        )}
+                        {product.status === "no-disponible" && (
+                          <Badge variant="bad">No disponible</Badge>
+                        )}
+                        {stock === 0 && product.status === "publicado" && (
+                          <Badge variant="bad">Agotado</Badge>
+                        )}
                         {product.featured && (
                           <Badge variant="cream">Destacado</Badge>
                         )}

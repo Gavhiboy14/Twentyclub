@@ -15,6 +15,7 @@ import { Field, Input, Label, NativeSelect, Textarea } from "@/components/ui/fie
 import { Checkbox, Switch } from "@/components/ui/controls";
 import { ConfirmAction, EmptyRow, ErrorNote, useMutate } from "./ui";
 import { ImageField } from "./image-field";
+import type { CollectionName } from "@/lib/admin/schemas";
 import { cn } from "@/lib/utils";
 
 export type FieldSpec =
@@ -72,7 +73,7 @@ export function CollectionManager({
   singular,
   plural,
 }: {
-  collection: "brands" | "categories" | "banners" | "offers";
+  collection: CollectionName;
   entries: Entry[];
   fields: FieldSpec[];
   defaults: Record<string, unknown>;

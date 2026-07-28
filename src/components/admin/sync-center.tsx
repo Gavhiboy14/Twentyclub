@@ -8,6 +8,7 @@ import {
   Check,
   CircleAlert,
   FileText,
+  Link2,
   Loader2,
   Minus,
   Plus,
@@ -32,7 +33,13 @@ type Phase = "listo" | "leyendo" | "analizando" | "revisando" | "aplicando";
  * analizando y revisando son momentos distintos y el usuario tiene que ver en
  * cuál está.
  */
-export function SyncCenter() {
+/** Lo mínimo del catálogo para poder elegir un producto al vincular. */
+export interface CatalogOption {
+  id: string;
+  label: string;
+}
+
+export function SyncCenter({ catalog }: { catalog: CatalogOption[] }) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -102,6 +109,40 @@ export function SyncCenter() {
       );
     }
   }, []);
+
+  /* ------------------------------- vincular ------------------------------ */
+
+  /**
+   * Ata una línea "nuevo" a un producto que ya existe. El servidor recalcula
+   * la línea como modificación y devuelve el plan entero, así que el resumen
+   * de arriba se actualiza solo.
+   */
+  async function link(itemId: string, productId: string) {
+    if (!run) return;
+    setError(null);
+
+    const res = await fetch(`/api/admin/sync/${run.id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "vincular", itemId, productId }),
+    });
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      setError((data as { error?: string }).error ?? "No se pudo vincular.");
+      return;
+    }
+
+    const { item } = data as { item: ImportItem };
+    setRun((current) =>
+      current
+        ? {
+            ...current,
+            items: current.items.map((i) => (i.id === item.id ? item : i)),
+          }
+        : current,
+    );
+  }
 
   /* ------------------------------ confirmar ------------------------------ */
 
@@ -206,6 +247,7 @@ export function SyncCenter() {
               <ItemList
                 items={groups[tab]}
                 skipped={skipped}
+                catalog={catalog}
                 onToggle={(id) =>
                   setSkipped((current) => {
                     const next = new Set(current);
@@ -214,6 +256,7 @@ export function SyncCenter() {
                     return next;
                   })
                 }
+                onLink={link}
               />
             </div>
 
@@ -435,11 +478,15 @@ function firstTabWithItems(items: ImportItem[]): ChangeKind {
 function ItemList({
   items,
   skipped,
+  catalog,
   onToggle,
+  onLink,
 }: {
   items: ImportItem[];
   skipped: Set<string>;
+  catalog: CatalogOption[];
   onToggle: (id: string) => void;
+  onLink: (itemId: string, productId: string) => void;
 }) {
   if (!items.length) {
     return (
@@ -501,6 +548,13 @@ function ItemList({
               )}
             </div>
 
+            {item.kind === "nuevo" && (
+              <LinkPicker
+                catalog={catalog}
+                onPick={(productId) => onLink(item.id, productId)}
+              />
+            )}
+
             {actionable && (
               <button
                 type="button"
@@ -521,5 +575,56 @@ function ItemList({
         );
       })}
     </ul>
+  );
+}
+
+/**
+ * Selector para atar un borrador a un producto que ya existe.
+ *
+ * Es un `<select>` nativo y no un buscador con dropdown propio: con 31
+ * productos el nativo se abre más rápido, filtra escribiendo y funciona igual
+ * con teclado en cualquier navegador.
+ */
+function LinkPicker({
+  catalog,
+  onPick,
+}: {
+  catalog: CatalogOption[];
+  onPick: (productId: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="flex shrink-0 items-center gap-2 rounded-full border border-champagne/12 px-3.5 py-2 text-[0.75rem] text-ash transition-colors duration-300 hover:border-champagne/25 hover:text-chalk"
+      >
+        <Link2 className="size-3 stroke-[1.5]" />
+        Ya lo tengo
+      </button>
+    );
+  }
+
+  return (
+    <select
+      autoFocus
+      defaultValue=""
+      onBlur={() => setOpen(false)}
+      onChange={(event) => {
+        if (event.target.value) onPick(event.target.value);
+        setOpen(false);
+      }}
+      aria-label="Elegí el producto de tu tienda"
+      className="h-9 shrink-0 rounded-full border border-champagne/20 bg-graphite px-3 text-[0.75rem] text-chalk"
+    >
+      <option value="">Elegí el producto…</option>
+      {catalog.map((option) => (
+        <option key={option.id} value={option.id}>
+          {option.label}
+        </option>
+      ))}
+    </select>
   );
 }
