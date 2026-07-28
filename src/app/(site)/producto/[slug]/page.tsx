@@ -50,9 +50,8 @@ export default async function ProductPage({
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const [related, catalog, settings] = await Promise.all([
+  const [related, settings] = await Promise.all([
     getRelatedProducts(product, 4),
-    getAllProducts(),
     getSettings(),
   ]);
 
@@ -233,7 +232,7 @@ export default async function ProductPage({
         </Section>
       )}
 
-      <RecentlyViewed catalog={catalog} excludeSlug={product.slug} />
+      <RecentlyViewed excludeSlug={product.slug} />
     </>
   );
 }

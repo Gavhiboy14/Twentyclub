@@ -183,7 +183,7 @@ export default async function HomePage() {
         <ProductRail products={bestSellers} />
       </Section>
 
-      <RecentlyViewed catalog={catalog} />
+      <RecentlyViewed />
 
       <Section>
         <SectionHeader

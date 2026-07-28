@@ -2,18 +2,16 @@
 
 import Link from "next/link";
 import { Heart } from "lucide-react";
-import type { ProductView } from "@/lib/types";
 import { useFavorites } from "@/store/favorites";
 import { Button } from "@/components/ui/button";
 import { ProductGridSkeleton } from "@/components/ui/skeleton";
 import { ProductGrid } from "./product-grid";
+import { useLocalProducts } from "./use-local-products";
 
-export function FavoritesList({ catalog }: { catalog: ProductView[] }) {
+/** La lista vive en el navegador; los productos se piden por id a la API. */
+export function FavoritesList() {
   const { ids, hydrated, clear } = useFavorites();
-
-  const products = ids
-    .map((id) => catalog.find((p) => p.id === id))
-    .filter((p): p is ProductView => Boolean(p));
+  const { products } = useLocalProducts("ids", ids, hydrated);
 
   return (
     <>
@@ -28,14 +26,14 @@ export function FavoritesList({ catalog }: { catalog: ProductView[] }) {
           </p>
         </div>
 
-        {hydrated && products.length > 0 && (
+        {products && products.length > 0 && (
           <Button variant="ghost" size="sm" onClick={clear}>
             Vaciar lista
           </Button>
         )}
       </div>
 
-      {!hydrated ? (
+      {!products ? (
         <ProductGridSkeleton count={4} />
       ) : products.length === 0 ? (
         <div className="flex flex-col items-center gap-6 rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl px-8 py-24 text-center">

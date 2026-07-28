@@ -1,31 +1,23 @@
 "use client";
 
-import type { ProductView } from "@/lib/types";
 import { useRecent } from "@/store/recent";
 import { Section, SectionHeader } from "@/components/site/section";
 import { ProductRail } from "./product-grid";
+import { useLocalProducts } from "./use-local-products";
 
 /**
- * Recibe el catálogo completo y resuelve contra los slugs guardados en el
- * navegador. No se renderiza nada hasta hidratar, para no romper el HTML del
- * servidor con contenido que sólo existe en el cliente.
+ * Resuelve contra la API los slugs guardados en el navegador.
+ *
+ * No se renderiza nada hasta tener la respuesta: la sección va abajo de todo
+ * y aparecer tarde no molesta, pero reservar espacio para algo que quizá no
+ * exista sí correría el resto de la página.
  */
-export function RecentlyViewed({
-  catalog,
-  excludeSlug,
-}: {
-  catalog: ProductView[];
-  excludeSlug?: string;
-}) {
+export function RecentlyViewed({ excludeSlug }: { excludeSlug?: string }) {
   const { slugs, hydrated } = useRecent();
-  if (!hydrated) return null;
+  const wanted = slugs.filter((slug) => slug !== excludeSlug);
+  const { products } = useLocalProducts("slugs", wanted, hydrated);
 
-  const products = slugs
-    .filter((slug) => slug !== excludeSlug)
-    .map((slug) => catalog.find((p) => p.slug === slug))
-    .filter((p): p is ProductView => Boolean(p));
-
-  if (products.length < 2) return null;
+  if (!products || products.length < 2) return null;
 
   return (
     <Section>
