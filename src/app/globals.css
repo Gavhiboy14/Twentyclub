@@ -54,6 +54,9 @@
   --animate-marquee: marquee 46s linear infinite;
   --animate-float: float 9s var(--ease-out-soft) infinite;
   --animate-drift: drift 28s ease-in-out infinite alternate;
+  /* Cabecera: el bamboleo corto de las fichas y la mota de polvo que sube */
+  --animate-bob: bob 11s var(--ease-out-soft) infinite;
+  --animate-dust: dust 22s linear infinite;
 }
 
 @keyframes marquee {
@@ -91,6 +94,37 @@
   }
   to {
     transform: translate3d(5%, 3%, 0) scale(1.14);
+  }
+}
+
+/* Bamboleo corto para las fichas que rodean al par. Amplitud mucho menor que
+   `float`: tienen que acompañar a la zapatilla, no competir con ella. */
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+/* Polvo en suspensión. Sube, se enciende y se apaga; nunca aparece o
+   desaparece de golpe. `--dust-x` desvía la trayectoria por mota. */
+@keyframes dust {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  14% {
+    opacity: var(--dust-peak, 0.5);
+  }
+  82% {
+    opacity: var(--dust-peak, 0.5);
+  }
+  100% {
+    transform: translate3d(var(--dust-x, 10px), -190px, 0);
+    opacity: 0;
   }
 }
 
@@ -410,6 +444,40 @@
     var(--color-ink) 100%
   );
   box-shadow: inset 0 1px 0 0 rgb(232 220 196 / 0.045);
+}
+
+/* Recorte del par del hero.
+ *
+ * Las fotos del catálogo son de estudio y traen el fondo puesto: una pared
+ * gris (#343434) en la mitad de arriba y un piso casi blanco (#f2f2f2) en la
+ * de abajo, con el horizonte justo a la mitad. Sobre el negro del hero eso se
+ * lee como un rectángulo pegado y se termina el efecto de pieza suspendida.
+ *
+ * Dos máscaras, en intersección:
+ *
+ *  - La lineal borra la pared. Arranca a disolver arriba y termina de abrir a
+ *    la altura del 40%, que es donde empieza la zapatilla en estas fotos.
+ *  - La elíptica disuelve los bordes. El par ocupa de punta a punta —de 3% a
+ *    96% del ancho—, así que no hay margen que recortar sin tocarlo: la punta
+ *    y el talón se apagan a propósito, y eso se lee como caída de luz.
+ *
+ * Lo que queda del piso deja de ser piso y pasa a ser el charco de luz del
+ * eclipse, que es justo lo que se buscaba.
+ *
+ * Con un PNG sin fondo no hay nada que borrar y la máscara sólo suaviza los
+ * bordes; el efecto llega más lejos con un recorte que con una foto de fondo.
+ */
+@utility hero-cutout {
+  --hero-mask: radial-gradient(
+      60% 54% at 50% 50%,
+      #000 46%,
+      transparent 78%
+    ),
+    linear-gradient(to bottom, transparent 20%, #000 40%);
+  mask-image: var(--hero-mask);
+  -webkit-mask-image: var(--hero-mask);
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
 }
 
 @utility glow-warm {

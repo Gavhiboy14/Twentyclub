@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import {
   motion,
   useMotionValue,
@@ -10,18 +10,35 @@ import {
   useScroll,
   useSpring,
   useTransform,
+  type MotionValue,
 } from "framer-motion";
-import { ArrowRight, ArrowDown } from "lucide-react";
+import { ArrowDown, ArrowRight, BadgeCheck, ShieldCheck, Truck } from "lucide-react";
 import type { Banner, ProductView } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { RevealWords } from "@/components/motion/reveal";
+import { HeroAtmosphere } from "./hero-atmosphere";
+import { WhatsAppIcon } from "./social-icons";
 import { Sparkle } from "./logo";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
+
+const EASE = [0.16, 1, 0.3, 1] as const;
+/** Blando y con poco rebote: el par tiene que sentirse pesado, no elástico. */
+const SPRING = { stiffness: 55, damping: 24, mass: 1.1 } as const;
 
 /**
- * Hero: el par flota entre dos capas de tipografía — la marca gigante detrás y
- * el titular adelante. Esa superposición es lo que da la profundidad; el resto
- * de la página es deliberadamente más quieto.
+ * Hero.
+ *
+ * Una sola pieza suspendida en un eclipse de luz cálida, con la tipografía a
+ * un costado y cuatro fichas de vidrio orbitándola. Toda la profundidad sale
+ * del paralaje: cada capa responde al puntero con una amplitud distinta —el
+ * halo se mueve al revés que el par, las fichas a mitad de camino— y eso es lo
+ * que hace que la escena se lea como un volumen y no como un collage.
+ *
+ * Al scrollear el par sube, se achica y se apaga: no desaparece, entrega la
+ * pantalla a la colección.
+ *
+ * El `-mt-20` cancela el `pt-20` del <main>: el hero arranca por debajo de la
+ * barra flotante, no por debajo del hueco que la barra deja.
  */
 export function Hero({
   banner,
@@ -33,25 +50,37 @@ export function Hero({
   const reduced = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
 
-  const pointerX = useMotionValue(0.5);
-  const pointerY = useMotionValue(0.5);
-  const glowX = useSpring(pointerX, { stiffness: 60, damping: 22 });
-  const glowY = useSpring(pointerY, { stiffness: 60, damping: 22 });
-
-  const spotlightLeft = useTransform(glowX, (v) => `${v * 100}%`);
-  const spotlightTop = useTransform(glowY, (v) => `${v * 100}%`);
-  const tiltX = useTransform(glowY, [0, 1], [6, -6]);
-  const tiltY = useTransform(glowX, [0, 1], [-8, 8]);
+  // Puntero normalizado a -0.5…0.5 desde el centro de la sección.
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const px = useSpring(pointerX, SPRING);
+  const py = useSpring(pointerY, SPRING);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const shoeY = useTransform(scrollYProgress, [0, 1], [0, 120]);
-  const typeY = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  const image = banner.image ?? product.images[0].url;
+  const shoeY = useTransform(scrollYProgress, [0, 1], [0, -130]);
+  const shoeScale = useTransform(scrollYProgress, [0, 1], [1, 0.82]);
+  const shoeFade = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
+  const cardsY = useTransform(scrollYProgress, [0, 1], [0, -90]);
+  const haloScale = useTransform(scrollYProgress, [0, 1], [1, 1.22]);
+  const haloFade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const copyY = useTransform(scrollYProgress, [0, 1], [0, -70]);
+  const copyFade = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
+
+  // El par gira apenas; pasado un punto deja de ser peso y se vuelve juguete.
+  const shoeRotateX = useTransform(py, (v) => v * -11);
+  const shoeRotateY = useTransform(px, (v) => v * 17);
+  const shoeShiftX = useTransform(px, (v) => v * 26);
+  const shoeShiftY = useTransform(py, (v) => v * 16);
+
+  // El halo va al revés que el par: es lo que despega una capa de la otra.
+  const haloX = useTransform(px, (v) => v * -40);
+  const haloY = useTransform(py, (v) => v * -26);
+
+  const image = banner.image ?? product.images[0]?.url ?? "";
 
   return (
     <section
@@ -59,44 +88,200 @@ export function Hero({
       onPointerMove={(event) => {
         if (reduced) return;
         const rect = event.currentTarget.getBoundingClientRect();
-        pointerX.set((event.clientX - rect.left) / rect.width);
-        pointerY.set((event.clientY - rect.top) / rect.height);
+        pointerX.set((event.clientX - rect.left) / rect.width - 0.5);
+        pointerY.set((event.clientY - rect.top) / rect.height - 0.5);
       }}
-      className="relative isolate grain overflow-hidden px-5 pb-24 pt-10 sm:px-8 lg:min-h-[88vh] lg:pb-32 lg:pt-16"
+      onPointerLeave={() => {
+        pointerX.set(0);
+        pointerY.set(0);
+      }}
+      className="grain relative isolate -mt-20 flex min-h-[100svh] items-center overflow-hidden px-5 pb-16 pt-24 sm:px-8 sm:pb-24 sm:pt-28 lg:pb-24 lg:pt-32"
     >
-      {/* Foco que sigue al puntero */}
-      {!reduced && (
-        <motion.div
-          aria-hidden
-          style={{ left: spotlightLeft, top: spotlightTop }}
-          className="pointer-events-none absolute -z-10 size-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-45 blur-[100px]"
-        >
-          <div className="size-full rounded-full bg-[radial-gradient(circle,rgba(201,160,99,0.34),transparent_65%)]" />
-        </motion.div>
-      )}
+      <HeroAtmosphere />
 
-      <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-6">
-        {/* Capa frontal: el mensaje */}
-        <motion.div style={{ opacity: fade }} className="relative z-20 max-w-xl">
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="eyebrow mb-6 flex items-center gap-2.5"
+      <div className="mx-auto grid w-full max-w-[86rem] items-center gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-12">
+        {/* ---------------------------------------------------------------
+            Escena. En mobile va primero: el par es el argumento de venta,
+            no el remate.
+            --------------------------------------------------------------- */}
+        <div className="relative order-first flex h-[38svh] w-full items-center justify-center sm:h-[50svh] lg:order-last lg:h-[64svh]">
+          {/* Eclipse: núcleo oscuro, anillo encendido y derrame cálido. La
+              zapatilla se recorta contra el anillo, como una pieza en vitrina. */}
+          <motion.div
+            aria-hidden
+            style={
+              reduced
+                ? undefined
+                : { x: haloX, y: haloY, scale: haloScale, opacity: haloFade }
+            }
+            className="pointer-events-none absolute aspect-square w-[112%] max-w-[32rem] lg:w-[95%] lg:max-w-[38rem]"
           >
-            <Sparkle className="size-2.5 text-chalk" />
-            {banner.eyebrow}
-          </motion.p>
+            <div
+              className="absolute inset-0 rounded-full blur-[70px]"
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(232,220,196,0.20) 0%, rgba(201,160,99,0.13) 42%, transparent 68%)",
+              }}
+            />
+            <div className="absolute inset-[13%] rounded-full border border-champagne/22 shadow-[0_0_70px_-10px_rgba(232,220,196,0.35),inset_0_0_60px_-20px_rgba(201,160,99,0.5)]" />
+            <div
+              className="absolute inset-[16%] rounded-full"
+              style={{
+                background:
+                  "radial-gradient(circle, var(--color-ink) 40%, rgba(15,15,16,0.6) 72%, transparent 100%)",
+              }}
+            />
+          </motion.div>
 
-          <h1 className="display-xl text-[clamp(2.75rem,8.5vw,5.5rem)] text-chalk">
-            <RevealWords text={banner.title} />
+          {/* El par desborda su caja a propósito: las fotos de estudio son
+              verticales y traen mucho aire arriba y abajo, así que se agranda
+              hasta que la zapatilla manda y la máscara se come el sobrante. */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <motion.div
+              style={
+                reduced
+                  ? undefined
+                  : { y: shoeY, scale: shoeScale, opacity: shoeFade }
+              }
+              className="w-full max-w-[26rem] sm:max-w-[30rem] lg:max-w-[38rem] [perspective:1400px]"
+            >
+              <motion.div
+                style={
+                  reduced
+                    ? undefined
+                    : {
+                        rotateX: shoeRotateX,
+                        rotateY: shoeRotateY,
+                        x: shoeShiftX,
+                        y: shoeShiftY,
+                      }
+                }
+                initial={{ opacity: 0, scale: 0.92, filter: "blur(20px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                transition={{ duration: 1.3, delay: 0.15, ease: EASE }}
+              >
+                <div className="animate-float">
+                  <Image
+                    src={image}
+                    alt={`${product.brand.name} ${product.name}`}
+                    width={1200}
+                    height={1200}
+                    priority
+                    fetchPriority="high"
+                    sizes="(max-width: 640px) 92vw, (max-width: 1024px) 70vw, 46vw"
+                    className="hero-cutout h-auto w-full drop-shadow-[0_70px_90px_rgba(0,0,0,0.9)]"
+                  />
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Fichas en órbita. Cuelgan de la escena y no del par, así se
+              apoyan en el borde visible y no en el aire de la foto. En mobile
+              queda sólo la del producto: cuatro paneles sobre 375px tapan
+              justo lo que hay que mirar. */}
+          <motion.div
+            style={reduced ? undefined : { y: cardsY, opacity: shoeFade }}
+            className="pointer-events-none absolute inset-0"
+          >
+            <OrbitCard
+              px={px}
+              py={py}
+              depth={0.55}
+              delay={0.9}
+              reduced={reduced}
+              className="-left-2 top-[3%] lg:-left-10"
+            >
+              <Link
+                href={`/producto/${product.slug}`}
+                className="flex items-center gap-4"
+              >
+                <div>
+                  <p className="eyebrow text-gold">Nuevo ingreso</p>
+                  <p className="mt-1 text-[0.8125rem] font-semibold text-chalk">
+                    {product.brand.name} {product.name}
+                  </p>
+                </div>
+                <span className="h-8 w-px bg-champagne/12" />
+                <span className="font-display text-sm font-bold text-chalk">
+                  {formatPrice(product.finalPrice)}
+                </span>
+              </Link>
+            </OrbitCard>
+
+            <OrbitCard
+              px={px}
+              py={py}
+              depth={0.85}
+              delay={1.05}
+              reduced={reduced}
+              className="-right-2 top-[30%] hidden sm:flex lg:right-0 xl:-right-6"
+            >
+              <OrbitLine
+                icon={<Truck className="size-4 stroke-[1.25] text-gold" />}
+                label="Envíos a todo el país"
+                value="24–48 hs"
+              />
+            </OrbitCard>
+
+            <OrbitCard
+              px={px}
+              py={py}
+              depth={0.35}
+              delay={1.2}
+              reduced={reduced}
+              className="bottom-[18%] hidden lg:flex lg:-left-12 xl:-left-16"
+            >
+              <OrbitLine
+                icon={<ShieldCheck className="size-4 stroke-[1.25] text-gold" />}
+                label="Compra por pedido"
+                value="Productos originales"
+              />
+            </OrbitCard>
+
+            <OrbitCard
+              px={px}
+              py={py}
+              depth={0.7}
+              delay={1.35}
+              reduced={reduced}
+              className="-bottom-2 right-0 hidden lg:flex"
+            >
+              <OrbitLine
+                icon={<WhatsAppIcon className="size-4 text-gold" />}
+                label="Atención personalizada"
+                value="WhatsApp"
+              />
+            </OrbitCard>
+          </motion.div>
+        </div>
+
+        {/* ---------------------------------------------------------------
+            Mensaje
+            --------------------------------------------------------------- */}
+        <motion.div
+          style={reduced ? undefined : { y: copyY, opacity: copyFade }}
+          className="relative z-10 max-w-xl"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="glass-soft inline-flex items-center gap-2.5 rounded-full py-2 pl-3.5 pr-4.5"
+          >
+            <Sparkle className="size-2.5 text-gold" />
+            <span className="eyebrow text-mist">{banner.eyebrow}</span>
+          </motion.div>
+
+          <h1 className="display-xl mt-6 text-[clamp(2.5rem,7.2vw,5.5rem)] text-chalk">
+            <RevealWords text={banner.title} delay={0.12} />
           </h1>
 
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-7 max-w-md text-base leading-relaxed text-mist sm:text-lg"
+            transition={{ duration: 0.9, delay: 0.55, ease: EASE }}
+            className="mt-6 max-w-md text-[0.9375rem] leading-[1.75] text-mist sm:text-[1.0625rem]"
           >
             {banner.subtitle}
           </motion.p>
@@ -104,8 +289,8 @@ export function Hero({
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.62, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-9 flex flex-wrap items-center gap-3"
+            transition={{ duration: 0.9, delay: 0.68, ease: EASE }}
+            className="mt-8 flex flex-wrap items-center gap-3"
           >
             <Button asChild size="lg">
               <Link href={banner.ctaHref}>
@@ -118,103 +303,99 @@ export function Hero({
             </Button>
           </motion.div>
 
-          <motion.dl
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.9, delay: 0.8 }}
-            className="mt-12 flex flex-wrap gap-x-10 gap-y-5"
+            transition={{ duration: 1, delay: 0.9 }}
+            className="mt-9 flex items-center gap-3 border-t border-champagne/[0.07] pt-6"
           >
-            <Stat value="9" label="Marcas" />
-            <Stat value="32" label="Modelos" />
-            <Stat value="24 h" label="Envío CABA" />
-          </motion.dl>
-        </motion.div>
-
-        {/* Capa media: el par. Capa trasera: la marca gigante. */}
-        <div className="relative z-10 flex items-center justify-center lg:h-[38rem]">
-          <motion.p
-            aria-hidden
-            style={{ y: typeY }}
-            className="display-xl pointer-events-none absolute inset-x-0 top-1/2 -z-10 -translate-y-1/2 select-none text-center text-[clamp(6rem,22vw,17rem)] leading-none text-transparent"
-          >
-            <span
-              className="bg-linear-to-b from-champagne/[0.11] to-champagne/[0.01] bg-clip-text"
-              style={{ WebkitTextStroke: "1px rgba(232,220,196,0.05)" }}
-            >
-              20
-            </span>
-          </motion.p>
-
-          <motion.div
-            style={reduced ? undefined : { y: shoeY, rotateX: tiltX, rotateY: tiltY }}
-            initial={{ opacity: 0, scale: 0.9, filter: "blur(18px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-lg [perspective:1200px]"
-          >
-            <div className="animate-float">
-              <Image
-                src={image}
-                alt={`${product.brand.name} ${product.name}`}
-                width={1000}
-                height={1000}
-                priority
-                sizes="(max-width: 1024px) 90vw, 42vw"
-                className="w-full drop-shadow-[0_60px_80px_rgba(0,0,0,0.85)]"
-              />
-            </div>
-
-            {/* Ficha flotante del par destacado */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute bottom-2 left-2 border border-champagne/10 bg-graphite/85 backdrop-blur-2xl shadow-[0_24px_60px_-24px_rgba(0,0,0,0.95)] flex items-center gap-4 rounded-2xl px-4 py-3 sm:bottom-6 sm:left-6"
-            >
-              <div>
-                <p className="eyebrow">{product.brand.name}</p>
-                <p className="text-sm font-semibold text-chalk">{product.name}</p>
-              </div>
-              <span className="h-8 w-px bg-cream/10" />
-              <div className="text-right">
-                <p className="font-display text-base font-bold text-chalk">
-                  {formatPrice(product.finalPrice)}
-                </p>
-                <Link
-                  href={`/producto/${product.slug}`}
-                  className="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-sand transition-colors hover:text-chalk"
-                >
-                  Ver ficha
-                </Link>
-              </div>
-            </motion.div>
+            <BadgeCheck className="size-4 shrink-0 stroke-[1.25] text-gold" />
+            <p className="text-[0.875rem] text-ash">
+              <span className="font-display font-bold text-chalk">+500</span>{" "}
+              clientes satisfechos
+            </p>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
 
       <motion.a
         href="#coleccion"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.8 }}
-        style={{ opacity: fade }}
-        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.22em] text-ash transition-colors hover:text-chalk lg:flex"
+        transition={{ delay: 1.6, duration: 0.9 }}
+        style={reduced ? undefined : { opacity: copyFade }}
+        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 items-center gap-2.5 font-mono text-[0.625rem] uppercase tracking-[0.22em] text-ash transition-colors duration-300 hover:text-chalk lg:flex"
       >
-        <ArrowDown className="size-3 animate-bounce" />
+        <ArrowDown className="size-3 animate-bounce stroke-[1.5]" />
         Seguir
       </motion.a>
     </section>
   );
 }
 
-function Stat({ value, label }: { value: string; label: string }) {
+/**
+ * Ficha en órbita.
+ *
+ * `depth` es lo único que la distingue de sus hermanas: 0 la deja clavada al
+ * par y 1 la despega del todo. Repartir valores distintos entre las cuatro es
+ * lo que produce el paralaje.
+ */
+function OrbitCard({
+  px,
+  py,
+  depth,
+  delay,
+  reduced,
+  className,
+  children,
+}: {
+  px: MotionValue<number>;
+  py: MotionValue<number>;
+  depth: number;
+  delay: number;
+  reduced: boolean | null;
+  className?: string;
+  children: ReactNode;
+}) {
+  const x = useTransform(px, (v) => v * 46 * depth);
+  const y = useTransform(py, (v) => v * 30 * depth);
+
   return (
-    <div>
-      <dt className="sr-only">{label}</dt>
-      <dd className="font-display text-2xl font-bold tracking-tight text-chalk">
-        {value}
-      </dd>
-      <p className="eyebrow mt-1">{label}</p>
+    <motion.div
+      style={reduced ? undefined : { x, y }}
+      initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 1, delay, ease: EASE }}
+      className={cn("pointer-events-auto absolute z-20", className)}
+    >
+      <div
+        className="animate-bob glass edge-light flex items-center rounded-[1.5rem] px-4 py-3"
+        style={{ animationDelay: `${-delay * 3}s` }}
+      >
+        {children}
+      </div>
+    </motion.div>
+  );
+}
+
+function OrbitLine({
+  icon,
+  label,
+  value,
+}: {
+  icon: ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="grid size-9 shrink-0 place-items-center rounded-full border border-champagne/10 bg-champagne/[0.04]">
+        {icon}
+      </span>
+      <div>
+        <p className="eyebrow">{label}</p>
+        <p className="mt-1 text-[0.8125rem] font-semibold text-chalk">{value}</p>
+      </div>
     </div>
   );
 }

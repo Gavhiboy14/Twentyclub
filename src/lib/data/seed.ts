@@ -857,11 +857,11 @@ const banners: Banner[] = [
   {
     id: "banner_hero",
     placement: "hero",
-    eyebrow: "Temporada 26",
-    title: "Tu próximo par empieza acá.",
+    eyebrow: "Temporada 2026",
+    title: "Tu próximo par empieza en Twenty Club.",
     subtitle:
       "Zapatillas originales de nueve marcas, curadas de a una. Sin catálogos infinitos ni pares que no vas a usar.",
-    image: "/products/nike-air-max-plus-1.svg",
+    image: "/products/nike-dunk-low-retro-1.svg",
     ctaLabel: "Explorar colección",
     ctaHref: "/productos",
     active: true,

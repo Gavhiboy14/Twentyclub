@@ -12,6 +12,7 @@ import {
   getSettings,
 } from "@/lib/data/queries";
 import { Hero } from "@/components/site/hero";
+import { HeroBand } from "@/components/site/hero-band";
 import { BrandMarquee } from "@/components/site/brand-marquee";
 import { Section, SectionHeader } from "@/components/site/section";
 import { ProductGrid, ProductRail } from "@/components/product/product-grid";
@@ -45,7 +46,7 @@ export default async function HomePage() {
   ]);
 
   const heroProduct =
-    catalog.find((p) => p.slug === "nike-air-max-plus") ?? featured[0];
+    catalog.find((p) => p.slug === "nike-dunk-low-retro") ?? featured[0];
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -68,6 +69,8 @@ export default async function HomePage() {
       {heroBanner && heroProduct && (
         <Hero banner={heroBanner} product={heroProduct} />
       )}
+
+      <HeroBand brandCount={brands.length} modelCount={catalog.length} />
 
       <BrandMarquee brands={brands} />
 

@@ -25,9 +25,11 @@ export interface NavLink {
 /**
  * Barra flotante.
  *
- * Arranca pegada al borde y transparente; al scrollear se despega y se
- * convierte en una cápsula de vidrio ahumado. El movimiento es el mínimo
- * necesario para que se entienda que la barra está por encima del contenido.
+ * Siempre despegada del borde y siempre de vidrio: es una cápsula que viaja
+ * por encima del contenido, no un techo pegado a la ventana. Al scrollear no
+ * cambia de naturaleza, se densifica —se angosta, opaca el vidrio y suma
+ * sombra—, que es el mínimo necesario para que se entienda que hay contenido
+ * pasando por debajo.
  */
 export function Navbar({ links }: { links: NavLink[] }) {
   const pathname = usePathname();
@@ -59,18 +61,14 @@ export function Navbar({ links }: { links: NavLink[] }) {
 
   return (
     <>
-      <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-40 transition-[padding] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
-          scrolled ? "px-4 pt-4 sm:px-6 sm:pt-5" : "px-0 pt-0",
-        )}
-      >
+      <header className="fixed inset-x-0 top-0 z-40 px-4 pt-4 sm:px-6 sm:pt-5">
         <div
           className={cn(
-            "mx-auto flex items-center gap-4 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
+            "mx-auto flex items-center gap-4 rounded-full border backdrop-blur-2xl",
+            "transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
             scrolled
-              ? "max-w-6xl rounded-full border border-champagne/[0.09] bg-graphite/80 px-5 py-3 shadow-[0_20px_50px_-24px_rgba(0,0,0,0.95)] backdrop-blur-2xl"
-              : "max-w-[92rem] border border-transparent px-5 py-6 sm:px-8",
+              ? "max-w-6xl border-champagne/[0.09] bg-graphite/85 px-5 py-3 shadow-[0_20px_50px_-24px_rgba(0,0,0,0.95)]"
+              : "max-w-[80rem] border-champagne/[0.05] bg-graphite/35 px-5 py-3.5 shadow-[0_16px_44px_-30px_rgba(0,0,0,0.9)] sm:px-6",
           )}
         >
           <Logo />
@@ -81,10 +79,10 @@ export function Navbar({ links }: { links: NavLink[] }) {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "relative rounded-full px-4 py-2 text-[0.8125rem] transition-colors duration-300",
+                  "relative rounded-full px-4 py-2 text-[0.8125rem] transition-colors duration-400",
                   isActive(link.href)
                     ? "text-chalk"
-                    : "text-ash hover:text-mist",
+                    : "text-ash hover:bg-champagne/[0.05] hover:text-chalk",
                 )}
               >
                 {isActive(link.href) && (
