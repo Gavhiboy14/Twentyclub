@@ -12,7 +12,7 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { ArrowDown, ArrowRight, BadgeCheck, ShieldCheck, Truck } from "lucide-react";
+import { ArrowDown, ArrowRight, ShieldCheck, Truck } from "lucide-react";
 import type { Banner, ProductView } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { RevealWords } from "@/components/motion/reveal";
@@ -301,19 +301,6 @@ export function Hero({
             <Button asChild variant="glass" size="lg">
               <Link href="/ofertas">Ver ofertas</Link>
             </Button>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.9 }}
-            className="mt-9 flex items-center gap-3 border-t border-champagne/[0.07] pt-6"
-          >
-            <BadgeCheck className="size-4 shrink-0 stroke-[1.25] text-gold" />
-            <p className="text-[0.875rem] text-ash">
-              <span className="font-display font-bold text-chalk">+500</span>{" "}
-              clientes satisfechos
-            </p>
           </motion.div>
         </motion.div>
       </div>
