@@ -7,8 +7,18 @@ import { Sparkle } from "./logo";
 /** Piso: nunca menos que esto en pantalla, para que una carga ya cacheada no
  *  se sienta como un parpadeo. */
 const MIN_DISPLAY_MS = 650;
-/** Techo: si `load` nunca llega —un recurso colgado, lo que sea— el splash no
- *  se queda tapando el sitio para siempre. */
+/**
+ * Techo: pase lo que pase con `load`, a los 4s el splash se va igual.
+ *
+ * `load` espera a TODO —hasta un recurso invisible de baja prioridad, como
+ * un pixel de tracking— así que en una conexión mala puede tardar bastante
+ * más que el contenido visible, que carga con prioridad y normalmente ya
+ * está listo mucho antes. Probado a propósito: con un recurso que tarda 8s,
+ * el techo corta el splash a los 4s y lo que queda debajo ya es la página
+ * completa, no una a medio cargar. Ese es el balance: nunca tapa el sitio
+ * más de 4s, y en la inmensa mayoría de los casos para entonces no hay nada
+ * roto que revelar.
+ */
 const HARD_TIMEOUT_MS = 4000;
 
 /**
