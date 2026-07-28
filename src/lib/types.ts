@@ -1,5 +1,24 @@
 export type ProductTag = "nuevo" | "mas-vendido" | "ultimos-pares" | "oferta";
 
+/**
+ * Estado de publicación.
+ *
+ * `borrador` es donde caen los productos que trae una importación nueva: no se
+ * ven en la tienda hasta que alguien los revisa. `no-disponible` es donde caen
+ * los que dejaron de aparecer en el catálogo del proveedor — no se borran
+ * nunca, porque los pedidos viejos los siguen referenciando.
+ */
+export type ProductStatus = "publicado" | "borrador" | "no-disponible";
+
+/**
+ * Cómo se calcula el precio de venta.
+ *
+ * `manual` es el único modo en el que la sincronización no toca el precio.
+ * Es el estado de los productos cargados a mano antes de que existiera el
+ * módulo, para que ninguna importación les mueva el precio por sorpresa.
+ */
+export type PricingMode = "margen" | "fijo" | "manual";
+
 export type OrderStatus =
   | "pendiente"
   | "contactado"
@@ -43,6 +62,23 @@ export interface Product {
   sold: number;
   createdAt: string;
   updatedAt: string;
+
+  /* --- Sincronización con el proveedor -----------------------------------
+     `price` sigue siendo el precio publicado y la única fuente para el
+     carrito y los pedidos: lo de abajo es cómo se llegó a ese número, no un
+     segundo precio en competencia. */
+
+  status: ProductStatus;
+  pricingMode: PricingMode;
+  /** Lo que cuesta en el PDF del proveedor. 0 = todavía no vino de ningún PDF. */
+  supplierPrice: number;
+  /** Clave con la que se lo vuelve a encontrar en el próximo PDF. */
+  supplierRef: string;
+  /** Porcentaje sobre el costo. Se usa cuando pricingMode es "margen". */
+  marginPercent: number;
+  /** Monto fijo sobre el costo. Se usa cuando pricingMode es "fijo". */
+  marginFixed: number;
+  lastSyncAt: string | null;
 }
 
 export interface Brand {
@@ -112,6 +148,15 @@ export interface Order {
   status: OrderStatus;
 }
 
+/** Cómo se calculan por defecto los precios que trae una importación. */
+export interface SyncSettings {
+  pricingMode: PricingMode;
+  marginPercent: number;
+  marginFixed: number;
+  /** Redondea el precio publicado al múltiplo más cercano. 0 = sin redondeo. */
+  roundTo: number;
+}
+
 export interface Settings {
   storeName: string;
   whatsappNumber: string;
@@ -120,6 +165,7 @@ export interface Settings {
   tiktok: string;
   address: string;
   freeShippingFrom: number;
+  sync: SyncSettings;
 }
 
 export interface Database {
@@ -130,6 +176,22 @@ export interface Database {
   offers: Offer[];
   orders: Order[];
   settings: Settings;
+  /** Reglas de clasificación de la sincronización. */
+  syncRules: SyncRule[];
+}
+
+/** Regla de clasificación automática de la importación. */
+export interface SyncRule {
+  id: string;
+  field: "marca" | "modelo";
+  operator: "es" | "contiene";
+  value: string;
+  /** Marca a asignar cuando acierta. null = no la toca. */
+  brandId: string | null;
+  categoryIds: string[];
+  tags: ProductTag[];
+  active: boolean;
+  order: number;
 }
 
 /** Producto con marca resuelta y precio final calculado. */

@@ -1,5 +1,6 @@
 import { cache } from "react";
 import type { Database, Order, Product, Settings } from "@/lib/types";
+import { DEFAULT_SYNC_SETTINGS } from "@/lib/sync/defaults";
 import { supabaseAdmin } from "../supabase-client";
 import {
   ROW_MAPPERS,
@@ -12,6 +13,7 @@ import {
   productFromRow,
   productToRow,
   recordToRow,
+  syncRuleFromRow,
 } from "../mapping";
 import type { DataRepo, DeleteResult } from "../repo";
 
@@ -31,6 +33,7 @@ const DEFAULT_SETTINGS: Settings = {
   tiktok: "",
   address: "",
   freeShippingFrom: 0,
+  sync: DEFAULT_SYNC_SETTINGS,
 };
 
 function fail(context: string, error: { message: string } | null): never {
@@ -44,7 +47,7 @@ function fail(context: string, error: { message: string } | null): never {
 const loadSnapshot = cache(async (): Promise<Database> => {
   const db = supabaseAdmin();
 
-  const [products, brands, categories, banners, offers, orders, settings] =
+  const [products, brands, categories, banners, offers, orders, settings, rules] =
     await Promise.all([
       db.from("products").select("*"),
       db.from("brands").select("*"),
@@ -53,6 +56,7 @@ const loadSnapshot = cache(async (): Promise<Database> => {
       db.from("offers").select("*"),
       db.from("orders").select("*"),
       db.from("settings").select("data").eq("id", 1).maybeSingle(),
+      db.from("sync_rules").select("*"),
     ]);
 
   if (products.error) fail("leer productos", products.error);
@@ -73,7 +77,15 @@ const loadSnapshot = cache(async (): Promise<Database> => {
     settings: {
       ...DEFAULT_SETTINGS,
       ...((settings.data?.data ?? {}) as Partial<Settings>),
+      sync: {
+        ...DEFAULT_SYNC_SETTINGS,
+        ...((settings.data?.data as { sync?: object } | null)?.sync ?? {}),
+      },
     },
+    /* La tabla es nueva: si todavía no se corrió la migración, `rules.error`
+       viene con "relation does not exist" y el sitio tiene que seguir
+       andando igual, sin reglas. */
+    syncRules: rules.error ? [] : (rules.data ?? []).map(syncRuleFromRow),
   };
 });
 

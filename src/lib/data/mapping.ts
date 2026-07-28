@@ -8,8 +8,10 @@ import type {
   ProductImage,
   ProductTag,
   SizeStock,
+  SyncRule,
 } from "@/lib/types";
 import type { CollectionName } from "@/lib/admin/schemas";
+import { PRODUCT_SYNC_DEFAULTS } from "@/lib/sync/defaults";
 import type { Row } from "./repo";
 
 /**
@@ -51,6 +53,19 @@ export function productFromRow(row: PgRow): Product {
     sold: num(row.sold),
     createdAt: str(row.created_at, new Date().toISOString()),
     updatedAt: str(row.updated_at, new Date().toISOString()),
+    /* Las columnas de sincronización se agregaron después. Leerlas con
+       fallback deja que el código nuevo funcione contra una base a la que
+       todavía no se le corrió la migración. */
+    status: str(row.status, PRODUCT_SYNC_DEFAULTS.status) as Product["status"],
+    pricingMode: str(
+      row.pricing_mode,
+      PRODUCT_SYNC_DEFAULTS.pricingMode,
+    ) as Product["pricingMode"],
+    supplierPrice: num(row.supplier_price),
+    supplierRef: str(row.supplier_ref),
+    marginPercent: num(row.margin_percent),
+    marginFixed: num(row.margin_fixed),
+    lastSyncAt: (row.last_sync_at as string | null) ?? null,
   };
 }
 
@@ -82,6 +97,13 @@ export function productToRow(product: Partial<Product>): PgRow {
   put("sold", product.sold);
   put("created_at", product.createdAt);
   put("updated_at", product.updatedAt);
+  put("status", product.status);
+  put("pricing_mode", product.pricingMode);
+  put("supplier_price", product.supplierPrice);
+  put("supplier_ref", product.supplierRef);
+  put("margin_percent", product.marginPercent);
+  put("margin_fixed", product.marginFixed);
+  put("last_sync_at", product.lastSyncAt);
 
   return row;
 }
@@ -168,6 +190,37 @@ export function offerFromRow(row: PgRow): Offer {
     endsAt: str(row.ends_at, new Date().toISOString()),
     active: bool(row.active, true),
   };
+}
+
+export function syncRuleFromRow(row: PgRow): SyncRule {
+  return {
+    id: str(row.id),
+    field: str(row.field, "modelo") as SyncRule["field"],
+    operator: str(row.operator, "contiene") as SyncRule["operator"],
+    value: str(row.value),
+    brandId: (row.brand_id as string | null) ?? null,
+    categoryIds: list(row.category_ids),
+    tags: list(row.tags) as ProductTag[],
+    active: bool(row.active, true),
+    order: num(row.order),
+  };
+}
+
+export function syncRuleToRow(rule: Partial<SyncRule>): PgRow {
+  const row: PgRow = {};
+  const put = (key: string, value: unknown) => {
+    if (value !== undefined) row[key] = value;
+  };
+  put("id", rule.id);
+  put("field", rule.field);
+  put("operator", rule.operator);
+  put("value", rule.value);
+  put("brand_id", rule.brandId);
+  put("category_ids", rule.categoryIds);
+  put("tags", rule.tags);
+  put("active", rule.active);
+  put("order", rule.order);
+  return row;
 }
 
 /** Claves camelCase → snake_case por colección, sólo donde difieren. */

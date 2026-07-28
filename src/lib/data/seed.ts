@@ -9,6 +9,10 @@
   ProductTag,
   SizeStock,
 } from "@/lib/types";
+import {
+  DEFAULT_SYNC_SETTINGS,
+  PRODUCT_SYNC_DEFAULTS,
+} from "@/lib/sync/defaults";
 
 const DAY = 86_400_000;
 /** Fecha base fija: el catálogo semilla tiene que ser reproducible. */
@@ -846,6 +850,9 @@ const products: Product[] = SPECS.map((spec, i) => {
     sold: spec.sold,
     createdAt: created,
     updatedAt: created,
+    // El catálogo semilla no viene de ningún PDF: precio manual y sin
+    // referencia de proveedor, así que la sincronización no lo toca.
+    ...PRODUCT_SYNC_DEFAULTS,
   } satisfies Product;
 });
 
@@ -990,6 +997,8 @@ export function createSeedDatabase(): Database {
       tiktok: "twentyclub",
       address: "Buenos Aires, Argentina",
       freeShippingFrom: 250000,
+      sync: DEFAULT_SYNC_SETTINGS,
     },
+    syncRules: [],
   };
 }

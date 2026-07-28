@@ -4,6 +4,7 @@ import { productSchema } from "@/lib/admin/schemas";
 import { badRequest, requireAdmin } from "@/lib/admin/guard";
 import { slugify } from "@/lib/utils";
 import { uniqueSlug } from "@/lib/admin/slug";
+import { PRODUCT_SYNC_DEFAULTS } from "@/lib/sync/defaults";
 import type { Product } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -55,6 +56,8 @@ export async function POST(request: Request) {
     sold: input.sold ?? 0,
     createdAt: now,
     updatedAt: now,
+    // Cargado a mano: precio manual, sin proveedor detrás.
+    ...PRODUCT_SYNC_DEFAULTS,
   };
 
   const product = await repo().createProduct(record);
