@@ -68,7 +68,7 @@ export default async function ContactPage() {
         </div>
       </Reveal>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
         <InfoCard icon={<MapPin className="size-4" />} title="Showroom">
           {settings.address}. Con turno previo por WhatsApp.
         </InfoCard>
@@ -107,7 +107,7 @@ export default async function ContactPage() {
       </div>
 
       {/* Cómo comprar */}
-      <section id="como-comprar" className="mt-24 scroll-mt-28">
+      <section id="como-comprar" className="mt-32 scroll-mt-28">
         <Reveal className="mb-10">
           <p className="eyebrow mb-4">Cómo comprar</p>
           <h2 className="display-xl text-[clamp(1.85rem,4.5vw,3rem)] text-chalk">
@@ -120,13 +120,13 @@ export default async function ContactPage() {
           {PASOS.map((paso, i) => (
             <Reveal key={paso.title} delay={i * 0.08}>
               <li className="h-full rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl p-8">
-                <span className="numeric text-[0.6875rem] tracking-[0.22em] text-cream">
+                <span className="numeric text-sm tracking-[0.18em] text-gold">
                   0{i + 1}
                 </span>
-                <h3 className="mt-4 text-base font-semibold text-chalk">
+                <h3 className="mt-5 font-display text-lg font-bold tracking-tight text-chalk">
                   {paso.title}
                 </h3>
-                <p className="mt-2.5 text-[0.8125rem] leading-relaxed text-ash">
+                <p className="mt-3 text-[0.8125rem] leading-[1.7] text-ash">
                   {paso.body}
                 </p>
               </li>
@@ -168,7 +168,7 @@ function InfoCard({
 }) {
   return (
     <div className="rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl p-8">
-      <span className="text-cream">{icon}</span>
+      <span className="text-gold">{icon}</span>
       <h2 className="eyebrow mt-4">{title}</h2>
       <p className="mt-2 text-[0.8125rem] leading-relaxed text-mist">
         {children}

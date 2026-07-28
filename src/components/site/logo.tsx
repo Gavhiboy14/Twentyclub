@@ -39,7 +39,7 @@ export function Logo({
       </span>
 
       {!compact && (
-        <span className="font-display text-[1.0625rem] font-medium leading-none tracking-[-0.045em] text-chalk">
+        <span className="font-display text-[1.0625rem] font-bold leading-none tracking-[-0.045em] text-chalk">
           Twenty
           <span className="text-ash transition-colors duration-500 group-hover:text-champagne">
             {" "}

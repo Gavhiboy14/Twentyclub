@@ -46,7 +46,7 @@ export function BuyPanel({ product }: { product: ProductView }) {
   if (!product.inStock) {
     return (
       <div className="rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl p-8 text-center">
-        <p className="font-display text-lg font-medium text-chalk">
+        <p className="font-display text-lg font-bold text-chalk">
           Sin talles disponibles
         </p>
         <p className="mx-auto mt-2 max-w-xs text-sm text-ash">

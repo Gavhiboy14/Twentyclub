@@ -140,7 +140,7 @@ export function CatalogControls({
       <Dialog open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetContent side="bottom" className="p-0">
           <div className="flex items-center justify-between border-b border-champagne/8 px-6 py-4">
-            <DialogTitle className="font-display text-lg font-medium text-chalk">
+            <DialogTitle className="font-display text-lg font-bold text-chalk">
               Filtros
             </DialogTitle>
             <button
@@ -287,9 +287,9 @@ export function FilterPanel({
                 onClick={() => toggleIn("talle", size)}
                 aria-pressed={active}
                 className={cn(
-                  "min-w-11 rounded-xl border px-3 py-2 numeric text-xs transition-all duration-200",
+                  "min-w-11 rounded-xl border px-3 py-2 numeric text-xs transition-all duration-300",
                   active
-                    ? "border-cream bg-champagne/20 text-cream"
+                    ? "border-ivory bg-ivory text-ink"
                     : "border-champagne/10 bg-champagne/[0.03] text-mist hover:border-champagne/25 hover:text-chalk",
                 )}
               >
@@ -314,9 +314,9 @@ export function FilterPanel({
               >
                 <span
                   className={cn(
-                    "size-5 shrink-0 rounded-full border transition-all duration-200",
+                    "size-5 shrink-0 rounded-full border transition-all duration-300",
                     active
-                      ? "border-cream ring-2 ring-champagne/40 ring-offset-2 ring-offset-ink"
+                      ? "border-ivory ring-2 ring-gold/50 ring-offset-2 ring-offset-ink"
                       : "border-champagne/20",
                   )}
                   style={{ backgroundColor: color.hex }}

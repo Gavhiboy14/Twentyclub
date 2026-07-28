@@ -39,11 +39,11 @@ export function FavoritesList({ catalog }: { catalog: ProductView[] }) {
         <ProductGridSkeleton count={4} />
       ) : products.length === 0 ? (
         <div className="flex flex-col items-center gap-6 rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl px-8 py-24 text-center">
-          <div className="grid size-14 place-items-center rounded-2xl bg-champagne/5 text-ash">
-            <Heart className="size-6" />
+          <div className="grid size-16 place-items-center rounded-2xl border border-champagne/[0.08] bg-champagne/[0.03] text-ash">
+            <Heart className="size-6 stroke-[1.5]" />
           </div>
           <div>
-            <p className="font-display text-xl font-medium text-chalk">
+            <p className="font-display text-xl font-bold text-chalk">
               Todavía no guardaste nada
             </p>
             <p className="mx-auto mt-2 max-w-sm text-sm text-ash">

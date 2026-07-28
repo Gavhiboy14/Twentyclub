@@ -356,7 +356,7 @@ export function ProductForm({
               <span className="numeric text-[0.625rem] uppercase tracking-[0.16em] text-ash">
                 Se publica en
               </span>
-              <span className="font-display text-lg font-medium text-chalk">
+              <span className="font-display text-lg font-bold text-chalk">
                 {formatPrice(finalPrice)}
               </span>
             </div>

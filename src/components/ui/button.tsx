@@ -26,7 +26,7 @@ const button = cva(
           "hover:-translate-y-0.5 hover:bg-linen hover:shadow-[0_4px_12px_-2px_rgba(0,0,0,0.5),0_24px_50px_-18px_rgba(232,220,196,0.45)] " +
           "active:translate-y-0 active:shadow-[0_2px_6px_-2px_rgba(0,0,0,0.5)]",
         glass:
-          "glass text-chalk hover:-translate-y-0.5 hover:border-champagne/22 hover:bg-champagne/[0.07] hover:text-linen " +
+          "glass text-chalk hover:-translate-y-0.5 hover:border-champagne/22 hover:bg-champagne/[0.07] hover:text-chalk " +
           "active:translate-y-0",
         outline:
           "border border-iron/70 bg-transparent text-mist " +

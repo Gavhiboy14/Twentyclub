@@ -132,7 +132,7 @@ export default async function BrandPage({
 
             {products.length === 0 ? (
               <div className="rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl px-8 py-20 text-center">
-                <p className="font-display text-lg font-medium text-chalk">
+                <p className="font-display text-lg font-bold text-chalk">
                   Nada de {brand.name} con esos filtros
                 </p>
                 <p className="mx-auto mt-2 max-w-sm text-sm text-ash">

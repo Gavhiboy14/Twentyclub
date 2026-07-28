@@ -14,9 +14,9 @@ import { FavoriteButton } from "./favorite-button";
  * La tarjeta es el elemento que más se repite del sitio, así que es donde se
  * decide si la tienda se siente cara o barata.
  *
- * La estructura es: panel de vidrio ahumado → foco cálido → foto. La máscara
- * radial funde el fondo de la foto con el panel, así que funciona igual con
- * una foto de estudio que con un recorte.
+ * La estructura es: panel de vidrio ahumado → pozo plano → foto. Sin viñeta
+ * ni halo: la profundidad la da el panel que la contiene, no un degradado
+ * circular encima de la imagen.
  */
 export function ProductCard({
   product,
@@ -70,7 +70,7 @@ export function ProductCard({
         !product.inStock && "opacity-55",
       )}
     >
-      {/* El producto, suspendido en el foco */}
+      {/* La foto, a sangre dentro del pozo */}
       <Link
         href={`/producto/${product.slug}`}
         className="well relative block aspect-square overflow-hidden rounded-[1.35rem]"
@@ -126,7 +126,7 @@ export function ProductCard({
         <h3 className="mt-2.5 text-[1.0625rem] font-medium leading-snug tracking-[-0.015em] text-chalk">
           <Link
             href={`/producto/${product.slug}`}
-            className="transition-colors duration-300 hover:text-linen"
+            className="transition-colors duration-300 hover:text-chalk"
           >
             {product.name}
           </Link>
@@ -143,7 +143,7 @@ export function ProductCard({
           )}
         </div>
 
-                {product.inStock ? (
+        {product.inStock ? (
           <div className="mt-5 space-y-3">
             <div className="flex flex-wrap gap-1.5">
               {product.visibleSizes.map((s) => (

@@ -37,11 +37,11 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
   if (items.length === 0) {
     return (
       <div className="flex flex-col items-center gap-6 rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl px-8 py-28 text-center">
-        <div className="grid size-16 place-items-center rounded-2xl bg-champagne/5 text-ash">
-          <ShoppingBag className="size-6" />
+        <div className="grid size-16 place-items-center rounded-2xl border border-champagne/[0.08] bg-champagne/[0.03] text-ash">
+          <ShoppingBag className="size-6 stroke-[1.5]" />
         </div>
         <div>
-          <p className="font-display text-xl font-medium text-chalk">
+          <p className="font-display text-xl font-bold text-chalk">
             Tu carrito está vacío
           </p>
           <p className="mx-auto mt-2 max-w-sm text-sm text-ash">
@@ -56,7 +56,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1fr_22rem] lg:gap-12">
+    <div className="grid gap-8 lg:grid-cols-[1fr_23rem] lg:gap-14">
       {/* Líneas del pedido */}
       <div className="space-y-3">
         <AnimatePresence initial={false} mode="popLayout">
@@ -72,7 +72,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
             >
               <Link
                 href={`/producto/${item.slug}`}
-                className="relative size-24 shrink-0 overflow-hidden rounded-2xl bg-graphite sm:size-32"
+                className="well relative size-24 shrink-0 overflow-hidden rounded-2xl sm:size-32"
               >
                 <Image
                   src={item.image}
@@ -135,7 +135,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
                   </div>
 
                   <div className="text-right">
-                    <p className="font-display text-lg font-medium text-chalk">
+                    <p className="font-display text-lg font-bold text-chalk">
                       {formatPrice(item.unitPrice * item.qty)}
                     </p>
                     {item.qty > 1 && (
@@ -155,7 +155,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
       <aside className="lg:sticky lg:top-28 lg:self-start">
         <div className="space-y-7 rounded-[1.75rem] border border-champagne/[0.09] bg-graphite/80 p-7 backdrop-blur-2xl">
           <div>
-            <h2 className="font-display text-lg font-medium tracking-tight text-chalk">
+            <h2 className="font-display text-lg font-bold tracking-tight text-chalk">
               Resumen
             </h2>
             <p className="eyebrow mt-1">
@@ -179,7 +179,7 @@ export function CartPage({ freeShippingFrom }: { freeShippingFrom: number }) {
 
           <div className="flex items-baseline justify-between">
             <span className="text-sm text-mist">Total</span>
-            <span className="font-display text-2xl font-medium tracking-tight text-chalk">
+            <span className="font-display text-2xl font-bold tracking-tight text-chalk">
               {formatPrice(subtotal)}
             </span>
           </div>

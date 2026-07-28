@@ -113,7 +113,7 @@ function EmptyState() {
         <PackageSearch className="size-6" />
       </div>
       <div>
-        <p className="font-display text-xl font-medium text-chalk">
+        <p className="font-display text-xl font-bold text-chalk">
           Ningún par entra en esos filtros
         </p>
         <p className="mx-auto mt-2 max-w-sm text-sm text-ash">

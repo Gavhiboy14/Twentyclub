@@ -220,7 +220,7 @@ export function CollectionManager({
         }}
       >
         <DialogContent className="max-h-[85vh] max-w-xl overflow-y-auto">
-          <DialogTitle className="font-display text-xl font-medium tracking-tight text-chalk">
+          <DialogTitle className="font-display text-xl font-bold tracking-tight text-chalk">
             {editing
               ? `Editar ${singular.toLowerCase()}`
               : `Agregar ${singular.toLowerCase()}`}

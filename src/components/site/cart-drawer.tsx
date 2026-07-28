@@ -25,7 +25,7 @@ export function CartDrawer() {
       <SheetContent side="right" className="gap-0 p-0">
         <header className="flex items-center justify-between border-b border-champagne/8 px-6 py-5">
           <div>
-            <DialogTitle className="font-display text-xl font-medium tracking-tight text-chalk">
+            <DialogTitle className="font-display text-xl font-bold tracking-tight text-chalk">
               Tu carrito
             </DialogTitle>
             <DialogDescription className="eyebrow mt-1">
@@ -40,14 +40,14 @@ export function CartDrawer() {
             aria-label="Cerrar carrito"
             className="grid size-10 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/8 hover:text-chalk"
           >
-            <X className="size-4" />
+            <X className="size-4 stroke-[1.5]" />
           </button>
         </header>
 
         {items.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-5 px-8 text-center">
             <div className="grid size-16 place-items-center rounded-2xl border border-champagne/[0.07] bg-graphite/60 text-ash">
-              <ShoppingBag className="size-6" />
+              <ShoppingBag className="size-6 stroke-[1.5]" />
             </div>
             <div>
               <p className="font-display text-lg font-semibold text-chalk">
@@ -78,7 +78,7 @@ export function CartDrawer() {
                     <Link
                       href={`/producto/${item.slug}`}
                       onClick={closeCart}
-                      className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-carbon"
+                      className="well relative size-20 shrink-0 overflow-hidden rounded-xl"
                     >
                       <Image
                         src={item.image}
@@ -108,7 +108,7 @@ export function CartDrawer() {
                             aria-label="Restar uno"
                             className="grid size-6 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/8 hover:text-chalk"
                           >
-                            <Minus className="size-3" />
+                            <Minus className="size-3 stroke-[1.75]" />
                           </button>
                           <span className="min-w-5 text-center numeric text-xs text-chalk">
                             {item.qty}
@@ -122,11 +122,11 @@ export function CartDrawer() {
                             aria-label="Sumar uno"
                             className="grid size-6 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/8 hover:text-chalk disabled:opacity-30"
                           >
-                            <Plus className="size-3" />
+                            <Plus className="size-3 stroke-[1.75]" />
                           </button>
                         </div>
 
-                        <span className="ml-auto font-display text-sm font-medium text-chalk">
+                        <span className="ml-auto font-display text-sm font-bold text-chalk">
                           {formatPrice(item.unitPrice * item.qty)}
                         </span>
 
@@ -136,7 +136,7 @@ export function CartDrawer() {
                           aria-label={`Quitar ${item.brand} ${item.name} talle ${item.size}`}
                           className="grid size-7 place-items-center rounded-full text-ash transition-colors hover:bg-bad/12 hover:text-bad"
                         >
-                          <Trash2 className="size-3.5" />
+                          <Trash2 className="size-3.5 stroke-[1.5]" />
                         </button>
                       </div>
                     </div>
@@ -153,7 +153,7 @@ export function CartDrawer() {
                 </div>
                 <div className="flex items-baseline justify-between">
                   <span className="text-sm text-mist">Total</span>
-                  <span className="font-display text-2xl font-medium tracking-tight text-chalk">
+                  <span className="font-display text-2xl font-bold tracking-tight text-chalk">
                     {formatPrice(subtotal)}
                   </span>
                 </div>

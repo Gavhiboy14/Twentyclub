@@ -27,7 +27,7 @@ export function PageHeader({
     <header className="mb-8 flex flex-wrap items-end justify-between gap-5">
       <div>
         <p className="eyebrow mb-3">{eyebrow}</p>
-        <h1 className="font-display text-3xl font-medium tracking-[-0.04em] text-chalk">
+        <h1 className="font-display text-3xl font-bold tracking-[-0.04em] text-chalk">
           {title}
         </h1>
         {description && (
@@ -163,7 +163,7 @@ export function ConfirmAction({
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-md">
-          <DialogTitle className="font-display text-xl font-medium tracking-tight text-chalk">
+          <DialogTitle className="font-display text-xl font-bold tracking-tight text-chalk">
             {title}
           </DialogTitle>
           <DialogDescription className="mt-2.5 text-sm leading-relaxed text-mist">

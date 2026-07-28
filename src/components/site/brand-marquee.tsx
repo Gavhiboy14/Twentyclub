@@ -29,7 +29,7 @@ export function BrandMarquee({ brands }: { brands: Brand[] }) {
                 key={`${copy}-${brand.id}`}
                 href={`/marca/${brand.slug}`}
                 tabIndex={copy === 1 ? -1 : undefined}
-                className="font-display text-lg font-medium tracking-[0.02em] text-ash/60 uppercase transition-colors duration-500 hover:text-chalk sm:text-xl"
+                className="font-display text-lg font-bold tracking-[0.02em] text-ash/60 uppercase transition-colors duration-500 hover:text-chalk sm:text-xl"
               >
                 {brand.wordmark}
               </Link>

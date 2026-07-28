@@ -154,7 +154,7 @@ export default async function ProductPage({
                 </h1>
 
                 <div className="mt-6 flex flex-wrap items-baseline gap-4">
-                  <span className="font-display text-3xl font-medium tracking-tight text-chalk">
+                  <span className="font-display text-3xl font-bold tracking-tight text-chalk">
                     {formatPrice(product.finalPrice)}
                   </span>
                   {product.discount > 0 && (
@@ -249,7 +249,7 @@ function Perk({
 }) {
   return (
     <li className="flex gap-3">
-      <span className="mt-0.5 text-cream">{icon}</span>
+      <span className="mt-0.5 text-gold">{icon}</span>
       <span>
         <span className="block text-[0.8125rem] font-medium text-chalk">
           {title}

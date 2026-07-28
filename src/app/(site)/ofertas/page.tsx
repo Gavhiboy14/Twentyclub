@@ -38,7 +38,7 @@ export default async function OffersPage() {
 
       {products.length === 0 ? (
         <div className="rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl px-8 py-24 text-center">
-          <p className="font-display text-xl font-medium text-chalk">
+          <p className="font-display text-xl font-bold text-chalk">
             Ahora mismo no hay ofertas
           </p>
           <p className="mx-auto mt-2 max-w-sm text-sm text-ash">

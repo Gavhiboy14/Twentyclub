@@ -118,7 +118,7 @@ export function SearchDialog({
           {loading ? (
             <Loader2 className="size-4 shrink-0 animate-spin text-cream" />
           ) : (
-            <Search className="size-4 shrink-0 text-ash" />
+            <Search className="size-[1.05rem] shrink-0 stroke-[1.5] text-ash" />
           )}
           <input
             ref={inputRef}
@@ -126,7 +126,7 @@ export function SearchDialog({
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={onKeyDown}
             placeholder="Buscá por marca, modelo o color…"
-            className="h-16 w-full bg-transparent text-[0.9375rem] text-chalk placeholder:text-ash focus:outline-none"
+            className="h-[4.25rem] w-full bg-transparent text-base text-chalk placeholder:text-ash focus:outline-none"
             autoComplete="off"
             spellCheck={false}
           />
@@ -135,11 +135,11 @@ export function SearchDialog({
           </kbd>
         </div>
 
-        <div className="max-h-[min(26rem,55vh)] overflow-y-auto p-2">
+        <div className="max-h-[min(28rem,58vh)] overflow-y-auto p-2.5">
           {query.trim().length < 2 ? (
             <div className="p-4">
               <p className="eyebrow mb-3 flex items-center gap-2">
-                <TrendingUp className="size-3" />
+                <TrendingUp className="size-3 stroke-[1.5]" />
                 Búsquedas frecuentes
               </p>
               <div className="flex flex-wrap gap-2">
@@ -175,11 +175,11 @@ export function SearchDialog({
                     onMouseEnter={() => setCursor(i)}
                     onClick={() => go(r.slug)}
                     className={cn(
-                      "flex w-full items-center gap-4 rounded-2xl p-2.5 text-left transition-colors duration-150",
-                      i === cursor ? "bg-champagne/[0.07]" : "hover:bg-champagne/[0.04]",
+                      "flex w-full items-center gap-4 rounded-2xl p-3 text-left transition-all duration-200",
+                      i === cursor ? "bg-champagne/[0.07] ring-1 ring-champagne/12" : "hover:bg-champagne/[0.04]",
                     )}
                   >
-                    <div className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-carbon">
+                    <div className="well relative size-14 shrink-0 overflow-hidden rounded-xl">
                       <Image
                         src={r.image}
                         alt=""
@@ -196,7 +196,7 @@ export function SearchDialog({
                       <p className="truncate text-xs text-ash">{r.color}</p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <p className="font-display text-sm font-medium text-chalk">
+                      <p className="font-display text-sm font-bold text-chalk">
                         {formatPrice(r.price)}
                       </p>
                       {!r.inStock && (
