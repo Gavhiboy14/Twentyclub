@@ -79,6 +79,31 @@ export const offerSchema = z.object({
   active: z.boolean().default(true),
 });
 
+/**
+ * Regla de clasificación de la sincronización.
+ *
+ * `value` es lo que se busca dentro del modelo del PDF; el resto es lo que se
+ * asigna cuando acierta. Sin marca no alcanza para crear un producto, así que
+ * una regla sin `brandId` sólo sirve para sumar categorías o etiquetas.
+ */
+export const syncRuleSchema = z.object({
+  field: z.enum(["marca", "modelo"]).default("modelo"),
+  operator: z.enum(["es", "contiene"]).default("contiene"),
+  value: z.string().min(1, "Escribí qué texto tiene que aparecer").max(80),
+  brandId: z.string().nullable().default(null),
+  categoryIds: z.array(z.string()).default([]),
+  tags: z.array(productTagSchema).default([]),
+  active: z.boolean().default(true),
+  order: z.number().int().min(0).max(999).default(0),
+});
+
+export const syncSettingsSchema = z.object({
+  pricingMode: z.enum(["margen", "fijo", "manual"]).default("margen"),
+  marginPercent: z.number().min(0).max(500).default(35),
+  marginFixed: z.number().int().min(0).max(9_999_999).default(15000),
+  roundTo: z.number().int().min(0).max(100_000).default(100),
+});
+
 export const orderPatchSchema = z.object({
   status: z.enum(["pendiente", "contactado", "finalizado", "cancelado"]).optional(),
   customer: z
@@ -101,6 +126,7 @@ export const settingsSchema = z.object({
   tiktok: z.string().max(40).default(""),
   address: z.string().max(120).default(""),
   freeShippingFrom: z.number().int().min(0).max(99_999_999),
+  sync: syncSettingsSchema.optional(),
 });
 
 export const COLLECTION_SCHEMAS = {
@@ -108,6 +134,7 @@ export const COLLECTION_SCHEMAS = {
   categories: categorySchema,
   banners: bannerSchema,
   offers: offerSchema,
+  syncRules: syncRuleSchema,
 } as const;
 
 export type CollectionName = keyof typeof COLLECTION_SCHEMAS;

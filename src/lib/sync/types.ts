@@ -19,6 +19,8 @@ import type { Product, SizeStock, SyncRule } from "@/lib/types";
  */
 export const SYNCED_FIELDS = [
   "supplierPrice",
+  /** La referencia se graba la primera vez que se cruza el producto. */
+  "supplierRef",
   "price",
   "sizes",
   "status",

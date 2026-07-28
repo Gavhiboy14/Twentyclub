@@ -3,6 +3,11 @@ import { randomUUID } from "node:crypto";
 import { dirname, resolve } from "node:path";
 import type { Database, Order, Product, Settings } from "@/lib/types";
 import type { CollectionName } from "@/lib/admin/schemas";
+import type { ImportRun, ImportRunDetail } from "@/lib/sync/types";
+import {
+  DEFAULT_SYNC_SETTINGS,
+  PRODUCT_SYNC_DEFAULTS,
+} from "@/lib/sync/defaults";
 import { createSeedDatabase } from "../seed";
 import type { DataRepo, DeleteResult, Row } from "../repo";
 
@@ -16,6 +21,8 @@ import type { DataRepo, DeleteResult, Row } from "../repo";
  */
 
 const DB_PATH = resolve(process.cwd(), ".data/db.json");
+/** El historial va en su propio archivo: no tiene por qué crecerle al catálogo. */
+const IMPORTS_PATH = resolve(process.cwd(), ".data/imports.json");
 
 let cache: Database | null = null;
 let loading: Promise<Database> | null = null;
@@ -32,9 +39,33 @@ async function persist(db: Database) {
   cache = db;
 }
 
+/**
+ * Completa una base guardada antes de que existieran los campos nuevos.
+ *
+ * Es el equivalente local de la migración de Supabase: el archivo en disco
+ * puede tener meses y no hay nadie que le corra un ALTER TABLE. Sin esto, un
+ * `.data/db.json` viejo rompe el panel apenas se lee `settings.sync`, y la
+ * única salida sería borrar el catálogo de desarrollo.
+ */
+function migrate(db: Database): Database {
+  return {
+    ...db,
+    products: (db.products ?? []).map((product) => ({
+      ...PRODUCT_SYNC_DEFAULTS,
+      ...product,
+    })),
+    settings: {
+      ...db.settings,
+      sync: { ...DEFAULT_SYNC_SETTINGS, ...(db.settings?.sync ?? {}) },
+    },
+    syncRules: db.syncRules ?? [],
+  };
+}
+
 async function loadFromDisk(): Promise<Database> {
   try {
-    return JSON.parse(await readFile(DB_PATH, "utf8")) as Database;
+    const raw = JSON.parse(await readFile(DB_PATH, "utf8")) as Database;
+    return migrate(raw);
   } catch {
     const seed = createSeedDatabase();
     await persist(seed);
@@ -65,6 +96,40 @@ function write<T>(mutator: (db: Database) => T): Promise<T> {
 
 function listOf(db: Database, collection: CollectionName) {
   return db[collection] as unknown as Row[];
+}
+
+/* ------------------------- Historial de importaciones ---------------------- */
+
+let importsQueue: Promise<unknown> = Promise.resolve();
+
+async function readImports(): Promise<ImportRunDetail[]> {
+  try {
+    return JSON.parse(await readFile(IMPORTS_PATH, "utf8")) as ImportRunDetail[];
+  } catch {
+    return [];
+  }
+}
+
+/** Misma escritura atómica y en fila que la base, sobre el otro archivo. */
+function writeImports<T>(
+  mutator: (runs: ImportRunDetail[]) => T,
+): Promise<T> {
+  const run = importsQueue.then(async () => {
+    const runs = await readImports();
+    const result = mutator(runs);
+    await mkdir(dirname(IMPORTS_PATH), { recursive: true });
+    const tmp = `${IMPORTS_PATH}.${randomUUID()}.tmp`;
+    await writeFile(tmp, JSON.stringify(runs, null, 2), "utf8");
+    await rename(tmp, IMPORTS_PATH);
+    return result;
+  });
+  importsQueue = run.catch(() => undefined);
+  return run;
+}
+
+/** Cabecera sin las líneas del plan. */
+function headerOf({ items: _items, ...header }: ImportRunDetail): ImportRun {
+  return header;
 }
 
 export const localRepo: DataRepo = {
@@ -187,7 +252,36 @@ export const localRepo: DataRepo = {
     });
   },
 
+  async listImports() {
+    const runs = await readImports();
+    return runs
+      .map(headerOf)
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  },
+
+  async getImport(id) {
+    const runs = await readImports();
+    return runs.find((run) => run.id === id) ?? null;
+  },
+
+  createImport(run) {
+    return writeImports((runs) => {
+      runs.push(run);
+      return headerOf(run);
+    });
+  },
+
+  updateImport(id, patch) {
+    return writeImports((runs) => {
+      const index = runs.findIndex((run) => run.id === id);
+      if (index === -1) return null;
+      runs[index] = { ...runs[index], ...patch };
+      return headerOf(runs[index]);
+    });
+  },
+
   async reset() {
     await persist(createSeedDatabase());
+    await writeImports((runs) => runs.splice(0, runs.length));
   },
 };

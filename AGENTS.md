@@ -91,6 +91,29 @@ la repartas por la página.
 **Los precios del pedido se recalculan en el servidor.** `/api/orders` ignora lo
 que manda el navegador y arma el total desde la base.
 
+**La sincronización sólo puede escribir los campos de `SYNCED_FIELDS`**
+(`lib/sync/types.ts`). Todo patch que venga de una importación pasa por
+`onlySynced()` de `lib/sync/apply.ts` antes de tocar la base. Nombre comercial,
+descripción, slug, categorías, etiquetas, imágenes, destacado y orden son
+trabajo editorial del administrador y ningún PDF los pisa. Si agregás un campo
+que sí viene del proveedor, va en esa lista y en ningún otro lado.
+
+`patch` y `previous` de cada línea del plan son simétricos: aplicar escribe el
+primero, deshacer escribe el segundo. Por eso el rollback no tiene lógica
+propia. Si agregás un cambio al plan, tenés que llenar los dos.
+
+**El PDF se lee en el navegador**, no en el servidor: son 47 páginas y las
+funciones de Netlify cortan a los diez segundos. `lib/sync/read-pdf.ts` corre
+en el cliente y al servidor le llega la tabla ya interpretada.
+
+**El historial de importaciones no entra en `snapshot()`.** Cada corrida guarda
+el plan entero —cientos de líneas con su antes y su después— y la tienda no lo
+necesita nunca. Va por `listImports()` / `getImport()` del repo.
+
+`npx tsx scripts/test-sync.mts <pdf>` corre el ciclo completo contra la base
+local y comprueba que deshacer deje el catálogo como estaba. Nunca apunta a
+Supabase.
+
 ## Comandos
 
 ```bash
@@ -99,4 +122,10 @@ npm run build      # build de producción
 npm run typecheck     # tsc --noEmit
 npm run gen:images    # regenera los SVG de catálogo desde scripts/colorways.json
 npm run seed:supabase # migra .data/db.json + imágenes locales a Supabase
+
+node scripts/try-sync.mjs <pdf>        # qué lee del PDF, sin tocar nada
+npx tsx scripts/test-sync.mts <pdf>    # ciclo completo contra la base local
 ```
+
+`supabase/migrations/` hay que correrlo a mano en el SQL Editor, en orden, y
+**antes** de desplegar el código que lo necesita.

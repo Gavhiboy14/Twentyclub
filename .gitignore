@@ -47,3 +47,6 @@ next-env.d.ts
 # imagenes subidas desde el panel
 /public/uploads/*
 !/public/uploads/.gitkeep
+
+# Worker de pdf.js: se copia desde node_modules en cada build
+/public/pdf.worker.min.mjs

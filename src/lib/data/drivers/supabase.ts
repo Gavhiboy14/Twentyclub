@@ -1,9 +1,13 @@
 import { cache } from "react";
 import type { Database, Order, Product, Settings } from "@/lib/types";
 import { DEFAULT_SYNC_SETTINGS } from "@/lib/sync/defaults";
+import type { ImportItem } from "@/lib/sync/types";
 import { supabaseAdmin } from "../supabase-client";
 import {
+  COLLECTION_TABLES,
   ROW_MAPPERS,
+  importFromRow,
+  importToRow,
   bannerFromRow,
   brandFromRow,
   categoryFromRow,
@@ -143,7 +147,7 @@ export const supabaseRepo: DataRepo = {
 
   async createRecord(collection, row) {
     const { data, error } = await supabaseAdmin()
-      .from(collection)
+      .from(COLLECTION_TABLES[collection])
       .insert(recordToRow(collection, row))
       .select()
       .single();
@@ -153,7 +157,7 @@ export const supabaseRepo: DataRepo = {
 
   async updateRecord(collection, id, patch) {
     const { data, error } = await supabaseAdmin()
-      .from(collection)
+      .from(COLLECTION_TABLES[collection])
       .update(recordToRow(collection, patch))
       .eq("id", id)
       .select()
@@ -192,7 +196,7 @@ export const supabaseRepo: DataRepo = {
     }
 
     const { data, error } = await db
-      .from(collection)
+      .from(COLLECTION_TABLES[collection])
       .delete()
       .eq("id", id)
       .select("id");
@@ -277,5 +281,52 @@ export const supabaseRepo: DataRepo = {
     if (error) fail("guardar ajustes", error);
 
     return merged;
+  },
+
+  /* ------------------ Historial de importaciones ------------------------ */
+
+  async listImports() {
+    const { data, error } = await supabaseAdmin()
+      .from("imports")
+      // Sin `items`: la lista del historial no necesita el plan entero.
+      .select("id, created_at, applied_at, file_name, pages, user, status, summary")
+      .order("created_at", { ascending: false });
+    if (error) fail("leer importaciones", error);
+    return (data ?? []).map(importFromRow);
+  },
+
+  async getImport(id) {
+    const { data, error } = await supabaseAdmin()
+      .from("imports")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+    if (error) fail("leer importación", error);
+    if (!data) return null;
+    return {
+      ...importFromRow(data),
+      items: (Array.isArray(data.items) ? data.items : []) as ImportItem[],
+    };
+  },
+
+  async createImport(run) {
+    const { data, error } = await supabaseAdmin()
+      .from("imports")
+      .insert(importToRow(run))
+      .select()
+      .single();
+    if (error) fail("guardar importación", error);
+    return importFromRow(data);
+  },
+
+  async updateImport(id, patch) {
+    const { data, error } = await supabaseAdmin()
+      .from("imports")
+      .update(importToRow(patch))
+      .eq("id", id)
+      .select()
+      .maybeSingle();
+    if (error) fail("actualizar importación", error);
+    return data ? importFromRow(data) : null;
   },
 };

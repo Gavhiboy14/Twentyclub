@@ -12,6 +12,7 @@ import {
   Menu,
   Package,
   Layers,
+  RefreshCw,
   Settings,
   ShoppingCart,
   Tag,
@@ -24,6 +25,7 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { href: "/admin", label: "Resumen", icon: LayoutDashboard, exact: true },
   { href: "/admin/productos", label: "Productos", icon: Package },
+  { href: "/admin/sincronizacion", label: "Sincronización", icon: RefreshCw },
   { href: "/admin/pedidos", label: "Pedidos", icon: ShoppingCart },
   { href: "/admin/marcas", label: "Marcas", icon: Tag },
   { href: "/admin/categorias", label: "Categorías", icon: Layers },

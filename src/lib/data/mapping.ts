@@ -12,6 +12,7 @@ import type {
 } from "@/lib/types";
 import type { CollectionName } from "@/lib/admin/schemas";
 import { PRODUCT_SYNC_DEFAULTS } from "@/lib/sync/defaults";
+import type { ImportRun, ImportRunDetail } from "@/lib/sync/types";
 import type { Row } from "./repo";
 
 /**
@@ -192,6 +193,38 @@ export function offerFromRow(row: PgRow): Offer {
   };
 }
 
+/* --------------------- Historial de importaciones -------------------------- */
+
+export function importFromRow(row: PgRow): ImportRun {
+  return {
+    id: str(row.id),
+    createdAt: str(row.created_at, new Date().toISOString()),
+    appliedAt: (row.applied_at as string | null) ?? null,
+    fileName: str(row.file_name),
+    pages: num(row.pages),
+    user: str(row.user),
+    status: str(row.status, "analizado") as ImportRun["status"],
+    summary: (row.summary ?? {}) as ImportRun["summary"],
+  };
+}
+
+export function importToRow(run: Partial<ImportRunDetail>): PgRow {
+  const row: PgRow = {};
+  const put = (key: string, value: unknown) => {
+    if (value !== undefined) row[key] = value;
+  };
+  put("id", run.id);
+  put("created_at", run.createdAt);
+  put("applied_at", run.appliedAt);
+  put("file_name", run.fileName);
+  put("pages", run.pages);
+  put("user", run.user);
+  put("status", run.status);
+  put("summary", run.summary);
+  put("items", run.items);
+  return row;
+}
+
 export function syncRuleFromRow(row: PgRow): SyncRule {
   return {
     id: str(row.id),
@@ -229,6 +262,16 @@ const COLUMN_ALIASES: Record<CollectionName, Record<string, string>> = {
   categories: {},
   banners: { ctaLabel: "cta_label", ctaHref: "cta_href" },
   offers: { productIds: "product_ids", startsAt: "starts_at", endsAt: "ends_at" },
+  syncRules: { brandId: "brand_id", categoryIds: "category_ids" },
+};
+
+/** Nombre real de la tabla cuando difiere del de la colección. */
+export const COLLECTION_TABLES: Record<CollectionName, string> = {
+  brands: "brands",
+  categories: "categories",
+  banners: "banners",
+  offers: "offers",
+  syncRules: "sync_rules",
 };
 
 export function recordToRow(collection: CollectionName, record: Row): PgRow {
@@ -246,4 +289,5 @@ export const ROW_MAPPERS: Record<CollectionName, (row: PgRow) => Row> = {
   categories: (row) => categoryFromRow(row) as unknown as Row,
   banners: (row) => bannerFromRow(row) as unknown as Row,
   offers: (row) => offerFromRow(row) as unknown as Row,
+  syncRules: (row) => syncRuleFromRow(row) as unknown as Row,
 };

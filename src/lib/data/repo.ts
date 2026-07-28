@@ -1,5 +1,6 @@
 import type { Database, Order, Product, Settings } from "@/lib/types";
 import type { CollectionName } from "@/lib/admin/schemas";
+import type { ImportRun, ImportRunDetail } from "@/lib/sync/types";
 
 /** Registro plano de una colección simple (marcas, categorías, banners, ofertas). */
 export type Row = Record<string, unknown> & { id: string };
@@ -52,6 +53,22 @@ export interface DataRepo {
   commitOrderStock(order: Order): Promise<void>;
 
   updateSettings(patch: Partial<Settings>): Promise<Settings>;
+
+  /* --- Sincronización de catálogo ----------------------------------------
+     El historial vive aparte de `snapshot()` a propósito: cada corrida
+     guarda el plan entero —cientos de líneas con su antes y su después— y
+     la tienda no lo necesita nunca. Cargarlo en el snapshot sería pagar ese
+     peso en cada visita a la home. */
+
+  /** Sólo la cabecera de cada corrida, sin las líneas. Para el historial. */
+  listImports(): Promise<ImportRun[]>;
+  /** La corrida completa, con el plan. */
+  getImport(id: string): Promise<ImportRunDetail | null>;
+  createImport(run: ImportRunDetail): Promise<ImportRun>;
+  updateImport(
+    id: string,
+    patch: Partial<ImportRunDetail>,
+  ): Promise<ImportRun | null>;
 
   /** Vuelve al catálogo semilla. Sólo lo implementa el driver local. */
   reset?(): Promise<void>;

@@ -83,6 +83,7 @@ function findExisting(
   extracted: ExtractedProduct,
   brandId: string | null,
   products: Product[],
+  claimed: Set<string>,
 ): Product | null {
   const key = supplierKey(extracted.model);
 
@@ -91,10 +92,17 @@ function findExisting(
 
   if (!brandId) return null;
 
+  /* `claimed` es imprescindible, no una precaución.
+     Durante el armado del plan nada se escribe, así que el `supplierRef` que
+     una línea le va a poner al producto todavía no está en la base. Sin este
+     registro en memoria, dos filas parecidas del PDF —"Jordan 1 Low" y
+     "Jordan 1 Low Bred"— se enganchan las dos al mismo producto, y al aplicar
+     la segunda le pisa el precio a la primera sin que nada lo avise. */
   let best: { product: Product; score: number } | null = null;
   for (const product of products) {
     if (product.brandId !== brandId) continue;
     if (product.supplierRef) continue; // ya está atado a otra fila
+    if (claimed.has(product.id)) continue;
     const score = similarity(extracted.model, product.name);
     if (score >= FUZZY_THRESHOLD && (!best || score > best.score)) {
       best = { product, score };
@@ -153,7 +161,12 @@ export function buildPlan({ extraction, db, rules, now }: PlanInput): Plan {
   for (const extracted of unique) {
     const outcome = applyRules(extracted.model, rules);
     const brand = outcome.brandId ? brandsById.get(outcome.brandId) : undefined;
-    const existing = findExisting(extracted, outcome.brandId, db.products);
+    const existing = findExisting(
+      extracted,
+      outcome.brandId,
+      db.products,
+      touched,
+    );
 
     /* Sin marca no hay producto posible: la columna es obligatoria en la base.
        Se reporta para que el admin cree la marca o agregue una regla. */
