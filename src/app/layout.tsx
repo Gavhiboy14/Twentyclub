@@ -1,17 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Manrope, JetBrains_Mono } from "next/font/google";
+import { Inter, Manrope, JetBrains_Mono } from "next/font/google";
 import { Splash } from "@/components/site/splash";
 import "./globals.css";
 
 /**
- * Archivo con el eje de ancho es el carácter de la marca: a wdth 112 y peso
- * 700 los titulares tienen la presencia de un afiche. Manrope para leer y
- * JetBrains Mono para los datos — talles, SKU, contadores.
+ * Inter en peso 900 para los titulares: el negro casi macizo es lo que les da
+ * el golpe de afiche. Manrope para leer y JetBrains Mono para los datos —
+ * talles, SKU, contadores.
+ *
+ * El contraste entre display y cuerpo lo hace el peso, no el dibujo: Inter 900
+ * contra Manrope 400 son dos cosas bien distintas en pantalla aunque las dos
+ * sean grotescas.
  */
-const archivo = Archivo({
+const inter = Inter({
   subsets: ["latin"],
-  axes: ["wdth"],
-  variable: "--font-archivo",
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -80,7 +83,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${archivo.variable} ${manrope.variable} ${mono.variable}`}
+      className={`${inter.variable} ${manrope.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
       <body className="min-h-dvh antialiased">

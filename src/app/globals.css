@@ -39,9 +39,10 @@
   --color-warn: #c9a961;
   --color-bad: #bd7f6f;
 
-  /* Tipografía. La display ancha y pesada es el carácter de la marca: sin
-     ella el sitio se cae en la neutralidad. El mono da textura de dato. */
-  --font-display: var(--font-archivo), system-ui, sans-serif;
+  /* Tipografía. El peso de la display es el carácter de la marca: en 900 los
+     titulares golpean, en 700 se vuelven una tienda más. El mono da textura
+     de dato. */
+  --font-display: var(--font-inter), system-ui, sans-serif;
   --font-sans: var(--font-manrope), system-ui, sans-serif;
   --font-mono: var(--font-mono-face), ui-monospace, monospace;
 
@@ -553,21 +554,25 @@
   color: var(--color-ash);
 }
 
-/* Titulares. Ancha y con peso — es lo que separa a Twenty Club de cualquier
-   tienda con Inter. El eje de ancho de Archivo hace el trabajo. */
+/* Titulares. El golpe lo da el peso 900: es lo único que separa un titular
+   con presencia de uno que se lee como texto grande.
+
+   Sin `font-variation-settings` a propósito. Inter no tiene eje de ancho —
+   sólo peso y tamaño óptico— así que un "wdth" acá sería una declaración
+   muerta que el día de mañana confunde a quien la lea. */
 @utility display {
   font-family: var(--font-display);
-  font-variation-settings: "wdth" 108;
-  font-weight: 700;
+  font-weight: 900;
   letter-spacing: -0.04em;
   line-height: 0.92;
 }
 
 @utility display-xl {
   font-family: var(--font-display);
-  font-variation-settings: "wdth" 112;
-  font-weight: 700;
-  letter-spacing: -0.045em;
+  font-weight: 900;
+  /* Más apretado que `display`: cuanto más grande el cuerpo, más se abre el
+     espacio entre letras a la vista, y hay que compensarlo. */
+  letter-spacing: -0.05em;
   line-height: 0.88;
 }
 
