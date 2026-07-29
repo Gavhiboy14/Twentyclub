@@ -2,17 +2,32 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
-import { Heart, Menu, Search, ShoppingBag, X } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronDown,
+  Heart,
+  Menu,
+  Search,
+  ShoppingBag,
+  X,
+} from "lucide-react";
 import { Dialog, SheetContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/controls";
 import { useCart } from "@/store/cart";
 import { useFavorites } from "@/store/favorites";
+import type { Brand } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
 import { SearchDialog } from "./search-dialog";
@@ -22,6 +37,8 @@ export interface NavLink {
   href: string;
 }
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
 /**
  * Barra flotante.
  *
@@ -30,8 +47,18 @@ export interface NavLink {
  * cambia de naturaleza, se densifica —se angosta, opaca el vidrio y suma
  * sombra—, que es el mínimo necesario para que se entienda que hay contenido
  * pasando por debajo.
+ *
+ * "Productos" es el único ítem que no es un link: agrupa las marcas en un
+ * desplegable —dropdown en desktop, acordeón en el menú mobile— para que la
+ * barra no compita por ancho cada vez que se suma una marca al catálogo.
  */
-export function Navbar({ links }: { links: NavLink[] }) {
+export function Navbar({
+  links,
+  brands,
+}: {
+  links: NavLink[];
+  brands: Brand[];
+}) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -58,6 +85,11 @@ export function Navbar({ links }: { links: NavLink[] }) {
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const productsActive =
+    pathname.startsWith("/marca/") || pathname.startsWith("/productos");
+
+  // "Inicio" siempre primero; "Productos" se intercala justo después.
+  const [home, ...rest] = links;
 
   return (
     <>
@@ -74,26 +106,16 @@ export function Navbar({ links }: { links: NavLink[] }) {
           <Logo />
 
           <nav className="ml-6 hidden flex-1 items-center gap-1 lg:flex">
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "relative rounded-full px-4 py-2 text-[0.8125rem] transition-colors duration-400",
-                  isActive(link.href)
-                    ? "text-chalk"
-                    : "text-ash hover:bg-champagne/[0.05] hover:text-chalk",
-                )}
-              >
-                {isActive(link.href) && (
-                  <motion.span
-                    layoutId="nav-active"
-                    className="absolute inset-0 -z-10 rounded-full bg-champagne/[0.08]"
-                    transition={{ type: "spring", stiffness: 380, damping: 34 }}
-                  />
-                )}
+            <NavItem href={home.href} active={isActive(home.href)}>
+              {home.label}
+            </NavItem>
+
+            <ProductsMenu brands={brands} active={productsActive} />
+
+            {rest.map((link) => (
+              <NavItem key={link.href} href={link.href} active={isActive(link.href)}>
                 {link.label}
-              </Link>
+              </NavItem>
             ))}
           </nav>
 
@@ -171,30 +193,61 @@ export function Navbar({ links }: { links: NavLink[] }) {
             </button>
           </div>
 
-          <nav className="mt-14 flex flex-col">
-            {links.map((link, i) => (
-              <motion.div
+          <nav className="mt-14 flex flex-1 flex-col overflow-y-auto">
+            <MobileLink href={home.href} active={isActive(home.href)} delay={0.07}>
+              {home.label}
+            </MobileLink>
+
+            <motion.div
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.12, duration: 0.6, ease: EASE }}
+            >
+              <Accordion type="single" collapsible>
+                <AccordionItem value="productos" className="border-b border-champagne/[0.06]">
+                  <AccordionTrigger
+                    className={cn(
+                      "py-5 font-display text-2xl tracking-[-0.03em] transition-colors duration-300",
+                      productsActive
+                        ? "text-chalk"
+                        : "text-mist hover:text-chalk",
+                    )}
+                  >
+                    Productos
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-2 pr-0">
+                    <div className="flex flex-col gap-0.5 pb-3">
+                      {brands.map((brand) => (
+                        <Link
+                          key={brand.id}
+                          href={`/marca/${brand.slug}`}
+                          className="rounded-xl px-3 py-2.5 text-[0.9375rem] text-mist transition-colors hover:bg-champagne/[0.05] hover:text-chalk"
+                        >
+                          {brand.name}
+                        </Link>
+                      ))}
+                      <Link
+                        href="/productos"
+                        className="mt-1 flex items-center justify-between rounded-xl px-3 py-2.5 text-[0.9375rem] font-medium text-chalk transition-colors hover:bg-champagne/[0.05]"
+                      >
+                        Ver todo
+                        <ArrowRight className="size-3.5 stroke-[1.5]" />
+                      </Link>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </motion.div>
+
+            {rest.map((link, i) => (
+              <MobileLink
                 key={link.href}
-                initial={{ opacity: 0, x: 24 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{
-                  delay: 0.07 + i * 0.05,
-                  duration: 0.6,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
+                href={link.href}
+                active={isActive(link.href)}
+                delay={0.17 + i * 0.05}
               >
-                <Link
-                  href={link.href}
-                  className={cn(
-                    "block border-b border-champagne/[0.06] py-5 font-display text-2xl tracking-[-0.03em] transition-colors duration-300",
-                    isActive(link.href)
-                      ? "text-chalk"
-                      : "text-mist hover:text-chalk",
-                  )}
-                >
-                  {link.label}
-                </Link>
-              </motion.div>
+                {link.label}
+              </MobileLink>
             ))}
           </nav>
 
@@ -215,5 +268,164 @@ export function Navbar({ links }: { links: NavLink[] }) {
 
       <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
     </>
+  );
+}
+
+function NavItem({
+  href,
+  active,
+  children,
+}: {
+  href: string;
+  active: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "relative rounded-full px-4 py-2 text-[0.8125rem] transition-colors duration-400",
+        active ? "text-chalk" : "text-ash hover:bg-champagne/[0.05] hover:text-chalk",
+      )}
+    >
+      {active && (
+        <motion.span
+          layoutId="nav-active"
+          className="absolute inset-0 -z-10 rounded-full bg-champagne/[0.08]"
+          transition={{ type: "spring", stiffness: 380, damping: 34 }}
+        />
+      )}
+      {children}
+    </Link>
+  );
+}
+
+function MobileLink({
+  href,
+  active,
+  delay,
+  children,
+}: {
+  href: string;
+  active: boolean;
+  delay: number;
+  children: React.ReactNode;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 24 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay, duration: 0.6, ease: EASE }}
+    >
+      <Link
+        href={href}
+        className={cn(
+          "block border-b border-champagne/[0.06] py-5 font-display text-2xl tracking-[-0.03em] transition-colors duration-300",
+          active ? "text-chalk" : "text-mist hover:text-chalk",
+        )}
+      >
+        {children}
+      </Link>
+    </motion.div>
+  );
+}
+
+/**
+ * Desplegable de marcas para desktop.
+ *
+ * Deliberadamente no usa Radix DropdownMenu: ese primitivo posiciona su
+ * `Content` con un `transform` propio (para esquivar los bordes de pantalla),
+ * y animar `transform` en el mismo elemento le pisaría esa posición durante
+ * la transición. Acá el `motion.div` sólo anima opacidad/escala; la posición
+ * la da el `absolute` normal del panel respecto al trigger.
+ */
+function ProductsMenu({ brands, active }: { brands: Brand[]; active: boolean }) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(event: PointerEvent) {
+      if (rootRef.current && !rootRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div ref={rootRef} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        className={cn(
+          "relative flex items-center gap-1.5 rounded-full px-4 py-2 text-[0.8125rem] transition-colors duration-400",
+          active || open
+            ? "text-chalk"
+            : "text-ash hover:bg-champagne/[0.05] hover:text-chalk",
+        )}
+      >
+        {(active || open) && !open && (
+          <motion.span
+            layoutId="nav-active"
+            className="absolute inset-0 -z-10 rounded-full bg-champagne/[0.08]"
+            transition={{ type: "spring", stiffness: 380, damping: 34 }}
+          />
+        )}
+        Productos
+        <ChevronDown
+          className={cn(
+            "size-3 stroke-[2.5] transition-transform duration-300",
+            open && "rotate-180",
+          )}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            role="menu"
+            initial={{ opacity: 0, y: -6, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.97 }}
+            transition={{ duration: 0.22, ease: EASE }}
+            className="glass-strong grain edge-light absolute left-0 top-[calc(100%+0.75rem)] w-56 origin-top rounded-[1.5rem] p-2.5"
+          >
+            {brands.map((brand) => (
+              <Link
+                key={brand.id}
+                href={`/marca/${brand.slug}`}
+                role="menuitem"
+                onClick={() => setOpen(false)}
+                className="block rounded-xl px-3.5 py-2.5 text-[0.8125rem] text-mist transition-colors hover:bg-champagne/[0.06] hover:text-chalk"
+              >
+                {brand.name}
+              </Link>
+            ))}
+            <div className="mt-1 border-t border-champagne/[0.06] pt-1">
+              <Link
+                href="/productos"
+                role="menuitem"
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between rounded-xl px-3.5 py-2.5 text-[0.8125rem] font-medium text-chalk transition-colors hover:bg-champagne/[0.06]"
+              >
+                Ver todo
+                <ArrowRight className="size-3.5 stroke-[1.5]" />
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

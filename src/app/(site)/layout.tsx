@@ -12,9 +12,6 @@ import { CartDrawer } from "@/components/site/cart-drawer";
  */
 export const dynamic = "force-dynamic";
 
-/** Las cinco marcas que van fijas en la barra; el resto vive en /productos. */
-const NAV_BRANDS = ["nike", "adidas", "new-balance", "puma", "jordan"];
-
 export default async function SiteLayout({
   children,
 }: {
@@ -22,20 +19,18 @@ export default async function SiteLayout({
 }) {
   const [brands, settings] = await Promise.all([getBrands(), getSettings()]);
 
+  /* Las marcas ya no van sueltas acá: viven todas dentro del desplegable
+     "Productos" de la barra, así que la barra no compite por ancho a medida
+     que se suman marcas nuevas. */
   const links: NavLink[] = [
     { label: "Inicio", href: "/" },
-    ...NAV_BRANDS.map((slug) => {
-      const brand = brands.find((b) => b.slug === slug);
-      return { label: brand?.name ?? slug, href: `/marca/${slug}` };
-    }),
-    { label: "Ofertas", href: "/ofertas" },
     { label: "Contacto", href: "/contacto" },
   ];
 
   return (
     <SiteProviders>
       <SiteBackground />
-      <Navbar links={links} />
+      <Navbar links={links} brands={brands} />
       <main id="contenido" className="pt-20">
         {children}
       </main>
