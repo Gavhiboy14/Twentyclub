@@ -101,10 +101,15 @@ export function Hero({
 
       <div className="mx-auto grid w-full max-w-[86rem] items-center gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-12">
         {/* ---------------------------------------------------------------
-            Escena. En mobile va primero: el par es el argumento de venta,
-            no el remate.
+            Escena: el par, el aro de luz y las fichas que lo rodean.
+
+            `order-last` sirve para los dos casos. En desktop lo manda a la
+            columna derecha; en mobile, donde la grilla es de una sola
+            columna, lo baja debajo del texto. En el DOM va primero para que
+            el navegador empiece a bajar la foto —que es el LCP— sin esperar
+            a parsear el bloque de texto entero.
             --------------------------------------------------------------- */}
-        <div className="relative order-first flex h-[38svh] w-full items-center justify-center sm:h-[50svh] lg:order-last lg:h-[64svh]">
+        <div className="relative order-last flex h-[38svh] w-full items-center justify-center sm:h-[50svh] lg:h-[64svh]">
           {/* Eclipse: núcleo oscuro, anillo encendido y derrame cálido. La
               zapatilla se recorta contra el anillo, como una pieza en vitrina. */}
           <motion.div
@@ -177,9 +182,14 @@ export function Hero({
           </div>
 
           {/* Fichas en órbita. Cuelgan de la escena y no del par, así se
-              apoyan en el borde visible y no en el aire de la foto. En mobile
-              queda sólo la del producto: cuatro paneles sobre 375px tapan
-              justo lo que hay que mirar. */}
+              apoyan en el borde visible y no en el aire de la foto.
+
+              En mobile no hay ancho para que floten al costado sin taparla,
+              así que se apilan: una arriba del par y otra abajo. La de abajo
+              va por fuera de la caja de la escena (-bottom-6) porque la foto
+              desborda su contenedor y la zapatilla llega casi hasta el
+              borde; ahí adentro se le montaría encima. Las otras dos entran
+              recién en desktop. */}
           <motion.div
             style={reduced ? undefined : { y: cardsY, opacity: shoeFade }}
             className="pointer-events-none absolute inset-0"
@@ -215,7 +225,7 @@ export function Hero({
               depth={0.85}
               delay={1.05}
               reduced={reduced}
-              className="-right-2 top-[30%] hidden sm:flex lg:right-0 xl:-right-6"
+              className="-bottom-6 -right-2 sm:bottom-auto sm:top-[30%] lg:right-0 xl:-right-6"
             >
               <OrbitLine
                 icon={<Truck className="size-4 stroke-[1.25] text-gold" />}
