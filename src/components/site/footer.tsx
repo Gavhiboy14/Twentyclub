@@ -13,6 +13,7 @@ const TIENDA = [
 ];
 
 const AYUDA = [
+  { label: "Guía de talles", href: "/guia-de-talles" },
   { label: "Cómo comprar", href: "/contacto#como-comprar" },
   { label: "Envíos", href: "/contacto#envios" },
   { label: "Cambios", href: "/contacto#cambios" },

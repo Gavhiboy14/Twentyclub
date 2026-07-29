@@ -24,6 +24,7 @@ export default async function SiteLayout({
      que se suman marcas nuevas. */
   const links: NavLink[] = [
     { label: "Inicio", href: "/" },
+    { label: "Guía de talles", href: "/guia-de-talles" },
     { label: "Contacto", href: "/contacto" },
   ];
 
