@@ -159,7 +159,7 @@ export function ProductCard({
 
         {product.inStock ? (
           <div className="mt-5 space-y-3">
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {product.visibleSizes.map((s) => (
                 <button
                   key={s.size}
@@ -170,7 +170,7 @@ export function ProductCard({
                   }}
                   aria-pressed={s.size === size}
                   className={cn(
-                    "numeric relative z-10 min-w-9 rounded-lg border px-2 py-1.5 text-[0.6875rem] transition-all duration-300",
+                    "numeric relative z-10 flex h-11 min-w-11 items-center justify-center rounded-lg border px-2.5 text-[0.6875rem] transition-all duration-300",
                     s.size === size
                       ? "border-ivory bg-ivory text-ink"
                       : "border-champagne/10 bg-champagne/[0.03] text-mist hover:border-champagne/28 hover:text-chalk",

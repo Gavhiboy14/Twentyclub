@@ -149,7 +149,7 @@ export function Navbar({
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="Buscar productos"
-              className="grid size-10 place-items-center rounded-full text-ash transition-colors duration-300 hover:bg-champagne/[0.07] hover:text-chalk"
+              className="grid size-11 place-items-center rounded-full text-ash transition-colors duration-300 hover:bg-champagne/[0.07] hover:text-chalk"
             >
               <Search className="size-[1.1rem] stroke-[1.5]" />
             </button>
@@ -157,7 +157,7 @@ export function Navbar({
             <Link
               href="/favoritos"
               aria-label={`Favoritos${ids.length ? ` (${ids.length})` : ""}`}
-              className="relative hidden size-10 place-items-center rounded-full text-ash transition-colors duration-300 hover:bg-champagne/[0.07] hover:text-chalk sm:grid"
+              className="relative hidden size-11 place-items-center rounded-full text-ash transition-colors duration-300 hover:bg-champagne/[0.07] hover:text-chalk sm:grid"
             >
               <Heart className="size-[1.1rem] stroke-[1.5]" />
               {ids.length > 0 && (
@@ -169,7 +169,7 @@ export function Navbar({
               type="button"
               onClick={openCart}
               aria-label={`Abrir carrito${count ? ` (${count} productos)` : ""}`}
-              className="relative grid size-10 place-items-center rounded-full text-chalk transition-colors duration-300 hover:bg-champagne/[0.07]"
+              className="relative grid size-11 place-items-center rounded-full text-chalk transition-colors duration-300 hover:bg-champagne/[0.07]"
             >
               <ShoppingBag className="size-[1.1rem] stroke-[1.5]" />
               <AnimatePresence>
@@ -191,7 +191,7 @@ export function Navbar({
               type="button"
               onClick={() => setMenuOpen(true)}
               aria-label="Abrir menú"
-              className="grid size-10 place-items-center rounded-full text-chalk transition-colors duration-300 hover:bg-champagne/[0.07] lg:hidden"
+              className="grid size-11 place-items-center rounded-full text-chalk transition-colors duration-300 hover:bg-champagne/[0.07] lg:hidden"
             >
               <Menu className="size-[1.1rem] stroke-[1.5]" />
             </button>
@@ -212,7 +212,7 @@ export function Navbar({
               type="button"
               onClick={() => setMenuOpen(false)}
               aria-label="Cerrar menú"
-              className="grid size-10 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/[0.07] hover:text-chalk"
+              className="grid size-11 place-items-center rounded-full text-ash transition-colors hover:bg-champagne/[0.07] hover:text-chalk"
             >
               <X className="size-4 stroke-[1.5]" />
             </button>

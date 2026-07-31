@@ -31,7 +31,7 @@ export function FavoriteButton({
         active ? `Quitar ${label} de favoritos` : `Guardar ${label} en favoritos`
       }
       className={cn(
-        "glass grid size-10 place-items-center rounded-full transition-colors duration-300",
+        "glass grid size-11 place-items-center rounded-full transition-colors duration-300",
         active
           ? "border-champagne/40 text-sand"
           : "text-ash hover:text-chalk",
