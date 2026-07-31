@@ -61,7 +61,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           className="bloom left-[-10%] top-[-20%] size-[36rem] opacity-30"
           style={{
             background:
-              "radial-gradient(circle, rgba(232,220,196,0.10), transparent 68%)",
+              "radial-gradient(circle, rgba(239,233,213,0.10), transparent 68%)",
           }}
         />
       </div>

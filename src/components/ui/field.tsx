@@ -14,7 +14,7 @@ const controlBase =
   "transition-[border-color,background-color,box-shadow] duration-300 " +
   "hover:border-champagne/18 " +
   "focus:border-champagne/45 focus:bg-champagne/[0.055] focus:outline-none " +
-  "focus:shadow-[0_0_0_3px_rgba(232,220,196,0.09)] " +
+  "focus:shadow-[0_0_0_3px_rgba(239,233,213,0.09)] " +
   "disabled:cursor-not-allowed disabled:opacity-45";
 
 export const Input = React.forwardRef<

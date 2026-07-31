@@ -120,7 +120,7 @@ export default async function ContactPage() {
           {PASOS.map((paso, i) => (
             <Reveal key={paso.title} delay={i * 0.08}>
               <li className="h-full rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl p-8">
-                <span className="numeric text-sm tracking-[0.18em] text-gold">
+                <span className="numeric text-sm tracking-[0.18em] text-chalk">
                   0{i + 1}
                 </span>
                 <h3 className="mt-5 font-display text-lg font-bold tracking-tight text-chalk">
@@ -168,7 +168,7 @@ function InfoCard({
 }) {
   return (
     <div className="rounded-[1.75rem] border border-champagne/[0.07] bg-graphite/50 backdrop-blur-xl p-8">
-      <span className="text-gold">{icon}</span>
+      <span className="text-chalk">{icon}</span>
       <h2 className="eyebrow mt-4">{title}</h2>
       <p className="mt-2 text-[0.8125rem] leading-relaxed text-mist">
         {children}

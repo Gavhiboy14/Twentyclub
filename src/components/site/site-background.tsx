@@ -15,7 +15,7 @@ export function SiteBackground() {
         className="bloom animate-drift left-[-15%] top-[-25%] size-[52rem] opacity-70"
         style={{
           background:
-            "radial-gradient(circle, rgba(232,220,196,0.09), rgba(201,185,151,0.03) 50%, transparent 72%)",
+            "radial-gradient(circle, rgba(239,233,213,0.09), rgba(201,185,151,0.03) 50%, transparent 72%)",
         }}
       />
       <div

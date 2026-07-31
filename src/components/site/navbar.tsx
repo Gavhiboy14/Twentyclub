@@ -91,16 +91,41 @@ export function Navbar({
   // "Inicio" siempre primero; "Productos" se intercala justo después.
   const [home, ...rest] = links;
 
+  const capsuleRef = useRef<HTMLDivElement>(null);
+
+  /* La cápsula es la pieza que más tiene que sentirse hecha de vidrio: sigue
+     al puntero con un brillo redondo, como si la luz real rebotara en ella.
+     Va por variables CSS y no por estado de React —`--sx`/`--sy` se escriben
+     directo en el nodo— porque un mousemove dispara docenas de eventos por
+     segundo y un setState en cada uno recalcularía el árbol entero para
+     mover un highlight. */
+  function trackPointer(event: React.PointerEvent<HTMLDivElement>) {
+    const el = capsuleRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--sx", `${((event.clientX - rect.left) / rect.width) * 100}%`);
+    el.style.setProperty("--sy", `${((event.clientY - rect.top) / rect.height) * 100}%`);
+    el.style.setProperty("--specular-opacity", "1");
+  }
+
+  function clearPointer() {
+    capsuleRef.current?.style.setProperty("--specular-opacity", "0");
+  }
+
   return (
     <>
       <header className="fixed inset-x-0 top-0 z-40 px-4 pt-4 sm:px-6 sm:pt-5">
         <div
+          ref={capsuleRef}
+          onPointerMove={trackPointer}
+          onPointerLeave={clearPointer}
           className={cn(
-            "mx-auto flex items-center gap-4 rounded-full border backdrop-blur-2xl",
+            "specular edge-light mx-auto flex items-center gap-4 rounded-full border backdrop-blur-2xl",
             "transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
             scrolled
-              ? "max-w-6xl border-champagne/[0.09] bg-graphite/85 px-5 py-3 shadow-[0_20px_50px_-24px_rgba(0,0,0,0.95)]"
-              : "max-w-[80rem] border-champagne/[0.05] bg-graphite/35 px-5 py-3.5 shadow-[0_16px_44px_-30px_rgba(0,0,0,0.9)] sm:px-6",
+              ? "max-w-6xl border-champagne/[0.09] bg-graphite/85 shadow-[0_20px_50px_-24px_rgba(0,0,0,0.95)]"
+              : "max-w-[80rem] border-champagne/[0.05] bg-graphite/35 shadow-[0_16px_44px_-30px_rgba(0,0,0,0.9)]",
+            scrolled ? "px-5 py-3" : "px-5 py-3.5 sm:px-6",
           )}
         >
           <Logo />

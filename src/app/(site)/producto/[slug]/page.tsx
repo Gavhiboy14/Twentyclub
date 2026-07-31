@@ -248,7 +248,7 @@ function Perk({
 }) {
   return (
     <li className="flex gap-3">
-      <span className="mt-0.5 text-gold">{icon}</span>
+      <span className="mt-0.5 text-chalk">{icon}</span>
       <span>
         <span className="block text-[0.8125rem] font-medium text-chalk">
           {title}

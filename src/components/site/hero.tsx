@@ -125,15 +125,15 @@ export function Hero({
               className="absolute inset-0 rounded-full blur-[70px]"
               style={{
                 background:
-                  "radial-gradient(circle, rgba(232,220,196,0.20) 0%, rgba(201,160,99,0.13) 42%, transparent 68%)",
+                  "radial-gradient(circle, rgba(239,233,213,0.22) 0%, rgba(239,233,213,0.11) 42%, transparent 68%)",
               }}
             />
-            <div className="absolute inset-[13%] rounded-full border border-champagne/22 shadow-[0_0_70px_-10px_rgba(232,220,196,0.35),inset_0_0_60px_-20px_rgba(201,160,99,0.5)]" />
+            <div className="absolute inset-[13%] rounded-full border border-champagne/22 shadow-[0_0_70px_-10px_rgba(239,233,213,0.35),inset_0_0_60px_-20px_rgba(239,233,213,0.4)]" />
             <div
               className="absolute inset-[16%] rounded-full"
               style={{
                 background:
-                  "radial-gradient(circle, var(--color-ink) 40%, rgba(15,15,16,0.6) 72%, transparent 100%)",
+                  "radial-gradient(circle, var(--color-ink) 40%, rgba(48,47,43,0.6) 72%, transparent 100%)",
               }}
             />
           </motion.div>
@@ -207,7 +207,7 @@ export function Hero({
                 className="flex items-center gap-4"
               >
                 <div>
-                  <p className="eyebrow text-gold">Nuevo ingreso</p>
+                  <p className="eyebrow text-chalk">Nuevo ingreso</p>
                   <p className="mt-1 text-[0.8125rem] font-semibold text-chalk">
                     {product.brand.name} {product.name}
                   </p>
@@ -228,7 +228,7 @@ export function Hero({
               className="-bottom-6 -right-2 sm:bottom-auto sm:top-[30%] lg:right-0 xl:-right-6"
             >
               <OrbitLine
-                icon={<Truck className="size-4 stroke-[1.25] text-gold" />}
+                icon={<Truck className="size-4 stroke-[1.25] text-chalk" />}
                 label="Envíos a todo el país"
                 value="24–48 hs"
               />
@@ -243,7 +243,7 @@ export function Hero({
               className="bottom-[18%] hidden lg:flex lg:-left-12 xl:-left-16"
             >
               <OrbitLine
-                icon={<ShieldCheck className="size-4 stroke-[1.25] text-gold" />}
+                icon={<ShieldCheck className="size-4 stroke-[1.25] text-chalk" />}
                 label="Compra por pedido"
                 value="Productos originales"
               />
@@ -258,7 +258,7 @@ export function Hero({
               className="-bottom-2 right-0 hidden lg:flex"
             >
               <OrbitLine
-                icon={<WhatsAppIcon className="size-4 text-gold" />}
+                icon={<WhatsAppIcon className="size-4 text-chalk" />}
                 label="Atención personalizada"
                 value="WhatsApp"
               />
@@ -279,7 +279,7 @@ export function Hero({
             transition={{ duration: 0.8, ease: EASE }}
             className="glass-soft inline-flex items-center gap-2.5 rounded-full py-2 pl-3.5 pr-4.5"
           >
-            <Sparkle className="size-2.5 text-gold" />
+            <Sparkle className="size-2.5 text-chalk" />
             <span className="eyebrow text-mist">{banner.eyebrow}</span>
           </motion.div>
 

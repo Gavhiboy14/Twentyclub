@@ -22,7 +22,7 @@ import { formatNumber, formatPrice } from "@/lib/utils";
  */
 const CREAM = "#efe9dc";
 const AXIS = "#807d76";
-const GRID = "rgba(232,220,196,0.06)";
+const GRID = "rgba(239,233,213,0.06)";
 
 const axisProps = {
   stroke: AXIS,
@@ -93,7 +93,7 @@ export function OrdersTimeline({
           strokeWidth={2}
           fill="url(#fillOrders)"
           dot={false}
-          activeDot={{ r: 4, fill: CREAM, stroke: "#0f0f10", strokeWidth: 2 }}
+          activeDot={{ r: 4, fill: CREAM, stroke: "#302f2b", strokeWidth: 2 }}
         />
       </AreaChart>
     </ResponsiveContainer>
@@ -124,7 +124,7 @@ export function BrandSalesChart({
           style={{ fontFamily: "var(--font-manrope)", fontSize: 12 }}
         />
         <Tooltip
-          cursor={{ fill: "rgba(232,220,196,0.04)" }}
+          cursor={{ fill: "rgba(239,233,213,0.04)" }}
           content={<TooltipBox formatter={formatNumber} />}
         />
         <Bar dataKey="units" name="Pares vendidos" radius={[0, 6, 6, 0]}>
@@ -158,7 +158,7 @@ export function ViewsChart({
         />
         <YAxis {...axisProps} width={40} />
         <Tooltip
-          cursor={{ fill: "rgba(232,220,196,0.04)" }}
+          cursor={{ fill: "rgba(239,233,213,0.04)" }}
           content={<TooltipBox formatter={formatNumber} />}
         />
         <Bar

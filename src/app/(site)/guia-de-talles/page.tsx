@@ -41,7 +41,7 @@ export default async function SizeGuidePage() {
             className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full bg-champagne/[0.07] blur-[90px]"
           />
           <div className="relative">
-            <p className="eyebrow mb-5 text-gold">Recomendación clave</p>
+            <p className="eyebrow mb-5 text-chalk">Recomendación clave</p>
             <p className="display text-[clamp(1.6rem,3.6vw,2.5rem)] text-chalk">
               Pedí un talle menos del que usás normalmente y te va a calzar
               perfecto.
@@ -54,9 +54,9 @@ export default async function SizeGuidePage() {
                   41
                 </p>
               </div>
-              <ArrowRight className="size-5 shrink-0 stroke-[1.25] text-gold" />
+              <ArrowRight className="size-5 shrink-0 stroke-[1.25] text-chalk" />
               <div>
-                <p className="eyebrow mb-1.5 text-gold">Pedís en Twenty</p>
+                <p className="eyebrow mb-1.5 text-chalk">Pedís en Twenty</p>
                 <p className="numeric font-display text-3xl font-bold text-chalk">
                   40
                 </p>
@@ -70,7 +70,7 @@ export default async function SizeGuidePage() {
       <section className="mt-28">
         <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <Reveal>
-            <span className="mb-6 grid size-12 place-items-center rounded-full border border-champagne/12 bg-champagne/[0.04] text-gold">
+            <span className="mb-6 grid size-12 place-items-center rounded-full border border-champagne/12 bg-champagne/[0.04] text-chalk">
               <Footprints className="size-5 stroke-[1.25]" />
             </span>
             <h2 className="display-xl text-[clamp(1.85rem,4.5vw,3rem)] text-chalk">
@@ -89,7 +89,7 @@ export default async function SizeGuidePage() {
                   key={step}
                   className="flex items-start gap-5 rounded-[1.5rem] border border-champagne/[0.07] bg-graphite/50 px-6 py-5 backdrop-blur-xl"
                 >
-                  <span className="numeric shrink-0 text-sm tracking-[0.18em] text-gold">
+                  <span className="numeric shrink-0 text-sm tracking-[0.18em] text-chalk">
                     0{i + 1}
                   </span>
                   <p className="text-[0.9375rem] leading-[1.7] text-mist">
@@ -105,7 +105,7 @@ export default async function SizeGuidePage() {
       {/* Tabla */}
       <section className="mt-28">
         <Reveal className="mb-10">
-          <span className="mb-6 grid size-12 place-items-center rounded-full border border-champagne/12 bg-champagne/[0.04] text-gold">
+          <span className="mb-6 grid size-12 place-items-center rounded-full border border-champagne/12 bg-champagne/[0.04] text-chalk">
             <Ruler className="size-5 stroke-[1.25]" />
           </span>
           <h2 className="display-xl text-[clamp(1.85rem,4.5vw,3rem)] text-chalk">
@@ -193,7 +193,7 @@ function Th({
     <th
       scope="col"
       className={`px-5 py-4 font-mono text-[0.6875rem] uppercase tracking-[0.18em] sm:px-8 ${
-        accent ? "text-gold" : "text-ash"
+        accent ? "text-chalk" : "text-ash"
       }`}
     >
       {children}

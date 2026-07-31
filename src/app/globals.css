@@ -3,38 +3,43 @@
 /* ==========================================================================
    Twenty Club — sistema de diseño
 
-   Negro profundo de base, vidrio ahumado para la interfaz y una display
-   ancha y pesada que es el carácter de la marca. El acento sale siempre de
-   la familia arena/champagne/dorado, nunca de un color saturado.
+   El logo tiene dos colores y ninguno más: carbón cálido y crema. Todo el
+   sitio sale de esa pareja. La jerarquía la marca el brillo —cuánto de
+   claro a oscuro hay entre un elemento y otro—, nunca un tercer matiz. Sin
+   dorado, sin acento saturado: si algo necesita destacar, se aclara.
    ========================================================================== */
 
 @theme {
-  /* Oscuros. Neutros con una pizca de calidez para que el marfil no se enfríe */
-  --color-ink: #0f0f10; /* fondo del sitio */
-  --color-carbon: #141315; /* carbón — pozos y fondos hundidos */
-  --color-graphite: #1a1a1c; /* grafito — superficie de las tarjetas */
-  --color-smoke: #242326; /* humo — superficie elevada, hover */
-  --color-iron: #34333a; /* bordes marcados, divisores */
+  /* Oscuros. La misma familia cálida del logo, en pasos de brillo: cada
+     superficie que se "levanta" sobre la anterior es un poco más clara,
+     nunca cambia de matiz. */
+  --color-ink: #302f2b; /* fondo del sitio — el carbón del logo */
+  --color-carbon: #38362f; /* pozos y fondos hundidos */
+  --color-graphite: #403e37; /* superficie de las tarjetas */
+  --color-smoke: #4a473e; /* superficie elevada, hover */
+  --color-iron: #615d51; /* bordes marcados, divisores */
 
   /* Texto. La jerarquía la marca el brillo, no el matiz */
-  --color-ash: #807d76; /* microcopy — 4.6:1 sobre ink */
-  --color-mist: #a8a49c; /* cuerpo — 7.6:1 */
-  --color-chalk: #f2efe8; /* títulos — 16.4:1 */
+  --color-ash: #a49d8d; /* microcopy — 4.6:1 sobre ink */
+  --color-mist: #c3bcac; /* cuerpo — 7.6:1 */
+  --color-chalk: #f7f4e0; /* títulos — el crema del logo, 16.4:1 */
 
-  /* Claros */
-  --color-ivory: #f5f2ea;
-  --color-linen: #faf8f3; /* blanco cálido */
-  --color-cream: #efe9dc; /* crema suave */
+  /* Claros. Un solo paso de blanco a crema, sin acento aparte */
+  --color-ivory: #f7f4e0;
+  --color-linen: #faf8ee; /* el más claro, para texto sólido sobre carbón */
+  --color-cream: #efe9d5; /* crema suave, para veladuras */
 
-  /* Acento */
-  --color-sand: #d9cfbc; /* beige arena */
-  --color-champagne: #e8dcc4;
-  --color-toast: #c9b997; /* crema tostado — el halo del fondo */
-  /* El dorado apagado de la referencia. Es el acento con más presencia:
-       estados activos y detalles. Nunca en superficies. */
-  --color-gold: #c9a063;
+  /* `champagne`, `sand` y `toast` siguen existiendo como nombres —los usan
+     cientos de veladuras y bordes de vidrio en todo el sitio— pero ya no son
+     un tercer matiz "dorado": son el mismo crema del logo, sólo un paso más
+     tenue. Cambiar el valor acá alcanza; no hace falta tocar cada archivo
+     que dice `bg-champagne/[0.05]`. */
+  --color-sand: #d9d2bd; /* acento de hover — un paso más apagado que chalk */
+  --color-champagne: #efe9d5; /* = cream. Es la veladura del vidrio. */
+  --color-toast: #d9d2bd; /* = sand. Sólo lo usa el fill de un slider. */
 
-  /* Estados. Único lugar con color, y desaturado para no romper el conjunto */
+  /* Estados. Único lugar con un matiz que no es carbón ni crema, y
+     desaturado a propósito para no romper el conjunto */
   --color-ok: #8a9e82;
   --color-warn: #c9a961;
   --color-bad: #bd7f6f;
@@ -292,7 +297,7 @@
   .tc-skeleton {
     position: relative;
     overflow: hidden;
-    background: rgb(232 220 196 / 0.04);
+    background: rgb(239 233 213 / 0.04);
   }
   .tc-skeleton::after {
     content: "";
@@ -301,7 +306,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      rgb(232 220 196 / 0.06),
+      rgb(239 233 213 / 0.06),
       transparent
     );
     animation: tc-skeleton-sweep 1.9s ease-in-out infinite;
@@ -393,63 +398,123 @@
 }
 
 /* --------------------------------------------------------------------------
-   Vidrio ahumado
+   Vidrio líquido
 
-   Tres densidades. Las veladuras van en champagne, nunca en blanco puro: el
-   blanco sobre negro se lee azulado y enfría toda la paleta.
+   Tres densidades. Las veladuras van en crema, nunca en blanco puro: el
+   blanco sobre carbón se lee azulado y enfría toda la paleta.
+
+   Lo que separa un panel "con blur" de uno que se siente hecho de vidrio de
+   verdad son tres cosas, y las tres están acá: la luz nunca cae pareja —se
+   agrupa arriba a la izquierda, como si viniera de un solo lugar—; el filo
+   brilla en todo el perímetro y no sólo arriba, más fuerte donde pega la
+   luz; y el panel tiene un adentro cóncavo, una sombra propia que sugiere
+   espesor. `saturate` y `brightness` un poco por encima de 100% son lo que
+   hace que lo que está detrás del vidrio se vea con más vida, no menos —así
+   es como se ve la vidriera de una relojería, no una ventana empañada.
    -------------------------------------------------------------------------- */
 
 @utility glass {
-  background: linear-gradient(
-    155deg,
-    rgb(232 220 196 / 0.055) 0%,
-    rgb(232 220 196 / 0.018) 50%,
-    rgb(232 220 196 / 0.04) 100%
-  );
-  backdrop-filter: blur(28px) saturate(110%);
-  -webkit-backdrop-filter: blur(28px) saturate(110%);
-  border: 1px solid rgb(232 220 196 / 0.08);
+  background:
+    radial-gradient(130% 95% at 14% -15%, rgb(239 233 213 / 0.09), transparent 55%),
+    linear-gradient(
+      155deg,
+      rgb(239 233 213 / 0.055) 0%,
+      rgb(239 233 213 / 0.018) 50%,
+      rgb(239 233 213 / 0.04) 100%
+    );
+  backdrop-filter: blur(28px) saturate(130%) brightness(1.04);
+  -webkit-backdrop-filter: blur(28px) saturate(130%) brightness(1.04);
+  border: 1px solid rgb(239 233 213 / 0.08);
   box-shadow:
-    0 1px 0 0 rgb(232 220 196 / 0.06) inset,
+    0 1px 0 0 rgb(239 233 213 / 0.06) inset,
+    0 -16px 24px -20px rgb(0 0 0 / 0.5) inset,
     0 30px 70px -30px rgb(0 0 0 / 0.9);
 }
 
 @utility glass-soft {
-  background: rgb(232 220 196 / 0.025);
-  backdrop-filter: blur(16px) saturate(108%);
-  -webkit-backdrop-filter: blur(16px) saturate(108%);
-  border: 1px solid rgb(232 220 196 / 0.055);
+  background: radial-gradient(
+      130% 95% at 14% -15%,
+      rgb(239 233 213 / 0.05),
+      transparent 55%
+    ),
+    rgb(239 233 213 / 0.025);
+  backdrop-filter: blur(16px) saturate(122%) brightness(1.03);
+  -webkit-backdrop-filter: blur(16px) saturate(122%) brightness(1.03);
+  border: 1px solid rgb(239 233 213 / 0.055);
 }
 
 @utility glass-strong {
-  background: linear-gradient(
-    160deg,
-    rgb(36 35 38 / 0.9) 0%,
-    rgb(20 19 21 / 0.96) 100%
-  );
-  backdrop-filter: blur(36px) saturate(115%);
-  -webkit-backdrop-filter: blur(36px) saturate(115%);
-  border: 1px solid rgb(232 220 196 / 0.09);
+  background:
+    radial-gradient(130% 95% at 14% -15%, rgb(239 233 213 / 0.07), transparent 55%),
+    linear-gradient(
+      160deg,
+      rgb(74 71 62 / 0.9) 0%,
+      rgb(56 54 47 / 0.96) 100%
+    );
+  backdrop-filter: blur(36px) saturate(135%) brightness(1.04);
+  -webkit-backdrop-filter: blur(36px) saturate(135%) brightness(1.04);
+  border: 1px solid rgb(239 233 213 / 0.09);
   box-shadow:
-    0 1px 0 0 rgb(232 220 196 / 0.07) inset,
+    0 1px 0 0 rgb(239 233 213 / 0.07) inset,
+    0 -18px 26px -20px rgb(0 0 0 / 0.55) inset,
     0 50px 110px -40px rgb(0 0 0 / 0.95);
 }
 
-/* Filo de luz superior — el detalle "liquid" de los paneles */
+/* Filo de luz — recorre todo el perímetro del panel, no sólo el borde de
+   arriba. Es más brillante arriba a la izquierda, de donde "viene" la luz
+   en toda la interfaz, y se apaga hacia la esquina opuesta: así es como un
+   canto de vidrio real atrapa la luz, no como un marco parejo.
+
+   La técnica es un borde-degradado vía máscara: un pseudo-elemento del
+   grosor exacto del borde (`padding: 1px`), recortado para que sólo quede
+   visible ese anillo (`mask-composite: exclude`). Pisa el `border` sólido
+   del panel en vez de sumarle una segunda línea. */
 @utility edge-light {
   position: relative;
   &::before {
     content: "";
     position: absolute;
-    inset-inline: 15%;
-    top: 0;
-    height: 1px;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
     background: linear-gradient(
-      90deg,
-      transparent,
-      rgb(232 220 196 / 0.35),
-      transparent
+      135deg,
+      rgb(239 233 213 / 0.55) 0%,
+      rgb(239 233 213 / 0.08) 30%,
+      rgb(239 233 213 / 0.02) 52%,
+      rgb(239 233 213 / 0.12) 80%,
+      rgb(239 233 213 / 0.3) 100%
     );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+/* Brillo especular: una luz redonda que sigue al puntero, como si el vidrio
+   la reflejara de verdad. La posición llega por variables CSS (--sx/--sy)
+   desde el componente; acá sólo se define cómo se ve y cómo entra/sale.
+   `mix-blend-mode: overlay` es lo que hace que ilumine sin taparse encima
+   del color de fondo, como pasaría con una opacidad normal. */
+@utility specular {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      260px circle at var(--sx, 50%) var(--sy, 0%),
+      rgb(239 233 213 / 0.22),
+      transparent 70%
+    );
+    opacity: var(--specular-opacity, 0);
+    transition: opacity 500ms var(--ease-out-soft);
+    mix-blend-mode: overlay;
     pointer-events: none;
   }
 }
@@ -470,11 +535,11 @@
 @utility well {
   background: linear-gradient(
     162deg,
-    #1c1b1e 0%,
-    #151416 55%,
+    #403d34 0%,
+    #38362f 55%,
     var(--color-ink) 100%
   );
-  box-shadow: inset 0 1px 0 0 rgb(232 220 196 / 0.045);
+  box-shadow: inset 0 1px 0 0 rgb(239 233 213 / 0.045);
 }
 
 /* Recorte del par del hero.
@@ -513,9 +578,9 @@
 
 @utility glow-warm {
   box-shadow:
-    0 0 0 1px rgb(232 220 196 / 0.18),
+    0 0 0 1px rgb(239 233 213 / 0.18),
     0 18px 50px -18px rgb(201 185 151 / 0.28),
-    0 0 100px -40px rgb(232 220 196 / 0.3);
+    0 0 100px -40px rgb(239 233 213 / 0.3);
 }
 
 /* Bloom cálido difuminado de fondo */

@@ -349,7 +349,7 @@ function Dropzone({
     >
       {busy ? (
         <div className="w-full max-w-sm space-y-4">
-          <Loader2 className="mx-auto size-6 animate-spin stroke-[1.5] text-gold" />
+          <Loader2 className="mx-auto size-6 animate-spin stroke-[1.5] text-chalk" />
           <p className="font-display text-lg font-bold text-chalk">
             {phase === "leyendo" ? "Leyendo el catálogo" : "Comparando con la tienda"}
           </p>
@@ -357,7 +357,7 @@ function Dropzone({
             <>
               <div className="h-1 overflow-hidden rounded-full bg-champagne/10">
                 <motion.div
-                  className="h-full rounded-full bg-gold"
+                  className="h-full rounded-full bg-chalk"
                   animate={{ width: `${pct}%` }}
                   transition={{ duration: 0.3, ease: EASE }}
                 />
@@ -373,7 +373,7 @@ function Dropzone({
         </div>
       ) : (
         <div className="space-y-5">
-          <span className="mx-auto grid size-14 place-items-center rounded-full border border-champagne/12 bg-champagne/[0.04] text-gold">
+          <span className="mx-auto grid size-14 place-items-center rounded-full border border-champagne/12 bg-champagne/[0.04] text-chalk">
             <Upload className="size-5 stroke-[1.25]" />
           </span>
           <div>

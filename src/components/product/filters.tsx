@@ -316,7 +316,7 @@ export function FilterPanel({
                   className={cn(
                     "size-5 shrink-0 rounded-full border transition-all duration-300",
                     active
-                      ? "border-ivory ring-2 ring-gold/50 ring-offset-2 ring-offset-ink"
+                      ? "border-ivory ring-2 ring-ivory/50 ring-offset-2 ring-offset-ink"
                       : "border-champagne/20",
                   )}
                   style={{ backgroundColor: color.hex }}

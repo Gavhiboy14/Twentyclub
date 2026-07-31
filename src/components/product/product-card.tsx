@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import type { ProductView } from "@/lib/types";
 import { cn, formatPrice } from "@/lib/utils";
@@ -29,6 +29,17 @@ export function ProductCard({
   const [size, setSize] = useState<string | null>(null);
   const [needsSize, setNeedsSize] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const cardRef = useRef<HTMLElement>(null);
+
+  /* El mismo brillo especular del navbar, más contenido: acá es un detalle
+     al pasar el mouse, no la pieza que tiene que llevarse toda la atención. */
+  function trackPointer(event: React.PointerEvent<HTMLElement>) {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--sx", `${((event.clientX - rect.left) / rect.width) * 100}%`);
+    el.style.setProperty("--sy", `${((event.clientY - rect.top) / rect.height) * 100}%`);
+  }
 
   const label = `${product.brand.name} ${product.name}`;
   const secondImage = product.images[1] ?? product.images[0];
@@ -57,16 +68,19 @@ export function ProductCard({
 
   return (
     <motion.article
+      ref={cardRef}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
+      onPointerMove={trackPointer}
       whileHover={{ y: -8 }}
       transition={{ type: "spring", stiffness: 320, damping: 30 }}
+      style={{ "--specular-opacity": hovered ? 1 : 0 } as React.CSSProperties}
       className={cn(
-        "group relative flex h-full flex-col rounded-[1.75rem] p-4",
+        "specular group relative flex h-full flex-col rounded-[1.75rem] p-4",
         "border border-champagne/[0.07] bg-graphite/70 backdrop-blur-xl",
         "shadow-[0_24px_60px_-32px_rgba(0,0,0,0.9)]",
         "transition-[border-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
-        "hover:border-champagne/16 hover:shadow-[0_40px_90px_-40px_rgba(0,0,0,1),0_0_60px_-30px_rgba(232,220,196,0.22)]",
+        "hover:border-champagne/16 hover:shadow-[0_40px_90px_-40px_rgba(0,0,0,1),0_0_60px_-30px_rgba(239,233,213,0.22)]",
         !product.inStock && "opacity-55",
       )}
     >

@@ -48,8 +48,8 @@ export function HeroAtmosphere() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(70% 55% at 68% 42%, rgba(201,160,99,0.09), transparent 68%)," +
-            "radial-gradient(50% 45% at 8% 12%, rgba(232,220,196,0.05), transparent 70%)",
+            "radial-gradient(70% 55% at 68% 42%, rgba(239,233,213,0.08), transparent 68%)," +
+            "radial-gradient(50% 45% at 8% 12%, rgba(239,233,213,0.05), transparent 70%)",
         }}
       />
 
@@ -80,7 +80,7 @@ export function HeroAtmosphere() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 45%, transparent 42%, rgba(15,15,16,0.55) 78%, var(--color-ink) 100%)",
+            "radial-gradient(120% 90% at 50% 45%, transparent 42%, rgba(48,47,43,0.55) 78%, var(--color-ink) 100%)",
         }}
       />
 
