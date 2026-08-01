@@ -103,22 +103,44 @@ export function RevealWords({
   text,
   className,
   delay = 0,
+  highlight,
 }: {
   text: string;
   className?: string;
   delay?: number;
+  highlight?: string;
 }) {
   const reduced = useReducedMotion();
   const words = text.split(" ");
+  const highlightSet = new Set(
+    (highlight ?? "")
+      .trim()
+      .toLowerCase()
+      .split(/\s+/)
+      .filter(Boolean),
+  );
+  const isHighlighted = (word: string) =>
+    highlightSet.has(word.replace(/[.,!?¡¿]+$/, "").toLowerCase());
 
-  if (reduced) return <span className={className}>{text}</span>;
+  if (reduced) {
+    return (
+      <span className={className}>
+        {words.map((word, i) => (
+          <span key={`${word}-${i}`} className={isHighlighted(word) ? "text-ember" : undefined}>
+            {word}
+            {i < words.length - 1 ? " " : ""}
+          </span>
+        ))}
+      </span>
+    );
+  }
 
   return (
     <span className={cn("inline-block", className)}>
       {words.map((word, i) => (
         <span key={`${word}-${i}`} className="inline-block overflow-hidden pb-[0.08em]">
           <motion.span
-            className="inline-block"
+            className={cn("inline-block", isHighlighted(word) && "text-ember")}
             initial={{ y: "108%", opacity: 0 }}
             animate={{ y: "0%", opacity: 1 }}
             transition={{

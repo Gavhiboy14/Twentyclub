@@ -44,6 +44,13 @@
   --color-warn: #c9a961;
   --color-bad: #bd7f6f;
 
+  /* Acento de autoridad. Mismo matiz que `bad` (terracota), llevado a full
+     saturación — pero es un acento puntual, no un tercer color de sistema:
+     el CTA principal, la palabra que se resalta en el titular del hero, el
+     punto de una ficha. `bad` sigue siendo el de "agotado"; no se tocan. */
+  --color-ember: #e8623f;
+  --color-ember-dim: #c94f30;
+
   /* Tipografía. El peso de la display es el carácter de la marca: en 900 los
      titulares golpean, en 700 se vuelven una tienda más. El mono da textura
      de dato. */

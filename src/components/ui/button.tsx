@@ -28,6 +28,12 @@ const button = cva(
         glass:
           "glass text-chalk hover:-translate-y-0.5 hover:border-champagne/22 hover:bg-champagne/[0.07] hover:text-chalk " +
           "active:translate-y-0",
+        /** Sólido en el acento de autoridad: para el único CTA que tiene que
+         *  ganarle la vista a todo lo demás en la pantalla. */
+        accent:
+          "bg-ember text-linen shadow-[0_4px_18px_-4px_rgba(232,98,63,0.55),0_22px_46px_-20px_rgba(232,98,63,0.5)] " +
+          "hover:-translate-y-0.5 hover:bg-ember-dim hover:shadow-[0_6px_20px_-4px_rgba(232,98,63,0.6),0_28px_54px_-18px_rgba(232,98,63,0.6)] " +
+          "active:translate-y-0 active:shadow-[0_2px_8px_-2px_rgba(232,98,63,0.5)]",
         outline:
           "border border-iron/70 bg-transparent text-mist " +
           "hover:border-champagne/35 hover:bg-champagne/[0.04] hover:text-chalk",

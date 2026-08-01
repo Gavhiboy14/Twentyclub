@@ -207,7 +207,10 @@ export function Hero({
                 className="flex items-center gap-4"
               >
                 <div>
-                  <p className="eyebrow text-chalk">Nuevo ingreso</p>
+                  <p className="eyebrow flex items-center gap-1.5 text-chalk">
+                    <span className="size-1 rounded-full bg-ember" />
+                    Nuevo ingreso
+                  </p>
                   <p className="mt-1 text-[0.8125rem] font-semibold text-chalk">
                     {product.brand.name} {product.name}
                   </p>
@@ -279,12 +282,12 @@ export function Hero({
             transition={{ duration: 0.8, ease: EASE }}
             className="glass-soft inline-flex items-center gap-2.5 rounded-full py-2 pl-3.5 pr-4.5"
           >
-            <Sparkle className="size-2.5 text-chalk" />
+            <Sparkle className="size-2.5 text-ember" />
             <span className="eyebrow text-mist">{banner.eyebrow}</span>
           </motion.div>
 
           <h1 className="display-xl mt-6 text-[clamp(2.5rem,7.2vw,5.5rem)] text-chalk">
-            <RevealWords text={banner.title} delay={0.12} />
+            <RevealWords text={banner.title} delay={0.12} highlight="Twenty Club" />
           </h1>
 
           <motion.p
@@ -302,15 +305,28 @@ export function Hero({
             transition={{ duration: 0.9, delay: 0.68, ease: EASE }}
             className="mt-8 flex flex-wrap items-center gap-3"
           >
-            <Button asChild size="lg">
+            <Button asChild variant="accent" size="lg">
               <Link href={banner.ctaHref}>
                 {banner.ctaLabel}
                 <ArrowRight />
               </Link>
             </Button>
             <Button asChild variant="glass" size="lg">
-              <Link href="/ofertas">Ver ofertas</Link>
+              <Link href="/ofertas">
+                Ver ofertas
+                <ArrowRight />
+              </Link>
             </Button>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.8, ease: EASE }}
+            className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-champagne/10 pt-6"
+          >
+            <Stat value="+9" label="marcas curadas" />
+            <Stat value="24–48h" label="de envío" />
           </motion.div>
         </motion.div>
       </div>
@@ -372,6 +388,15 @@ function OrbitCard({
         {children}
       </div>
     </motion.div>
+  );
+}
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="flex items-baseline gap-2">
+      <span className="font-display text-xl font-bold text-chalk">{value}</span>
+      <span className="text-[0.8125rem] text-ash">{label}</span>
+    </div>
   );
 }
 
