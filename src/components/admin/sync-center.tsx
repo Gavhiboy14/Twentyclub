@@ -399,7 +399,7 @@ function Dropzone({
 
 const SUMMARY_ROWS = [
   { key: "found", label: "Productos encontrados" },
-  { key: "created", label: "Productos nuevos" },
+  { key: "created", label: "Sin vincular" },
   { key: "updated", label: "Productos modificados" },
   { key: "removed", label: "Dados de baja" },
   { key: "priceChanges", label: "Precios modificados" },
@@ -450,9 +450,15 @@ function Summary({ run }: { run: ImportRunDetail }) {
 
 /* ------------------------------- Diferencias ------------------------------ */
 
+/**
+ * "Modificados" va primero porque es el resultado que se busca al importar:
+ * los talles y precios que cambiaron. "Sin vincular" es la bandeja de avisos
+ * —modelos del proveedor que la tienda no tiene—, y no se aplica nada de ahí
+ * salvo que el admin lo pida producto por producto.
+ */
 const TABS: { kind: ChangeKind; label: string }[] = [
-  { kind: "nuevo", label: "Nuevos" },
   { kind: "modificado", label: "Modificados" },
+  { kind: "nuevo", label: "Sin vincular" },
   { kind: "ausente", label: "Dados de baja" },
   { kind: "error", label: "Errores" },
   { kind: "sin-cambios", label: "Sin cambios" },
@@ -549,10 +555,22 @@ function ItemList({
             </div>
 
             {item.kind === "nuevo" && (
-              <LinkPicker
-                catalog={catalog}
-                onPick={(productId) => onLink(item.id, productId)}
-              />
+              <div className="flex shrink-0 flex-wrap items-center gap-2">
+                {item.suggestion && (
+                  <button
+                    type="button"
+                    onClick={() => onLink(item.id, item.suggestion!.productId)}
+                    className="flex items-center gap-2 rounded-full border border-ok/30 bg-ok/10 px-3.5 py-2 text-[0.75rem] text-ok transition-colors duration-300 hover:bg-ok/20"
+                  >
+                    <Link2 className="size-3 stroke-[1.5]" />
+                    Sí, es este
+                  </button>
+                )}
+                <LinkPicker
+                  catalog={catalog}
+                  onPick={(productId) => onLink(item.id, productId)}
+                />
+              </div>
             )}
 
             {actionable && (
@@ -568,7 +586,13 @@ function ItemList({
                 )}
               >
                 {off ? <Plus className="size-3" /> : <Minus className="size-3" />}
-                {off ? "Incluir" : "Excluir"}
+                {item.kind === "nuevo"
+                  ? off
+                    ? "Cargarlo igual"
+                    : "No cargarlo"
+                  : off
+                    ? "Incluir"
+                    : "Excluir"}
               </button>
             )}
           </li>

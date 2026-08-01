@@ -11,7 +11,14 @@ import {
   type ImportItem,
   type ImportSummary,
 } from "./types";
-import { canonical, detectColor, displayName, similarity, supplierKey } from "./normalize";
+import {
+  canonical,
+  detectColor,
+  displayName,
+  similarity,
+  supplierKey,
+  withoutBrand,
+} from "./normalize";
 import { applyRules } from "./rules";
 import { publishedPrice } from "./pricing";
 import { DEFAULT_SYNC_SETTINGS } from "./defaults";
@@ -26,8 +33,18 @@ import { DEFAULT_SYNC_SETTINGS } from "./defaults";
    no tiene lógica propia y no puede desincronizarse de la importación.
    ========================================================================== */
 
-/** Umbral del cruce difuso. Alto a propósito: ante la duda, producto nuevo. */
+/** Umbral del cruce difuso. Alto a propósito: ante la duda, no se ata solo. */
 const FUZZY_THRESHOLD = 0.72;
+
+/**
+ * Piso para *sugerir* un producto sin atarlo.
+ *
+ * Entre este valor y `FUZZY_THRESHOLD` está la zona gris: demasiado parecido
+ * para ignorarlo, no lo suficiente como para vincularlo sin preguntar. El caso
+ * típico es que el proveedor escriba "Nike Dunk Panda Blancas" y en la tienda
+ * el producto se llame "Dunk Panda". Se ofrece en un clic y decide el admin.
+ */
+const SUGGEST_THRESHOLD = 0.4;
 
 let counter = 0;
 function itemId(): string {
@@ -84,6 +101,7 @@ function findExisting(
   brandId: string | null,
   products: Product[],
   claimed: Set<string>,
+  brandName: string,
 ): Product | null {
   const key = supplierKey(extracted.model);
 
@@ -91,6 +109,8 @@ function findExisting(
   if (byRef) return byRef;
 
   if (!brandId) return null;
+
+  const needle = withoutBrand(extracted.model, brandName);
 
   /* `claimed` es imprescindible, no una precaución.
      Durante el armado del plan nada se escribe, así que el `supplierRef` que
@@ -103,12 +123,55 @@ function findExisting(
     if (product.brandId !== brandId) continue;
     if (product.supplierRef) continue; // ya está atado a otra fila
     if (claimed.has(product.id)) continue;
-    const score = similarity(extracted.model, product.name);
+    const score = similarity(needle, withoutBrand(product.name, brandName));
     if (score >= FUZZY_THRESHOLD && (!best || score > best.score)) {
       best = { product, score };
     }
   }
   return best?.product ?? null;
+}
+
+/**
+ * Producto más parecido para una fila que no se pudo vincular sola.
+ *
+ * Mira el mismo universo que `findExisting` —misma marca, sin referencia y no
+ * reclamado— pero en la franja de abajo del umbral. No decide nada: alimenta
+ * el botón de "¿Es este?" del panel, para que vincular no obligue a buscar el
+ * producto a mano en la lista entera.
+ */
+function findSuggestion(
+  extracted: ExtractedProduct,
+  brandId: string | null,
+  products: Product[],
+  claimed: Set<string>,
+  brandsById: Map<string, Brand>,
+): ImportItem["suggestion"] {
+  if (!brandId) return null;
+
+  const brandName = brandsById.get(brandId)?.name ?? "";
+  const needle = withoutBrand(extracted.model, brandName);
+
+  let best: { product: Product; score: number } | null = null;
+  for (const product of products) {
+    if (product.brandId !== brandId) continue;
+    if (product.supplierRef) continue;
+    if (claimed.has(product.id)) continue;
+    const score = similarity(needle, withoutBrand(product.name, brandName));
+    if (
+      score >= SUGGEST_THRESHOLD &&
+      score < FUZZY_THRESHOLD &&
+      (!best || score > best.score)
+    ) {
+      best = { product, score };
+    }
+  }
+
+  if (!best) return null;
+  // El candidato salió del filtro por marca, así que `brandName` es el suyo.
+  return {
+    productId: best.product.id,
+    label: `${brandName} ${best.product.name}`.trim(),
+  };
 }
 
 /* -------------------------------- Plan ------------------------------------ */
@@ -166,6 +229,7 @@ export function buildPlan({ extraction, db, rules, now }: PlanInput): Plan {
       outcome.brandId,
       db.products,
       touched,
+      brand?.name ?? "",
     );
 
     /* Sin marca no hay producto posible: la columna es obligatoria en la base.
@@ -195,7 +259,21 @@ export function buildPlan({ extraction, db, rules, now }: PlanInput): Plan {
       );
     } else {
       items.push(
-        createItem(extracted, brand!, outcome, settings, timestamp, takenSlugs),
+        createItem(
+          extracted,
+          brand!,
+          outcome,
+          settings,
+          timestamp,
+          takenSlugs,
+          findSuggestion(
+            extracted,
+            outcome.brandId,
+            db.products,
+            touched,
+            brandsById,
+          ),
+        ),
       );
     }
   }
@@ -301,6 +379,15 @@ function updateItem(
   };
 }
 
+/**
+ * Línea para un modelo del PDF que no está en la tienda.
+ *
+ * Nace **desaprobada**, y esa es la decisión que ordena toda la pantalla: el
+ * catálogo del proveedor es mucho más grande que la tienda, así que "no lo
+ * encontré" es un aviso, no una orden de crear. Si esto viniera aprobado,
+ * confirmar una importación llenaría Twenty Club con cientos de borradores que
+ * nadie pidió. El admin elige de a uno: vincular, incluir o ignorar.
+ */
 function createItem(
   extracted: ExtractedProduct,
   brand: Brand,
@@ -308,6 +395,7 @@ function createItem(
   settings: Database["settings"]["sync"],
   timestamp: string,
   takenSlugs: Set<string>,
+  suggestion: ImportItem["suggestion"] = null,
 ): ImportItem {
   const name = displayName(extracted.model);
   const { color, colorHex } = detectColor(extracted.model);
@@ -369,8 +457,11 @@ function createItem(
     ],
     patch: draft,
     previous: null,
-    reason: "",
-    approved: true,
+    reason: suggestion
+      ? `No coincide con ningún producto de tu tienda. ¿Será "${suggestion.label}"?`
+      : "No coincide con ningún producto de tu tienda",
+    suggestion,
+    approved: false,
   };
 }
 

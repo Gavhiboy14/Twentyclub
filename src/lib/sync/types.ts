@@ -96,6 +96,14 @@ export interface ImportItem {
   previous: Partial<Product> | null;
   /** Por qué quedó en error, o por qué se saltea. */
   reason: string;
+  /**
+   * Candidato más parecido para una línea sin vincular.
+   *
+   * Quedó por debajo del umbral del cruce automático —por eso la línea no se
+   * ató sola—, pero lo bastante cerca como para que valga ofrecerlo en un
+   * clic. Es sólo una sugerencia: no se aplica hasta que el admin la acepta.
+   */
+  suggestion?: { productId: string; label: string } | null;
   /** El administrador puede desmarcar líneas sueltas antes de confirmar. */
   approved: boolean;
 }

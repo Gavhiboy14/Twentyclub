@@ -50,6 +50,28 @@ export function similarity(a: string, b: string): number {
   return (2 * shared) / (left.size + right.size);
 }
 
+/**
+ * Saca el nombre de la marca del texto antes de compararlo.
+ *
+ * El cruce se hace siempre dentro de una misma marca, así que esa palabra no
+ * distingue nada: lo único que hace es diluir el parecido. El proveedor
+ * escribe "Vans Ultraranger" y en la tienda el producto se llama
+ * "UltraRanger" — con la marca adentro eso da 0.67 y no llega al umbral; sin
+ * ella da 1 y se vincula solo, que es lo que uno espera.
+ *
+ * El color **no** se toca, a propósito: "Gazelle Celeste" y "Gazelle Bordó"
+ * son dos productos distintos del catálogo, y borrarlo los volvería
+ * indistinguibles entre sí.
+ */
+export function withoutBrand(value: string, brandName: string): string {
+  const brandTokens = new Set(canonical(brandName).split(" ").filter(Boolean));
+  if (!brandTokens.size) return canonical(value);
+  return canonical(value)
+    .split(" ")
+    .filter((token) => token && !brandTokens.has(token))
+    .join(" ");
+}
+
 /* --------------------------------- Color ---------------------------------- */
 
 /**
