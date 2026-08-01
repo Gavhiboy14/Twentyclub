@@ -46,6 +46,19 @@ const FUZZY_THRESHOLD = 0.72;
  */
 const SUGGEST_THRESHOLD = 0.4;
 
+/**
+ * Umbral para volver a enganchar un producto que **ya estaba atado** y cuya
+ * referencia no volvió a aparecer en este PDF.
+ *
+ * Es más bajo que el general y no por descuido: ese producto ya se sabe de
+ * este proveedor, y la única alternativa a reengancharlo es darlo de baja y
+ * crear un duplicado al lado. Un renombre típico —"Ultraranger" pasa a
+ * "Ultraranger Blancas"— cae en 0.67 y no llegaba al umbral general. El
+ * cambio de vínculo queda visible en la línea, así que si el parecido erró se
+ * ve y se excluye antes de confirmar.
+ */
+const REBIND_THRESHOLD = 0.55;
+
 let counter = 0;
 function itemId(): string {
   counter += 1;
@@ -89,42 +102,45 @@ function dedupe(products: ExtractedProduct[]): {
 /* ------------------------------ Matcheo ----------------------------------- */
 
 /**
- * Encuentra el producto de la tienda que corresponde a una fila del PDF.
+ * Producto de la tienda que se parece a una fila del PDF.
  *
- * Primero por referencia exacta, que es como quedan atados a partir de la
- * primera importación. Recién si no hay, intenta por parecido de nombre, y
- * sólo dentro de la misma marca — cruzar "Dunk Panda" de Nike con uno de otra
+ * Sólo dentro de la misma marca: cruzar "Dunk Panda" de Nike con uno de otra
  * marca sería peor que crear un producto de más.
+ *
+ * A diferencia del cruce por referencia, esto corre en una segunda pasada y
+ * mira también productos que **ya tienen** referencia, siempre que ninguna
+ * fila de este PDF los haya reclamado. Un producto atado cuya referencia no
+ * volvió a aparecer es justo el caso del renombre —el proveedor le cambió el
+ * nombre al modelo—, y es el único momento en que conviene volver a engancharlo
+ * por parecido en vez de darlo de baja y crear un duplicado al lado.
+ *
+ * `claimed` es imprescindible, no una precaución. Durante el armado del plan
+ * nada se escribe, así que el `supplierRef` que una línea le va a poner al
+ * producto todavía no está en la base. Sin este registro en memoria, dos filas
+ * parecidas —"Jordan 1 Low" y "Jordan 1 Low Bred"— se enganchan las dos al
+ * mismo producto, y al aplicar la segunda le pisa el precio a la primera sin
+ * que nada lo avise.
  */
-function findExisting(
+function findBySimilarity(
   extracted: ExtractedProduct,
   brandId: string | null,
   products: Product[],
   claimed: Set<string>,
   brandName: string,
 ): Product | null {
-  const key = supplierKey(extracted.model);
-
-  const byRef = products.find((p) => p.supplierRef && p.supplierRef === key);
-  if (byRef) return byRef;
-
   if (!brandId) return null;
 
   const needle = withoutBrand(extracted.model, brandName);
 
-  /* `claimed` es imprescindible, no una precaución.
-     Durante el armado del plan nada se escribe, así que el `supplierRef` que
-     una línea le va a poner al producto todavía no está en la base. Sin este
-     registro en memoria, dos filas parecidas del PDF —"Jordan 1 Low" y
-     "Jordan 1 Low Bred"— se enganchan las dos al mismo producto, y al aplicar
-     la segunda le pisa el precio a la primera sin que nada lo avise. */
   let best: { product: Product; score: number } | null = null;
   for (const product of products) {
     if (product.brandId !== brandId) continue;
-    if (product.supplierRef) continue; // ya está atado a otra fila
     if (claimed.has(product.id)) continue;
+    /* Un producto huérfano —atado a este proveedor y sin fila propia en este
+       PDF— se reengancha con menos exigencia: ver `REBIND_THRESHOLD`. */
+    const floor = product.supplierRef ? REBIND_THRESHOLD : FUZZY_THRESHOLD;
     const score = similarity(needle, withoutBrand(product.name, brandName));
-    if (score >= FUZZY_THRESHOLD && (!best || score > best.score)) {
+    if (score >= floor && (!best || score > best.score)) {
       best = { product, score };
     }
   }
@@ -154,7 +170,6 @@ function findSuggestion(
   let best: { product: Product; score: number } | null = null;
   for (const product of products) {
     if (product.brandId !== brandId) continue;
-    if (product.supplierRef) continue;
     if (claimed.has(product.id)) continue;
     const score = similarity(needle, withoutBrand(product.name, brandName));
     if (
@@ -221,17 +236,43 @@ export function buildPlan({ extraction, db, rules, now }: PlanInput): Plan {
     });
   }
 
-  for (const extracted of unique) {
+  /* El cruce va en dos pasadas y el orden no es un detalle de implementación.
+     Si se resolviera fila por fila, una fila temprana podría llevarse por
+     parecido un producto que más abajo del PDF le corresponde por referencia
+     exacta a otra. Primero se atan todos los seguros; el parecido se reparte
+     después, sobre lo que quedó realmente suelto. */
+  const byRef = new Map<string, Product>();
+  for (const product of db.products) {
+    if (product.supplierRef) byRef.set(product.supplierRef, product);
+  }
+
+  const rows = unique.map((extracted) => {
     const outcome = applyRules(extracted.model, rules);
-    const brand = outcome.brandId ? brandsById.get(outcome.brandId) : undefined;
-    const existing = findExisting(
+    return {
       extracted,
-      outcome.brandId,
+      outcome,
+      brand: outcome.brandId ? brandsById.get(outcome.brandId) : undefined,
+      existing: byRef.get(supplierKey(extracted.model)) ?? null,
+    };
+  });
+
+  for (const row of rows) {
+    if (row.existing) touched.add(row.existing.id);
+  }
+
+  for (const row of rows) {
+    if (row.existing) continue;
+    row.existing = findBySimilarity(
+      row.extracted,
+      row.outcome.brandId,
       db.products,
       touched,
-      brand?.name ?? "",
+      row.brand?.name ?? "",
     );
+    if (row.existing) touched.add(row.existing.id);
+  }
 
+  for (const { extracted, outcome, brand, existing } of rows) {
     /* Sin marca no hay producto posible: la columna es obligatoria en la base.
        Se reporta para que el admin cree la marca o agregue una regla. */
     if (!existing && !brand) {
@@ -253,7 +294,7 @@ export function buildPlan({ extraction, db, rules, now }: PlanInput): Plan {
     }
 
     if (existing) {
-      touched.add(existing.id);
+      // Ya quedó reclamado en la pasada que lo encontró.
       items.push(
         updateItem(existing, extracted, brandsById, settings, timestamp),
       );
@@ -358,10 +399,27 @@ function updateItem(
   }
 
   /* La referencia se graba la primera vez que se lo cruza, para que el próximo
-     PDF lo encuentre por clave exacta y no por parecido. */
-  if (!product.supplierRef) {
-    patch.supplierRef = supplierKey(extracted.model);
-    previous.supplierRef = "";
+     PDF lo encuentre por clave exacta y no por parecido.
+
+     Y se **regraba** si el proveedor le cambió el nombre al modelo: sin esto,
+     un renombre obligaría a vincular el mismo producto a mano en cada
+     importación, porque la referencia vieja no vuelve a aparecer nunca.
+
+     El renombre entra además como cambio visible. No es cosmético: si fuera
+     el único cambio de la línea —mismo precio, mismos talles— la línea
+     quedaría en "sin cambios", no se aprobaría, y la referencia nueva no
+     llegaría a guardarse. */
+  const nextRef = supplierKey(extracted.model);
+  if (product.supplierRef !== nextRef) {
+    if (product.supplierRef) {
+      changes.push({
+        field: "vínculo",
+        before: product.supplierRef,
+        after: nextRef,
+      });
+    }
+    patch.supplierRef = nextRef;
+    previous.supplierRef = product.supplierRef;
   }
 
   return {

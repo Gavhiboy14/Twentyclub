@@ -64,16 +64,24 @@ export async function POST(request: Request, { params }: Params) {
     }
 
     /* Si otra línea ya apuntaba a ese producto quedarían dos escribiendo
-       encima, que es justo lo que el plan evita en el cruce automático. */
-    const clash = run.items.some(
+       encima, que es justo lo que el plan evita en el cruce automático.
+
+       La baja es la excepción, y es la que hace vinculable el renombre: si el
+       producto figuraba como "dejó de aparecer" es porque su referencia vieja
+       no estaba en este PDF — que es exactamente lo que pasa cuando el
+       proveedor le cambia el nombre. Al vincularlo el producto reaparece, así
+       que esa baja ya no corresponde y se cae. Sin esto la línea se rechazaba
+       y el renombre no había forma de resolverlo desde el panel. */
+    const conflicting = run.items.filter(
       (item, i) => i !== index && item.productId === productId,
     );
-    if (clash) {
+    if (conflicting.some((item) => item.kind !== "ausente")) {
       return badRequest("Otra línea de esta importación ya usa ese producto");
     }
 
-    const items = [...run.items];
-    items[index] = linked;
+    const bajas = new Set(conflicting.map((item) => item.id));
+    const items = run.items.filter((item) => !bajas.has(item.id));
+    items[items.findIndex((item) => item.id === itemId)] = linked;
     const updated = await store.updateImport(id, {
       items,
       summary: summarize(items),

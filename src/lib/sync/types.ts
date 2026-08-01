@@ -66,7 +66,13 @@ export type ChangeKind =
   | "ausente"
   | "error";
 
-export type ChangeField = "precio" | "talles" | "estado";
+/**
+ * `vínculo` es el único que no describe un dato de la tienda sino la atadura
+ * con el PDF: aparece cuando el proveedor le cambia el nombre a un modelo que
+ * ya estaba vinculado. Sin él, un renombre sin cambio de talles ni de precio
+ * quedaría como "sin cambios" y la referencia nueva no se llegaría a guardar.
+ */
+export type ChangeField = "precio" | "talles" | "estado" | "vínculo";
 
 export interface FieldChange {
   field: ChangeField;
